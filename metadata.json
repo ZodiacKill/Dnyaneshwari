@@ -1,0 +1,6 @@
+{
+  "name": "Marathi Dnyaneshwari",
+  "description": "Comprehensive Marathi Dnyaneshwari scripture app featuring all 18 Adhyays, authentic Ovis with Marathi Bhavarth & English translations, search, audio recitation, and AI spiritual chintan.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
