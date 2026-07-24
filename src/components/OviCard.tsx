@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { Ovi } from '../types';
 import { Volume2, VolumeX, Heart, Share2, Sparkles, Copy, Check, MessageSquare } from 'lucide-react';
 import { speakMarathiText, stopMarathiSpeech } from '../utils/audioUtils';
+import { ShareModal } from './ShareModal';
 
 interface OviCardProps {
   ovi: Ovi;
   chapterTitle?: string;
-  fontSize: 'normal' | 'large' | 'xlarge';
   isBookmarked: boolean;
   onToggleBookmark: (oviId: string, note?: string) => void;
   onAskAi: (ovi: Ovi) => void;
@@ -18,7 +18,6 @@ interface OviCardProps {
 export const OviCard: React.FC<OviCardProps> = ({
   ovi,
   chapterTitle,
-  fontSize,
   isBookmarked,
   onToggleBookmark,
   onAskAi,
@@ -29,20 +28,9 @@ export const OviCard: React.FC<OviCardProps> = ({
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [copied, setCopied] = useState(false);
   const [showNoteInput, setShowNoteInput] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
   const [userNote, setUserNote] = useState('');
   const [activeTab, setActiveTab] = useState<'bhavarth' | 'english' | 'insight'>('bhavarth');
-
-  const oviStyle: Record<'normal' | 'large' | 'xlarge', React.CSSProperties> = {
-    normal: { fontSize: '1.2rem', lineHeight: '1.8' },
-    large: { fontSize: '1.6rem', lineHeight: '2.0' },
-    xlarge: { fontSize: '2.2rem', lineHeight: '2.3', letterSpacing: '0.02em' },
-  };
-
-  const bhavarthStyle: Record<'normal' | 'large' | 'xlarge', React.CSSProperties> = {
-    normal: { fontSize: '0.95rem', lineHeight: '1.65' },
-    large: { fontSize: '1.15rem', lineHeight: '1.85' },
-    xlarge: { fontSize: '1.4rem', lineHeight: '2.0' },
-  };
 
   const handleSpeech = () => {
     if (onPlayAudio) {
@@ -68,15 +56,7 @@ export const OviCard: React.FC<OviCardProps> = ({
   };
 
   const handleShare = () => {
-    if (navigator.share) {
-      navigator.share({
-        title: `ज्ञानेश्वरी ओवी ${ovi.chapterNumber}.${ovi.oviNumber}`,
-        text: `${ovi.originalMarathi}\n- भावार्थ: ${ovi.marathiBhavarth}`,
-        url: window.location.href,
-      }).catch(() => {});
-    } else {
-      handleCopy();
-    }
+    setShowShareModal(true);
   };
 
   const handleSaveBookmark = () => {
@@ -200,10 +180,7 @@ export const OviCard: React.FC<OviCardProps> = ({
 
       {/* Main Original Marathi Ovi Text */}
       <div className="my-3 text-center sm:text-left px-3 sm:px-4 py-3 rounded-xl border border-amber-200/80 bg-[#FAF4E5] shadow-inner">
-        <p
-          className="font-serif font-bold text-amber-950 transition-all duration-200"
-          style={oviStyle[fontSize]}
-        >
+        <p className="font-serif font-bold text-amber-950 text-lg sm:text-xl leading-relaxed">
           {ovi.originalMarathi}
         </p>
       </div>
@@ -246,20 +223,14 @@ export const OviCard: React.FC<OviCardProps> = ({
         {/* Tab Content */}
         <div className="pt-1">
           {activeTab === 'bhavarth' && (
-            <p
-              className="text-amber-950 font-sans transition-all duration-200"
-              style={bhavarthStyle[fontSize]}
-            >
+            <p className="text-amber-950 font-sans text-sm sm:text-base leading-relaxed">
               <strong className="text-amber-950 font-serif">भावार्थ: </strong>
               {ovi.marathiBhavarth}
             </p>
           )}
 
           {activeTab === 'english' && (
-            <p
-              className="text-amber-950 font-sans italic transition-all duration-200"
-              style={bhavarthStyle[fontSize]}
-            >
+            <p className="text-amber-950 font-sans italic text-sm sm:text-base leading-relaxed">
               <strong className="text-amber-950 not-italic font-semibold">English Meaning: </strong>
               "{ovi.englishTranslation}"
             </p>
@@ -267,10 +238,7 @@ export const OviCard: React.FC<OviCardProps> = ({
 
           {activeTab === 'insight' && (
             <div className="bg-amber-50 p-3.5 rounded-xl border border-amber-200">
-              <p
-                className="text-amber-950 font-sans transition-all duration-200"
-                style={bhavarthStyle[fontSize]}
-              >
+              <p className="text-amber-950 font-sans text-sm sm:text-base leading-relaxed">
                 <strong className="text-amber-950 font-serif">आध्यात्मिक बोध: </strong>
                 {ovi.spiritualInsight}
               </p>
@@ -292,6 +260,15 @@ export const OviCard: React.FC<OviCardProps> = ({
             </span>
           ))}
         </div>
+      )}
+
+      {/* Share Modal */}
+      {showShareModal && (
+        <ShareModal
+          ovi={ovi}
+          chapterTitle={chapterTitle}
+          onClose={() => setShowShareModal(false)}
+        />
       )}
     </div>
   );

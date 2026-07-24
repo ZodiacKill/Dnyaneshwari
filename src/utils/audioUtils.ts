@@ -1,36 +1,77 @@
 // Browser Text-to-Speech for Marathi
-export function speakMarathiText(text: string, onEnd?: () => void) {
+let activeUtterance: SpeechSynthesisUtterance | null = null;
+
+export function speakMarathiText(text: string, onEnd?: () => void, rate: number = 0.75) {
   if (!('speechSynthesis' in window)) {
-    alert("Speech Synthesis is not supported in your browser.");
+    console.warn("Speech Synthesis is not supported in this browser environment.");
+    if (onEnd) onEnd();
     return;
   }
 
-  window.speechSynthesis.cancel(); // Stop any active speech
+  try {
+    // Unpause if speech synthesis is paused
+    if (window.speechSynthesis.paused) {
+      window.speechSynthesis.resume();
+    }
+    window.speechSynthesis.cancel(); // Stop any active speech
 
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = "mr-IN"; // Marathi
-  utterance.rate = 0.85; // Calmer reading pace
-  utterance.pitch = 1.0;
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "mr-IN"; // Marathi
+    utterance.rate = rate; // Fixed 0.75x rate
+    utterance.pitch = 1.0;
 
-  // Fallback to Hindi or default if Marathi voice isn't explicitly found
-  const voices = window.speechSynthesis.getVoices();
-  const marathiVoice = voices.find(v => v.lang.includes("mr") || v.lang.includes("hi"));
-  if (marathiVoice) {
-    utterance.voice = marathiVoice;
+    const assignVoice = () => {
+      const voices = window.speechSynthesis.getVoices();
+      if (!voices || voices.length === 0) return;
+      const marathiVoice = voices.find(v => v.lang.includes("mr") || v.lang.startsWith("mr"));
+      const hindiVoice = voices.find(v => v.lang.includes("hi") || v.lang.startsWith("hi"));
+      const indianVoice = voices.find(v => v.lang.includes("IN"));
+      if (marathiVoice) {
+        utterance.voice = marathiVoice;
+      } else if (hindiVoice) {
+        utterance.voice = hindiVoice;
+      } else if (indianVoice) {
+        utterance.voice = indianVoice;
+      }
+    };
+
+    assignVoice();
+    if (window.speechSynthesis.getVoices().length === 0) {
+      window.speechSynthesis.onvoiceschanged = () => {
+        assignVoice();
+      };
+    }
+
+    let finished = false;
+    const handleFinished = () => {
+      if (!finished) {
+        finished = true;
+        activeUtterance = null;
+        if (onEnd) onEnd();
+      }
+    };
+
+    utterance.onend = handleFinished;
+    utterance.onerror = (e) => {
+      console.warn("Speech synthesis ended or was interrupted:", e);
+      handleFinished();
+    };
+
+    activeUtterance = utterance;
+    window.speechSynthesis.speak(utterance);
+  } catch (err) {
+    console.error("Error executing speakMarathiText:", err);
+    if (onEnd) onEnd();
   }
-
-  if (onEnd) {
-    utterance.onend = onEnd;
-    utterance.onerror = onEnd;
-  }
-
-  window.speechSynthesis.speak(utterance);
 }
 
 export function stopMarathiSpeech() {
   if ('speechSynthesis' in window) {
-    window.speechSynthesis.cancel();
+    try {
+      window.speechSynthesis.cancel();
+    } catch {}
   }
+  activeUtterance = null;
 }
 
 // Web Audio API Tanpura Drone Synthesizer

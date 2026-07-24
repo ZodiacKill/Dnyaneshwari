@@ -5,7 +5,6 @@ import { OviCard } from './OviCard';
 import { Heart, Trash2, MessageSquare } from 'lucide-react';
 
 interface BookmarksViewProps {
-  fontSize: 'normal' | 'large' | 'xlarge';
   bookmarks: string[];
   userNotes: Record<string, string>;
   onToggleBookmark: (oviId: string, note?: string) => void;
@@ -14,7 +13,6 @@ interface BookmarksViewProps {
 }
 
 export const BookmarksView: React.FC<BookmarksViewProps> = ({
-  fontSize,
   bookmarks,
   userNotes,
   onToggleBookmark,
@@ -81,7 +79,6 @@ export const BookmarksView: React.FC<BookmarksViewProps> = ({
                 <OviCard
                   ovi={ovi}
                   chapterTitle={ch?.marathiTitle}
-                  fontSize={fontSize}
                   isBookmarked={true}
                   onToggleBookmark={onToggleBookmark}
                   onAskAi={onAskAi}

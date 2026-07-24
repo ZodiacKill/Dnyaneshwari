@@ -6,7 +6,6 @@ import { SimpleAudioPlayer } from './SimpleAudioPlayer';
 import { Search, Tag, BookOpen, RotateCcw, ChevronRight, Sparkles, Filter } from 'lucide-react';
 
 interface SearchModuleProps {
-  fontSize: 'normal' | 'large' | 'xlarge';
   bookmarks: string[];
   onToggleBookmark: (oviId: string, note?: string) => void;
   onAskAi: (ovi: Ovi) => void;
@@ -355,7 +354,6 @@ export const SearchModule: React.FC<SearchModuleProps> = ({
                       key={ovi.id}
                       ovi={ovi}
                       chapterTitle={ch?.marathiTitle}
-                      fontSize={fontSize}
                       isBookmarked={bookmarks.includes(ovi.id)}
                       onToggleBookmark={onToggleBookmark}
                       onAskAi={onAskAi}

@@ -11,7 +11,6 @@ interface ChapterDetailViewProps {
   chapter: Chapter;
   onBack: () => void;
   onSelectChapter: (num: number) => void;
-  fontSize: 'normal' | 'large' | 'xlarge';
   bookmarks: string[];
   onToggleBookmark: (oviId: string, note?: string) => void;
   onAskAi: (ovi: Ovi) => void;
@@ -21,7 +20,6 @@ export const ChapterDetailView: React.FC<ChapterDetailViewProps> = ({
   chapter,
   onBack,
   onSelectChapter,
-  fontSize,
   bookmarks,
   onToggleBookmark,
   onAskAi,
@@ -251,7 +249,6 @@ export const ChapterDetailView: React.FC<ChapterDetailViewProps> = ({
                     key={ovi.id}
                     ovi={ovi}
                     chapterTitle={chapter.marathiTitle}
-                    fontSize={fontSize}
                     isBookmarked={bookmarks.includes(ovi.id)}
                     onToggleBookmark={onToggleBookmark}
                     onAskAi={onAskAi}

@@ -42,13 +42,12 @@ export const SimpleAudioPlayer: React.FC<SimpleAudioPlayerProps> = ({
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(0.85);
   const [isMuted, setIsMuted] = useState(false);
-  const [playbackSpeed, setPlaybackSpeed] = useState<number>(1.0);
   const [speechProgress, setSpeechProgress] = useState(0);
   const [showFullOviText, setShowFullOviText] = useState(false);
 
   const isAudioFileAvailable = Boolean(ovi.audioUrl && ovi.audioUrl.trim().length > 0);
 
-  // Handle switching Ovi - reset state and autoplay
+  // Handle switching Ovi - reset state and start recitation
   useEffect(() => {
     setIsPlaying(false);
     setCurrentTime(0);
@@ -59,8 +58,13 @@ export const SimpleAudioPlayer: React.FC<SimpleAudioPlayerProps> = ({
 
     if (isAudioFileAvailable && audioRef.current) {
       audioRef.current.currentTime = 0;
-      audioRef.current.playbackRate = playbackSpeed;
-      audioRef.current.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
+      audioRef.current.playbackRate = 0.75;
+      audioRef.current.play()
+        .then(() => setIsPlaying(true))
+        .catch((err) => {
+          console.warn("Autoplay prevented or failed:", err);
+          setIsPlaying(false);
+        });
     } else {
       // Auto-start Marathi speech synthesis recitation if no audioUrl
       handlePlaySpeech();
@@ -80,7 +84,10 @@ export const SimpleAudioPlayer: React.FC<SimpleAudioPlayerProps> = ({
     if (!audio) return;
 
     const handleTimeUpdate = () => setCurrentTime(audio.currentTime);
-    const handleLoadedMetadata = () => setDuration(audio.duration || 0);
+    const handleLoadedMetadata = () => {
+      setDuration(audio.duration || 0);
+      audio.playbackRate = 0.75;
+    };
     const handleEnded = () => {
       setIsPlaying(false);
       setCurrentTime(0);
@@ -107,7 +114,10 @@ export const SimpleAudioPlayer: React.FC<SimpleAudioPlayerProps> = ({
         audioRef.current.pause();
         setIsPlaying(false);
       } else {
-        audioRef.current.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
+        audioRef.current.playbackRate = 0.75;
+        audioRef.current.play()
+          .then(() => setIsPlaying(true))
+          .catch(() => setIsPlaying(false));
       }
     } else {
       // Speech fallback mode
@@ -122,10 +132,14 @@ export const SimpleAudioPlayer: React.FC<SimpleAudioPlayerProps> = ({
 
   const handlePlaySpeech = () => {
     setIsPlaying(true);
-    speakMarathiText(`${ovi.originalMarathi}. भावार्थ: ${ovi.marathiBhavarth}`, () => {
-      setIsPlaying(false);
-      setSpeechProgress(100);
-    });
+    speakMarathiText(
+      `${ovi.originalMarathi}. भावार्थ: ${ovi.marathiBhavarth}`,
+      () => {
+        setIsPlaying(false);
+        setSpeechProgress(100);
+      },
+      0.75
+    );
   };
 
   const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -133,13 +147,6 @@ export const SimpleAudioPlayer: React.FC<SimpleAudioPlayerProps> = ({
     setCurrentTime(newTime);
     if (audioRef.current && isAudioFileAvailable) {
       audioRef.current.currentTime = newTime;
-    }
-  };
-
-  const handleSpeedChange = (speed: number) => {
-    setPlaybackSpeed(speed);
-    if (audioRef.current) {
-      audioRef.current.playbackRate = speed;
     }
   };
 
@@ -369,25 +376,15 @@ export const SimpleAudioPlayer: React.FC<SimpleAudioPlayerProps> = ({
           </button>
         </div>
 
-        {/* Secondary Bar: Speed & Volume */}
+        {/* Secondary Bar: Default Speed & Volume */}
         <div className="w-full flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-amber-900/60 text-xs">
           
-          {/* Speed Controls */}
-          <div className="flex items-center gap-1">
-            <span className="text-[11px] text-amber-300/80 font-medium">गती:</span>
-            {[0.75, 1.0, 1.25, 1.5].map((speed) => (
-              <button
-                key={speed}
-                onClick={() => handleSpeedChange(speed)}
-                className={`px-2 py-0.5 text-[10px] rounded font-mono transition-colors ${
-                  playbackSpeed === speed
-                    ? 'bg-amber-500 text-amber-950 font-bold'
-                    : 'bg-amber-950 text-amber-300 hover:bg-amber-900'
-                }`}
-              >
-                {speed}x
-              </button>
-            ))}
+          {/* Speed Indicator */}
+          <div className="flex items-center gap-1.5 text-[11px] text-amber-300/90 font-medium">
+            <span>वाचन गती:</span>
+            <span className="bg-amber-900/80 text-amber-200 px-2 py-0.5 rounded border border-amber-700/60 font-mono text-[10px] font-bold">
+              0.75x
+            </span>
           </div>
 
           {/* Volume Control */}

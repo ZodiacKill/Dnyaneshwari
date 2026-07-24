@@ -1,23 +1,15 @@
 import React from 'react';
-import { BookOpen, Search, Heart, Sparkles, Volume2, VolumeX, Sun, Feather, Type } from 'lucide-react';
+import { BookOpen, Search, Heart, Sparkles, Feather } from 'lucide-react';
 
 interface HeaderProps {
-  activeTab: 'chapters' | 'search' | 'pasayadan' | 'daily' | 'bookmarks' | 'ai';
-  setActiveTab: (tab: 'chapters' | 'search' | 'pasayadan' | 'daily' | 'bookmarks' | 'ai') => void;
-  isTanpuraPlaying: boolean;
-  onToggleTanpura: () => void;
-  fontSize: 'normal' | 'large' | 'xlarge';
-  setFontSize: (size: 'normal' | 'large' | 'xlarge') => void;
+  activeTab: 'chapters' | 'search' | 'pasayadan' | 'bookmarks' | 'ai';
+  setActiveTab: (tab: 'chapters' | 'search' | 'pasayadan' | 'bookmarks' | 'ai') => void;
   bookmarkCount: number;
 }
 
 export const Header: React.FC<HeaderProps> = ({
   activeTab,
   setActiveTab,
-  isTanpuraPlaying,
-  onToggleTanpura,
-  fontSize,
-  setFontSize,
   bookmarkCount,
 }) => {
   return (
@@ -90,18 +82,6 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
 
             <button
-              onClick={() => setActiveTab('daily')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
-                activeTab === 'daily'
-                  ? 'bg-[#78350F] text-amber-100 shadow-sm border border-amber-600/60'
-                  : 'text-amber-200/90 hover:bg-amber-900/60 hover:text-amber-100'
-              }`}
-            >
-              <Sun className="w-4 h-4 text-amber-400" />
-              <span>आजची ओवी</span>
-            </button>
-
-            <button
               onClick={() => setActiveTab('ai')}
               className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
                 activeTab === 'ai'
@@ -113,64 +93,6 @@ export const Header: React.FC<HeaderProps> = ({
               <span>चिंतन AI</span>
             </button>
           </nav>
-
-          {/* Quick Controls */}
-          <div className="flex items-center gap-2">
-            {/* Tanpura Audio Drone */}
-            <button
-              onClick={onToggleTanpura}
-              title={isTanpuraPlaying ? "तानपुरा बंद करा" : "तानपुरा ध्वनी सुरू करा"}
-              className={`flex items-center gap-1.5 text-xs px-2.5 py-1.5 rounded-xl transition-all border ${
-                isTanpuraPlaying
-                  ? 'bg-amber-600 text-amber-950 border-amber-400 font-bold animate-pulse'
-                  : 'bg-amber-900/40 text-amber-300 border-amber-800 hover:bg-amber-900/80'
-              }`}
-            >
-              {isTanpuraPlaying ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
-              <span className="hidden lg:inline">{isTanpuraPlaying ? 'तानपुरा चालू' : 'तानपुरा'}</span>
-            </button>
-
-            {/* Font Size Selector */}
-            <div className="flex items-center gap-1 bg-amber-950/80 rounded-xl border border-amber-700/80 p-1 shadow-inner">
-              <span className="text-[11px] font-bold text-amber-300/80 px-1 hidden sm:inline-flex items-center gap-1">
-                <Type className="w-3.5 h-3.5 text-amber-400" />
-                <span>अक्षर</span>
-              </span>
-              <button
-                onClick={() => setFontSize('normal')}
-                className={`px-2.5 py-1 text-xs rounded-lg transition-all font-black ${
-                  fontSize === 'normal'
-                    ? 'bg-gradient-to-r from-amber-400 to-amber-500 text-amber-950 shadow-md ring-2 ring-amber-300 scale-105'
-                    : 'text-amber-200/90 hover:text-amber-100 hover:bg-amber-900/60'
-                }`}
-                title="सामान्य अक्षर आकार (Normal Font)"
-              >
-                A
-              </button>
-              <button
-                onClick={() => setFontSize('large')}
-                className={`px-2.5 py-1 text-xs rounded-lg transition-all font-black ${
-                  fontSize === 'large'
-                    ? 'bg-gradient-to-r from-amber-400 to-amber-500 text-amber-950 shadow-md ring-2 ring-amber-300 scale-105'
-                    : 'text-amber-200/90 hover:text-amber-100 hover:bg-amber-900/60'
-                }`}
-                title="मोठे अक्षर आकार (Large Font)"
-              >
-                A+
-              </button>
-              <button
-                onClick={() => setFontSize('xlarge')}
-                className={`px-2.5 py-1 text-xs rounded-lg transition-all font-black ${
-                  fontSize === 'xlarge'
-                    ? 'bg-gradient-to-r from-amber-400 to-amber-500 text-amber-950 shadow-md ring-2 ring-amber-300 scale-105'
-                    : 'text-amber-200/90 hover:text-amber-100 hover:bg-amber-900/60'
-                }`}
-                title="खूप मोठे अक्षर आकार (Extra Large Font)"
-              >
-                A++
-              </button>
-            </div>
-          </div>
 
         </div>
       </div>

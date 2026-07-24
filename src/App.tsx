@@ -5,19 +5,14 @@ import { ChapterGrid } from './components/ChapterGrid';
 import { ChapterDetailView } from './components/ChapterDetailView';
 import { PasayadanView } from './components/PasayadanView';
 import { SearchModule } from './components/SearchModule';
-import { DailyOvi } from './components/DailyOvi';
 import { BookmarksView } from './components/BookmarksView';
 import { AiChintanModal } from './components/AiChintanModal';
 import { LoadingScreen } from './components/LoadingScreen';
-import { StatusBar } from './components/StatusBar';
 import { Ovi } from './types';
-import { toggleTanpuraDrone } from './utils/audioUtils';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'chapters' | 'search' | 'pasayadan' | 'daily' | 'bookmarks' | 'ai'>('chapters');
+  const [activeTab, setActiveTab] = useState<'chapters' | 'search' | 'pasayadan' | 'bookmarks' | 'ai'>('chapters');
   const [selectedChapterNum, setSelectedChapterNum] = useState<number | null>(null);
-  const [fontSize, setFontSize] = useState<'normal' | 'large' | 'xlarge'>('normal');
-  const [isTanpuraPlaying, setIsTanpuraPlaying] = useState<boolean>(false);
   const [isInitialAppLoading, setIsInitialAppLoading] = useState<boolean>(true);
   const [isTabLoading, setIsTabLoading] = useState<boolean>(false);
 
@@ -44,10 +39,41 @@ export default function App() {
   const [aiModalOpen, setAiModalOpen] = useState(false);
   const [aiContextOvi, setAiContextOvi] = useState<Ovi | null>(null);
 
-  // Initial Boot Loading Timer
+  // Initial Boot Loading Timer & Deep Link Parsing
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsInitialAppLoading(false);
+
+      // Parse share link parameters: ?ch=X&ovi=Y
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const chParam = params.get('ch');
+        const oviParam = params.get('ovi');
+
+        if (chParam) {
+          const chNum = parseInt(chParam, 10);
+          if (!isNaN(chNum) && chNum >= 1 && chNum <= 18) {
+            setSelectedChapterNum(chNum);
+            setActiveTab('chapters');
+
+            if (oviParam) {
+              setTimeout(() => {
+                const targetId = oviParam.includes('.') ? `ovi-${oviParam}` : `ovi-${chNum}.${oviParam}`;
+                const el = document.getElementById(targetId);
+                if (el) {
+                  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                  el.classList.add('ring-4', 'ring-amber-500', 'ring-offset-2');
+                  setTimeout(() => {
+                    el.classList.remove('ring-4', 'ring-amber-500', 'ring-offset-2');
+                  }, 3500);
+                }
+              }, 400);
+            }
+          }
+        }
+      } catch (e) {
+        console.warn("Could not parse share URL:", e);
+      }
     }, 600);
     return () => clearTimeout(timer);
   }, []);
@@ -100,17 +126,12 @@ export default function App() {
     }
   };
 
-  const handleToggleTanpura = () => {
-    const newState = toggleTanpuraDrone();
-    setIsTanpuraPlaying(newState);
-  };
-
   const handleOpenAiWithOvi = (ovi: Ovi) => {
     setAiContextOvi(ovi);
     setAiModalOpen(true);
   };
 
-  const handleNavTabChange = (tab: 'chapters' | 'search' | 'pasayadan' | 'daily' | 'bookmarks' | 'ai') => {
+  const handleNavTabChange = (tab: 'chapters' | 'search' | 'pasayadan' | 'bookmarks' | 'ai') => {
     if (tab === 'ai') {
       setAiContextOvi(null);
       setAiModalOpen(true);
@@ -149,10 +170,6 @@ export default function App() {
       <Header
         activeTab={activeTab}
         setActiveTab={handleNavTabChange}
-        isTanpuraPlaying={isTanpuraPlaying}
-        onToggleTanpura={handleToggleTanpura}
-        fontSize={fontSize}
-        setFontSize={setFontSize}
         bookmarkCount={bookmarks.length}
       />
 
@@ -170,7 +187,6 @@ export default function App() {
                   chapter={currentChapter}
                   onBack={() => setSelectedChapterNum(null)}
                   onSelectChapter={handleSelectChapter}
-                  fontSize={fontSize}
                   bookmarks={bookmarks}
                   onToggleBookmark={handleToggleBookmark}
                   onAskAi={handleOpenAiWithOvi}
@@ -185,7 +201,6 @@ export default function App() {
 
             {activeTab === 'search' && (
               <SearchModule
-                fontSize={fontSize}
                 bookmarks={bookmarks}
                 onToggleBookmark={handleToggleBookmark}
                 onAskAi={handleOpenAiWithOvi}
@@ -195,25 +210,14 @@ export default function App() {
 
             {activeTab === 'pasayadan' && (
               <PasayadanView
-                fontSize={fontSize}
                 onAskAi={handleOpenAiWithOvi}
                 bookmarks={bookmarks}
                 onToggleBookmark={handleToggleBookmark}
-              />
-            )}
-
-            {activeTab === 'daily' && (
-              <DailyOvi
-                fontSize={fontSize}
-                bookmarks={bookmarks}
-                onToggleBookmark={handleToggleBookmark}
-                onAskAi={handleOpenAiWithOvi}
               />
             )}
 
             {activeTab === 'bookmarks' && (
               <BookmarksView
-                fontSize={fontSize}
                 bookmarks={bookmarks}
                 userNotes={userNotes}
                 onToggleBookmark={handleToggleBookmark}
@@ -235,14 +239,6 @@ export default function App() {
           }}
         />
       )}
-
-      {/* Bottom High-Density Status Bar */}
-      <StatusBar
-        isTanpuraPlaying={isTanpuraPlaying}
-        onToggleTanpura={handleToggleTanpura}
-        onOpenSearch={() => handleNavTabChange('search')}
-        onOpenAi={() => handleNavTabChange('ai')}
-      />
     </div>
   );
 }
