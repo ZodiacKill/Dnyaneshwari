@@ -11,6 +11,8 @@ interface OviCardProps {
   onToggleBookmark: (oviId: string, note?: string) => void;
   onAskAi: (ovi: Ovi) => void;
   highlightText?: string;
+  onPlayAudio?: (ovi: Ovi) => void;
+  isAudioActive?: boolean;
 }
 
 export const OviCard: React.FC<OviCardProps> = ({
@@ -21,6 +23,8 @@ export const OviCard: React.FC<OviCardProps> = ({
   onToggleBookmark,
   onAskAi,
   highlightText,
+  onPlayAudio,
+  isAudioActive = false,
 }) => {
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -28,15 +32,23 @@ export const OviCard: React.FC<OviCardProps> = ({
   const [userNote, setUserNote] = useState('');
   const [activeTab, setActiveTab] = useState<'bhavarth' | 'english' | 'insight'>('bhavarth');
 
-  const textSizes = {
-    normal: { ovi: 'text-lg sm:text-xl', bhavarth: 'text-sm sm:text-base' },
-    large: { ovi: 'text-xl sm:text-2xl', bhavarth: 'text-base sm:text-lg' },
-    xlarge: { ovi: 'text-2xl sm:text-3xl', bhavarth: 'text-lg sm:text-xl' },
+  const oviStyle: Record<'normal' | 'large' | 'xlarge', React.CSSProperties> = {
+    normal: { fontSize: '1.2rem', lineHeight: '1.8' },
+    large: { fontSize: '1.6rem', lineHeight: '2.0' },
+    xlarge: { fontSize: '2.2rem', lineHeight: '2.3', letterSpacing: '0.02em' },
   };
 
-  const currentSize = textSizes[fontSize];
+  const bhavarthStyle: Record<'normal' | 'large' | 'xlarge', React.CSSProperties> = {
+    normal: { fontSize: '0.95rem', lineHeight: '1.65' },
+    large: { fontSize: '1.15rem', lineHeight: '1.85' },
+    xlarge: { fontSize: '1.4rem', lineHeight: '2.0' },
+  };
 
   const handleSpeech = () => {
+    if (onPlayAudio) {
+      onPlayAudio(ovi);
+      return;
+    }
     if (isPlayingAudio) {
       stopMarathiSpeech();
       setIsPlayingAudio(false);
@@ -75,24 +87,24 @@ export const OviCard: React.FC<OviCardProps> = ({
   return (
     <div
       id={`ovi-${ovi.id}`}
-      className="bg-amber-50/80 rounded-2xl border border-amber-200/90 shadow-sm hover:shadow-md transition-all p-5 sm:p-6 mb-5 relative group overflow-hidden"
+      className="bg-[#FFFDF8] rounded-2xl border border-[#D4C3A1] shadow-xs hover:shadow-md transition-all p-5 sm:p-6 mb-5 relative group overflow-hidden"
     >
       {/* Decorative Golden Left Accent Bar */}
-      <div className="absolute top-0 left-0 bottom-0 w-1.5 bg-gradient-to-b from-amber-500 via-orange-500 to-amber-700 rounded-l-2xl" />
+      <div className="absolute top-0 left-0 bottom-0 w-1.5 bg-gradient-to-b from-[#78350F] via-amber-600 to-[#451A03] rounded-l-2xl" />
 
       {/* Header Info Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-amber-200/60 pb-3 mb-4">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-amber-200/80 pb-3 mb-4">
         <div className="flex items-center gap-2">
-          <span className="bg-amber-800 text-amber-100 font-serif font-bold text-xs sm:text-sm px-3 py-1 rounded-full shadow-xs">
+          <span className="bg-[#78350F] text-amber-100 font-serif font-bold text-xs sm:text-sm px-3 py-1 rounded-full shadow-xs">
             अध्याय {ovi.chapterNumber} | ओवी {ovi.oviNumber}
           </span>
           {chapterTitle && (
-            <span className="text-xs text-amber-800 font-medium truncate max-w-[200px] sm:max-w-xs">
+            <span className="text-xs text-amber-900 font-medium truncate max-w-[200px] sm:max-w-xs">
               {chapterTitle}
             </span>
           )}
           {ovi.isFamous && (
-            <span className="bg-amber-200 text-amber-900 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-300">
+            <span className="bg-amber-200 text-amber-950 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-amber-300">
               प्रसिद्ध ओवी
             </span>
           )}
@@ -103,24 +115,24 @@ export const OviCard: React.FC<OviCardProps> = ({
           {/* Audio Recitation */}
           <button
             onClick={handleSpeech}
-            title={isPlayingAudio ? "गायन थांबवा" : "ओवी ऐका (Audio)"}
-            className={`p-2 rounded-lg transition-colors ${
-              isPlayingAudio
-                ? 'bg-orange-500 text-amber-950 font-bold animate-pulse'
-                : 'bg-amber-100 text-amber-900 hover:bg-amber-200'
+            title={isAudioActive || isPlayingAudio ? "गायन थांबवा" : "ओवी ऐका (Audio Recitation)"}
+            className={`p-2 rounded-xl transition-all ${
+              isAudioActive || isPlayingAudio
+                ? 'bg-amber-600 text-amber-950 font-bold animate-pulse ring-2 ring-amber-400 shadow-md'
+                : 'bg-amber-100 text-amber-950 hover:bg-amber-200 border border-amber-300/80'
             }`}
           >
-            {isPlayingAudio ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+            {isAudioActive || isPlayingAudio ? <Volume2 className="w-4 h-4 text-amber-950" /> : <Volume2 className="w-4 h-4" />}
           </button>
 
           {/* Bookmark */}
           <button
             onClick={() => setShowNoteInput(!showNoteInput)}
             title={isBookmarked ? "जतन केले आहे" : "ओवी जतन करा"}
-            className={`p-2 rounded-lg transition-colors ${
+            className={`p-2 rounded-xl transition-colors border ${
               isBookmarked
-                ? 'bg-rose-100 text-rose-600'
-                : 'bg-amber-100 text-amber-900 hover:bg-amber-200'
+                ? 'bg-rose-100 text-rose-600 border-rose-300'
+                : 'bg-amber-100 text-amber-950 border-amber-300/80 hover:bg-amber-200'
             }`}
           >
             <Heart className={`w-4 h-4 ${isBookmarked ? 'fill-rose-600 text-rose-600' : ''}`} />
@@ -130,7 +142,7 @@ export const OviCard: React.FC<OviCardProps> = ({
           <button
             onClick={handleCopy}
             title="ओवी कॉपी करा"
-            className="p-2 rounded-lg bg-amber-100 text-amber-900 hover:bg-amber-200 transition-colors"
+            className="p-2 rounded-xl bg-amber-100 text-amber-950 hover:bg-amber-200 border border-amber-300/80 transition-colors"
           >
             {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
           </button>
@@ -139,7 +151,7 @@ export const OviCard: React.FC<OviCardProps> = ({
           <button
             onClick={handleShare}
             title="शेअर करा"
-            className="p-2 rounded-lg bg-amber-100 text-amber-900 hover:bg-amber-200 transition-colors"
+            className="p-2 rounded-xl bg-amber-100 text-amber-950 hover:bg-amber-200 border border-amber-300/80 transition-colors"
           >
             <Share2 className="w-4 h-4" />
           </button>
@@ -147,9 +159,9 @@ export const OviCard: React.FC<OviCardProps> = ({
           {/* Ask AI */}
           <button
             onClick={() => onAskAi(ovi)}
-            className="flex items-center gap-1 bg-gradient-to-r from-amber-600 to-orange-600 text-amber-950 font-bold text-xs px-3 py-1.5 rounded-lg shadow-sm hover:brightness-110 transition-all"
+            className="flex items-center gap-1 bg-[#78350F] text-amber-100 font-bold text-xs px-3 py-1.5 rounded-xl shadow-xs hover:bg-[#5B2508] transition-all"
           >
-            <Sparkles className="w-3.5 h-3.5 text-amber-950" />
+            <Sparkles className="w-3.5 h-3.5 text-amber-300" />
             <span>चिंतन AI</span>
           </button>
         </div>
@@ -157,9 +169,9 @@ export const OviCard: React.FC<OviCardProps> = ({
 
       {/* Bookmark Note Drawer */}
       {showNoteInput && (
-        <div className="bg-amber-100/90 border border-amber-300/80 rounded-xl p-3 mb-4 transition-all">
-          <div className="flex items-center gap-1 text-xs font-bold text-amber-900 mb-1">
-            <MessageSquare className="w-3.5 h-3.5 text-amber-700" />
+        <div className="bg-amber-100/90 border border-amber-300 rounded-xl p-3 mb-4 transition-all">
+          <div className="flex items-center gap-1 text-xs font-bold text-amber-950 mb-1">
+            <MessageSquare className="w-3.5 h-3.5 text-amber-800" />
             <span>तुमची वैयक्तिक टीप (Personal Reflection Note):</span>
           </div>
           <input
@@ -172,13 +184,13 @@ export const OviCard: React.FC<OviCardProps> = ({
           <div className="flex justify-end gap-2">
             <button
               onClick={() => setShowNoteInput(false)}
-              className="text-xs text-amber-800 hover:underline px-2 py-1"
+              className="text-xs text-amber-900 hover:underline px-2 py-1 font-medium"
             >
               रद्द
             </button>
             <button
               onClick={handleSaveBookmark}
-              className="text-xs bg-amber-800 text-amber-100 px-3 py-1 rounded-md font-medium hover:bg-amber-900"
+              className="text-xs bg-[#78350F] text-amber-100 px-3 py-1 rounded-md font-bold hover:bg-[#5B2508]"
             >
               {isBookmarked ? 'टीप अद्यतन करा' : 'जतन करा'}
             </button>
@@ -187,8 +199,11 @@ export const OviCard: React.FC<OviCardProps> = ({
       )}
 
       {/* Main Original Marathi Ovi Text */}
-      <div className="my-3 text-center sm:text-left px-2 sm:px-4 py-3 bg-amber-100/60 rounded-xl border border-amber-200/80 shadow-inner">
-        <p className={`font-serif font-bold text-amber-950 leading-relaxed ${currentSize.ovi} tracking-wide`}>
+      <div className="my-3 text-center sm:text-left px-3 sm:px-4 py-3 rounded-xl border border-amber-200/80 bg-[#FAF4E5] shadow-inner">
+        <p
+          className="font-serif font-bold text-amber-950 transition-all duration-200"
+          style={oviStyle[fontSize]}
+        >
           {ovi.originalMarathi}
         </p>
       </div>
@@ -200,8 +215,8 @@ export const OviCard: React.FC<OviCardProps> = ({
             onClick={() => setActiveTab('bhavarth')}
             className={`pb-2 px-3 text-xs sm:text-sm font-semibold border-b-2 transition-all ${
               activeTab === 'bhavarth'
-                ? 'border-amber-800 text-amber-950 font-bold'
-                : 'border-transparent text-amber-700 hover:text-amber-900'
+                ? 'border-[#78350F] text-amber-950 font-bold'
+                : 'border-transparent text-amber-800 hover:text-amber-950'
             }`}
           >
             मराठी भावार्थ
@@ -210,8 +225,8 @@ export const OviCard: React.FC<OviCardProps> = ({
             onClick={() => setActiveTab('english')}
             className={`pb-2 px-3 text-xs sm:text-sm font-semibold border-b-2 transition-all ${
               activeTab === 'english'
-                ? 'border-amber-800 text-amber-950 font-bold'
-                : 'border-transparent text-amber-700 hover:text-amber-900'
+                ? 'border-[#78350F] text-amber-950 font-bold'
+                : 'border-transparent text-amber-800 hover:text-amber-950'
             }`}
           >
             English Translation
@@ -220,8 +235,8 @@ export const OviCard: React.FC<OviCardProps> = ({
             onClick={() => setActiveTab('insight')}
             className={`pb-2 px-3 text-xs sm:text-sm font-semibold border-b-2 transition-all ${
               activeTab === 'insight'
-                ? 'border-amber-800 text-amber-950 font-bold'
-                : 'border-transparent text-amber-700 hover:text-amber-900'
+                ? 'border-[#78350F] text-amber-950 font-bold'
+                : 'border-transparent text-amber-800 hover:text-amber-950'
             }`}
           >
             गूढ अर्थ व बोध
@@ -231,23 +246,32 @@ export const OviCard: React.FC<OviCardProps> = ({
         {/* Tab Content */}
         <div className="pt-1">
           {activeTab === 'bhavarth' && (
-            <p className={`text-amber-900/90 leading-relaxed ${currentSize.bhavarth} font-sans`}>
-              <strong className="text-amber-950">भावार्थ: </strong>
+            <p
+              className="text-amber-950 font-sans transition-all duration-200"
+              style={bhavarthStyle[fontSize]}
+            >
+              <strong className="text-amber-950 font-serif">भावार्थ: </strong>
               {ovi.marathiBhavarth}
             </p>
           )}
 
           {activeTab === 'english' && (
-            <p className={`text-amber-900/90 leading-relaxed ${currentSize.bhavarth} font-sans italic`}>
+            <p
+              className="text-amber-950 font-sans italic transition-all duration-200"
+              style={bhavarthStyle[fontSize]}
+            >
               <strong className="text-amber-950 not-italic font-semibold">English Meaning: </strong>
               "{ovi.englishTranslation}"
             </p>
           )}
 
           {activeTab === 'insight' && (
-            <div className="bg-amber-100/50 p-3 rounded-xl border border-amber-200">
-              <p className={`text-amber-900/90 leading-relaxed ${currentSize.bhavarth} font-sans`}>
-                <strong className="text-amber-950">आध्यात्मिक बोध: </strong>
+            <div className="bg-amber-50 p-3.5 rounded-xl border border-amber-200">
+              <p
+                className="text-amber-950 font-sans transition-all duration-200"
+                style={bhavarthStyle[fontSize]}
+              >
+                <strong className="text-amber-950 font-serif">आध्यात्मिक बोध: </strong>
                 {ovi.spiritualInsight}
               </p>
             </div>
@@ -257,12 +281,12 @@ export const OviCard: React.FC<OviCardProps> = ({
 
       {/* Topic Tags */}
       {ovi.tags && ovi.tags.length > 0 && (
-        <div className="mt-4 pt-3 border-t border-amber-200/50 flex flex-wrap items-center gap-1.5">
-          <span className="text-[11px] text-amber-700/80 font-medium">विषय:</span>
+        <div className="mt-4 pt-3 border-t border-amber-200/80 flex flex-wrap items-center gap-1.5">
+          <span className="text-[11px] text-amber-800 font-medium">विषय:</span>
           {ovi.tags.map((tag, idx) => (
             <span
               key={idx}
-              className="text-[11px] bg-amber-200/60 text-amber-900 px-2.5 py-0.5 rounded-full border border-amber-300/60 font-medium"
+              className="text-[11px] bg-amber-100 text-amber-950 px-2.5 py-0.5 rounded-full border border-amber-300 font-medium"
             >
               #{tag}
             </span>

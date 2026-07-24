@@ -20,13 +20,17 @@ export const PasayadanView: React.FC<PasayadanViewProps> = ({
   const [isPlayingFullPasayadan, setIsPlayingFullPasayadan] = useState(false);
   const [copiedAll, setCopiedAll] = useState(false);
 
-  const textSizes = {
-    normal: { ovi: 'text-lg sm:text-xl', bhavarth: 'text-sm' },
-    large: { ovi: 'text-xl sm:text-2xl', bhavarth: 'text-base' },
-    xlarge: { ovi: 'text-2xl sm:text-3xl', bhavarth: 'text-lg' },
+  const oviStyle: Record<'normal' | 'large' | 'xlarge', React.CSSProperties> = {
+    normal: { fontSize: '1.2rem', lineHeight: '1.8' },
+    large: { fontSize: '1.6rem', lineHeight: '2.0' },
+    xlarge: { fontSize: '2.2rem', lineHeight: '2.3', letterSpacing: '0.02em' },
   };
 
-  const currentSize = textSizes[fontSize];
+  const bhavarthStyle: Record<'normal' | 'large' | 'xlarge', React.CSSProperties> = {
+    normal: { fontSize: '0.95rem', lineHeight: '1.65' },
+    large: { fontSize: '1.15rem', lineHeight: '1.85' },
+    xlarge: { fontSize: '1.4rem', lineHeight: '2.0' },
+  };
 
   const handlePlayFullPasayadan = () => {
     if (isPlayingFullPasayadan) {
@@ -121,18 +125,27 @@ export const PasayadanView: React.FC<PasayadanViewProps> = ({
 
             {/* Original Marathi Ovi Text */}
             <div className="bg-amber-100/70 p-4 rounded-xl border border-amber-200 text-center sm:text-left mb-3">
-              <p className={`font-serif font-bold text-amber-950 leading-relaxed ${currentSize.ovi}`}>
+              <p
+                className="font-serif font-bold text-amber-950 transition-all duration-200"
+                style={oviStyle[fontSize]}
+              >
                 {ovi.originalMarathi}
               </p>
             </div>
 
             {/* Marathi Bhavarth & English Translation */}
-            <div className="space-y-2 text-amber-900/90 text-xs sm:text-sm leading-relaxed font-sans">
-              <p>
+            <div className="space-y-2 text-amber-900/90 leading-relaxed font-sans">
+              <p
+                className="transition-all duration-200"
+                style={bhavarthStyle[fontSize]}
+              >
                 <strong className="text-amber-950 font-semibold">मराठी भावार्थ: </strong>
                 {ovi.marathiBhavarth}
               </p>
-              <p className="italic text-amber-800/90 border-t border-amber-200/60 pt-2">
+              <p
+                className="italic text-amber-800/90 border-t border-amber-200/60 pt-2 transition-all duration-200"
+                style={bhavarthStyle[fontSize]}
+              >
                 <strong className="not-italic font-semibold text-amber-950">English Meaning: </strong>
                 "{ovi.englishTranslation}"
               </p>

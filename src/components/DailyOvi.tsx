@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FAMOUS_OVIS, ALL_CHAPTERS } from '../data/dnyaneshwariData';
 import { Ovi } from '../types';
 import { OviCard } from './OviCard';
+import { SimpleAudioPlayer } from './SimpleAudioPlayer';
 import { Sun, RefreshCw, Sparkles, Compass } from 'lucide-react';
 
 interface DailyOviProps {
@@ -28,11 +29,13 @@ export const DailyOvi: React.FC<DailyOviProps> = ({
   };
 
   const [currentIndex, setCurrentIndex] = useState(getTodayIndex());
+  const [activeAudioOvi, setActiveAudioOvi] = useState<Ovi | null>(null);
 
   const currentOvi = FAMOUS_OVIS[currentIndex] || FAMOUS_OVIS[0];
   const currentChapter = ALL_CHAPTERS.find(c => c.number === currentOvi.chapterNumber);
 
   const handleNextOvi = () => {
+    setActiveAudioOvi(null);
     setCurrentIndex((prev) => (prev + 1) % FAMOUS_OVIS.length);
   };
 
@@ -70,6 +73,21 @@ export const DailyOvi: React.FC<DailyOviProps> = ({
         </div>
       </div>
 
+      {/* Active Audio Player */}
+      {activeAudioOvi && (
+        <SimpleAudioPlayer
+          ovi={activeAudioOvi}
+          chapterTitle={currentChapter?.marathiTitle}
+          onClose={() => setActiveAudioOvi(null)}
+          onNextOvi={handleNextOvi}
+          onPrevOvi={() => {
+            setCurrentIndex((prev) => (prev - 1 + FAMOUS_OVIS.length) % FAMOUS_OVIS.length);
+          }}
+          hasNext={true}
+          hasPrev={true}
+        />
+      )}
+
       {/* The Ovi Card */}
       <OviCard
         ovi={currentOvi}
@@ -78,6 +96,8 @@ export const DailyOvi: React.FC<DailyOviProps> = ({
         isBookmarked={bookmarks.includes(currentOvi.id)}
         onToggleBookmark={onToggleBookmark}
         onAskAi={onAskAi}
+        onPlayAudio={(ovi) => setActiveAudioOvi(ovi)}
+        isAudioActive={activeAudioOvi?.id === currentOvi.id}
       />
     </div>
   );

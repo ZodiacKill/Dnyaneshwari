@@ -8,6 +8,7 @@ export interface Ovi {
   spiritualInsight: string;
   tags: string[];
   isFamous?: boolean;
+  audioUrl?: string; // Optional audio recitation file URL
 }
 
 export interface Chapter {
