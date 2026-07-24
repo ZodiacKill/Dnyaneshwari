@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Chapter, Ovi } from '../types';
 import { OviCard } from './OviCard';
-import { SimpleAudioPlayer } from './SimpleAudioPlayer';
-import { ArrowLeft, BookOpen, Search, ChevronLeft, ChevronRight, Menu, Tag, Sparkles, Volume2, Radio } from 'lucide-react';
+import { ArrowLeft, BookOpen, Search, ChevronLeft, ChevronRight, Menu, Tag, Sparkles } from 'lucide-react';
 import { ChapterSidebarIndex } from './ChapterSidebarIndex';
 import { LoadingScreen } from './LoadingScreen';
 import { ALL_CHAPTERS } from '../data/dnyaneshwariData';
@@ -28,12 +27,10 @@ export const ChapterDetailView: React.FC<ChapterDetailViewProps> = ({
   const [filterFamousOnly, setFilterFamousOnly] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [activeAudioOvi, setActiveAudioOvi] = useState<Ovi | null>(null);
 
   // Trigger smooth loading screen when chapter number changes
   useEffect(() => {
     setIsLoading(true);
-    setActiveAudioOvi(null);
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 300);
@@ -58,23 +55,6 @@ export const ChapterDetailView: React.FC<ChapterDetailViewProps> = ({
 
     return matchesSearch && matchesFamous;
   });
-
-  // Calculate prev/next Ovi for Audio Player
-  const currentAudioIndex = activeAudioOvi
-    ? chapter.keyOvis.findIndex(o => o.id === activeAudioOvi.id)
-    : -1;
-
-  const handleNextAudioOvi = () => {
-    if (currentAudioIndex >= 0 && currentAudioIndex < chapter.keyOvis.length - 1) {
-      setActiveAudioOvi(chapter.keyOvis[currentAudioIndex + 1]);
-    }
-  };
-
-  const handlePrevAudioOvi = () => {
-    if (currentAudioIndex > 0) {
-      setActiveAudioOvi(chapter.keyOvis[currentAudioIndex - 1]);
-    }
-  };
 
   return (
     <div className="flex gap-6 relative items-start">
@@ -134,21 +114,6 @@ export const ChapterDetailView: React.FC<ChapterDetailViewProps> = ({
           </div>
         </div>
 
-        {/* Sticky / Active Audio Player Component for currently viewed Ovi */}
-        {activeAudioOvi && (
-          <div className="sticky top-16 z-30 transition-all">
-            <SimpleAudioPlayer
-              ovi={activeAudioOvi}
-              chapterTitle={chapter.marathiTitle}
-              onClose={() => setActiveAudioOvi(null)}
-              onNextOvi={handleNextAudioOvi}
-              onPrevOvi={handlePrevAudioOvi}
-              hasNext={currentAudioIndex < chapter.keyOvis.length - 1}
-              hasPrev={currentAudioIndex > 0}
-            />
-          </div>
-        )}
-
         {/* Loading overlay when switching chapters */}
         {isLoading ? (
           <LoadingScreen
@@ -168,18 +133,6 @@ export const ChapterDetailView: React.FC<ChapterDetailViewProps> = ({
                     एकूण {chapter.totalOvis} ओव्या
                   </span>
                 </div>
-
-                <button
-                  onClick={() => {
-                    if (chapter.keyOvis.length > 0) {
-                      setActiveAudioOvi(chapter.keyOvis[0]);
-                    }
-                  }}
-                  className="flex items-center gap-1.5 text-xs bg-amber-700/60 hover:bg-amber-600 text-amber-100 px-3 py-1.5 rounded-full border border-amber-600/60 transition-colors shadow-xs"
-                >
-                  <Volume2 className="w-3.5 h-3.5 text-amber-300" />
-                  <span>ऑडिओ ऐका (Audio Recitation)</span>
-                </button>
               </div>
 
               <h2 className="font-serif text-2xl sm:text-3xl font-bold text-amber-100 mb-2">
@@ -253,8 +206,6 @@ export const ChapterDetailView: React.FC<ChapterDetailViewProps> = ({
                     onToggleBookmark={onToggleBookmark}
                     onAskAi={onAskAi}
                     highlightText={searchQuery}
-                    onPlayAudio={(selectedOvi) => setActiveAudioOvi(selectedOvi)}
-                    isAudioActive={activeAudioOvi?.id === ovi.id}
                   />
                 ))
               )}

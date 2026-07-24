@@ -11,8 +11,6 @@ interface OviCardProps {
   onToggleBookmark: (oviId: string, note?: string) => void;
   onAskAi: (ovi: Ovi) => void;
   highlightText?: string;
-  onPlayAudio?: (ovi: Ovi) => void;
-  isAudioActive?: boolean;
 }
 
 export const OviCard: React.FC<OviCardProps> = ({
@@ -22,8 +20,6 @@ export const OviCard: React.FC<OviCardProps> = ({
   onToggleBookmark,
   onAskAi,
   highlightText,
-  onPlayAudio,
-  isAudioActive = false,
 }) => {
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -33,18 +29,18 @@ export const OviCard: React.FC<OviCardProps> = ({
   const [activeTab, setActiveTab] = useState<'bhavarth' | 'english' | 'insight'>('bhavarth');
 
   const handleSpeech = () => {
-    if (onPlayAudio) {
-      onPlayAudio(ovi);
-      return;
-    }
     if (isPlayingAudio) {
       stopMarathiSpeech();
       setIsPlayingAudio(false);
     } else {
       setIsPlayingAudio(true);
-      speakMarathiText(`${ovi.originalMarathi}. भावार्थ: ${ovi.marathiBhavarth}`, () => {
-        setIsPlayingAudio(false);
-      });
+      speakMarathiText(
+        `${ovi.originalMarathi}. भावार्थ: ${ovi.marathiBhavarth}`,
+        () => {
+          setIsPlayingAudio(false);
+        },
+        0.75
+      );
     }
   };
 
@@ -95,14 +91,14 @@ export const OviCard: React.FC<OviCardProps> = ({
           {/* Audio Recitation */}
           <button
             onClick={handleSpeech}
-            title={isAudioActive || isPlayingAudio ? "गायन थांबवा" : "ओवी ऐका (Audio Recitation)"}
+            title={isPlayingAudio ? "वाचन थांबवा" : "ओवी ऐका (Read Ovi)"}
             className={`p-2 rounded-xl transition-all ${
-              isAudioActive || isPlayingAudio
+              isPlayingAudio
                 ? 'bg-amber-600 text-amber-950 font-bold animate-pulse ring-2 ring-amber-400 shadow-md'
                 : 'bg-amber-100 text-amber-950 hover:bg-amber-200 border border-amber-300/80'
             }`}
           >
-            {isAudioActive || isPlayingAudio ? <Volume2 className="w-4 h-4 text-amber-950" /> : <Volume2 className="w-4 h-4" />}
+            {isPlayingAudio ? <VolumeX className="w-4 h-4 text-amber-950" /> : <Volume2 className="w-4 h-4" />}
           </button>
 
           {/* Bookmark */}

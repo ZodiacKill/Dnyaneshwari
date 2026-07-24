@@ -2,7 +2,6 @@ import React, { useState, useTransition, useMemo } from 'react';
 import { ALL_OVIS, TOPIC_TAGS, ALL_CHAPTERS } from '../data/dnyaneshwariData';
 import { Ovi, Chapter } from '../types';
 import { OviCard } from './OviCard';
-import { SimpleAudioPlayer } from './SimpleAudioPlayer';
 import { Search, Tag, BookOpen, RotateCcw, ChevronRight, Sparkles, Filter } from 'lucide-react';
 
 interface SearchModuleProps {
@@ -25,7 +24,6 @@ const normalizeSearchQuery = (input: string): string => {
 };
 
 export const SearchModule: React.FC<SearchModuleProps> = ({
-  fontSize,
   bookmarks,
   onToggleBookmark,
   onAskAi,
@@ -36,7 +34,6 @@ export const SearchModule: React.FC<SearchModuleProps> = ({
   const [selectedChapter, setSelectedChapter] = useState<number | 'all'>('all');
   const [selectedTag, setSelectedTag] = useState<string | 'all'>('all');
   const [filterType, setFilterType] = useState<'all' | 'chapters' | 'ovis'>('all');
-  const [activeAudioOvi, setActiveAudioOvi] = useState<Ovi | null>(null);
   const [isPending, startTransition] = useTransition();
 
   const handleInputChange = (val: string) => {
@@ -306,31 +303,6 @@ export const SearchModule: React.FC<SearchModuleProps> = ({
                 </h3>
               </div>
 
-              {/* Active Audio Player in Search View */}
-              {activeAudioOvi && (
-                <div className="mb-6 sticky top-16 z-30">
-                  <SimpleAudioPlayer
-                    ovi={activeAudioOvi}
-                    chapterTitle={ALL_CHAPTERS.find(c => c.number === activeAudioOvi.chapterNumber)?.marathiTitle}
-                    onClose={() => setActiveAudioOvi(null)}
-                    onNextOvi={() => {
-                      const idx = matchedOvis.findIndex(o => o.id === activeAudioOvi.id);
-                      if (idx >= 0 && idx < matchedOvis.length - 1) {
-                        setActiveAudioOvi(matchedOvis[idx + 1]);
-                      }
-                    }}
-                    onPrevOvi={() => {
-                      const idx = matchedOvis.findIndex(o => o.id === activeAudioOvi.id);
-                      if (idx > 0) {
-                        setActiveAudioOvi(matchedOvis[idx - 1]);
-                      }
-                    }}
-                    hasNext={matchedOvis.findIndex(o => o.id === activeAudioOvi.id) < matchedOvis.length - 1}
-                    hasPrev={matchedOvis.findIndex(o => o.id === activeAudioOvi.id) > 0}
-                  />
-                </div>
-              )}
-
               {matchedOvis.length === 0 && matchedChapters.length === 0 ? (
                 <div className="bg-[#FFFDF8] rounded-2xl p-8 text-center border border-[#D4C3A1]">
                   <p className="text-sm font-bold text-amber-950">
@@ -358,8 +330,6 @@ export const SearchModule: React.FC<SearchModuleProps> = ({
                       onToggleBookmark={onToggleBookmark}
                       onAskAi={onAskAi}
                       highlightText={query}
-                      onPlayAudio={(selectedOvi) => setActiveAudioOvi(selectedOvi)}
-                      isAudioActive={activeAudioOvi?.id === ovi.id}
                     />
                   );
                 })
