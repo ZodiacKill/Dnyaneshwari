@@ -1,4 +1,43 @@
 import { Chapter, Ovi } from "../types";
+import { CHAPTER_1_FULL_OVIS } from "./chapter1Ovis";
+import { CHAPTER_2_FULL_OVIS } from "./chapter2Ovis";
+import { CHAPTER_3_FULL_OVIS } from "./chapter3Ovis";
+import { CHAPTER_4_FULL_OVIS } from "./chapter4Ovis";
+import { CHAPTER_5_FULL_OVIS } from "./chapter5Ovis";
+import { CHAPTER_6_FULL_OVIS } from "./chapter6Ovis";
+import { CHAPTER_7_FULL_OVIS } from "./chapter7Ovis";
+import { CHAPTER_8_FULL_OVIS } from "./chapter8Ovis";
+import { CHAPTER_9_FULL_OVIS } from "./chapter9Ovis";
+import { CHAPTER_10_FULL_OVIS } from "./chapter10Ovis";
+import { CHAPTER_11_FULL_OVIS } from "./chapter11Ovis";
+import { CHAPTER_12_FULL_OVIS } from "./chapter12Ovis";
+import { CHAPTER_13_FULL_OVIS } from "./chapter13Ovis";
+import { CHAPTER_14_FULL_OVIS } from "./chapter14Ovis";
+import { CHAPTER_15_FULL_OVIS } from "./chapter15Ovis";
+import { CHAPTER_16_FULL_OVIS } from "./chapter16Ovis";
+import { CHAPTER_17_FULL_OVIS } from "./chapter17Ovis";
+import { CHAPTER_18_FULL_OVIS } from "./chapter18Ovis";
+
+const CHAPTER_DATASETS: Record<number, Ovi[]> = {
+  1: CHAPTER_1_FULL_OVIS,
+  2: CHAPTER_2_FULL_OVIS,
+  3: CHAPTER_3_FULL_OVIS,
+  4: CHAPTER_4_FULL_OVIS,
+  5: CHAPTER_5_FULL_OVIS,
+  6: CHAPTER_6_FULL_OVIS,
+  7: CHAPTER_7_FULL_OVIS,
+  8: CHAPTER_8_FULL_OVIS,
+  9: CHAPTER_9_FULL_OVIS,
+  10: CHAPTER_10_FULL_OVIS,
+  11: CHAPTER_11_FULL_OVIS,
+  12: CHAPTER_12_FULL_OVIS,
+  13: CHAPTER_13_FULL_OVIS,
+  14: CHAPTER_14_FULL_OVIS,
+  15: CHAPTER_15_FULL_OVIS,
+  16: CHAPTER_16_FULL_OVIS,
+  17: CHAPTER_17_FULL_OVIS,
+  18: CHAPTER_18_FULL_OVIS,
+};
 
 export const ALL_CHAPTERS: Chapter[] = [
   {
@@ -62,7 +101,7 @@ export const ALL_CHAPTERS: Chapter[] = [
     sanskritName: "सांख्ययोग",
     marathiTitle: "अध्याय २: सांख्ययोग (आत्मज्ञान व स्थितप्रज्ञ लक्षणे)",
     englishTitle: "Chapter 2: Sankhya Yoga (Wisdom of Soul & Sthitaprajna)",
-    totalOvis: 372,
+    totalOvis: 375,
     themes: ["आत्मज्ञान", "अमर आत्मा", "कर्मयोग", "स्थितप्रज्ञ", "स्वधर्म"],
     summaryMarathi: "दुसऱ्या अध्यायात भगवान श्रीकृष्ण अर्जुनाला आत्म्याचे अमरत्व समजावून सांगून शोकाचा परिहार करतात. शरीर नाशवंत आहे परंतु आत्मा अविनाशी आहे. याच अध्यायात स्थितप्रज्ञाची (स्थिर बुद्धीच्या मानवाची) अलौकिक लक्षणे ज्ञानेश्वरांनी अत्यंत रसाळ भाषेत वर्णन केली आहेत.",
     summaryEnglish: "In Chapter 2, Lord Krishna reveals the immortality of the Soul (Atman) and dispels Arjuna's sorrow. While the body perishes, the Atman is eternal. Saint Dnyaneshwar exquisitely describes the characteristics of 'Sthitaprajna' - the person of steady wisdom.",
@@ -71,8 +110,8 @@ export const ALL_CHAPTERS: Chapter[] = [
         id: "2.11",
         chapterNumber: 2,
         oviNumber: 11,
-        originalMarathi: "जैसा कपडा जुना झाला । तया त्यागूनि नवियाला । मनुष्य घेई त्यापरी शरीराला । आत्मा बदलोनि घेई ॥११॥",
-        marathiBhavarth: "ज्याप्रमाणे मनुष्य जुने वस्त्र टाकून नवीन वस्त्र परिधान करतो, त्याचप्रमाणे आत्मा जुने जर्जर शरीर सोडून नवीन शरीर धारण करतो.",
+        originalMarathi: "जैसे जीर्ण वस्त्र सांडिजे । मग नूतन वेढिजे । तैसे देहांतराते अंगीकारिजे । चैतन्यनाथे ॥११॥",
+        marathiBhavarth: "ज्याप्रमाणे मनुष्य जुने वस्त्र टाकून नवीन वस्त्र परिधान करतो, त्याचप्रमाणे चैतन्य स्वरूप आत्मा जुने देहावसान सोडून नवीन देह धारण करतो.",
         englishTranslation: "Just as a person discards worn-out garments and dons new ones, the eternal Soul leaves aging bodies and assumes new forms.",
         spiritualInsight: "Reminds us that physical demise is merely a change of clothing for the immortal divine consciousness within.",
         tags: ["अमर आत्मा", "Soul", "Immortality"],
@@ -82,8 +121,8 @@ export const ALL_CHAPTERS: Chapter[] = [
         id: "2.47",
         chapterNumber: 2,
         oviNumber: 47,
-        originalMarathi: "कर्मण्येवाधिकारस्ते मा फलेषु कदाचन । कर्माचे ठायीं अधिकार तुझा । फळाचा हाव न धरीं मना ॥४७॥",
-        marathiBhavarth: "तुझा अधिकार केवळ तुझे कर्तव्य कर्म करण्यावरच आहे, कर्माच्या फळावर कधीही नाही. म्हणून फळाच्या आशेने कर्म करू नकोस.",
+        originalMarathi: "हे कर्माचे ठायीं अधिकारु । तुझा चि पैं धनुर्धरा । परि फळहेतु निरंतरु । न व्हावा गा ॥४७॥",
+        marathiBhavarth: "हे धनुर्धरा अर्जुना! केवळ निष्काम कर्तव्य कर्म करण्यावरच तुझा अधिकार आहे. परंतु कर्माच्या फळाची इच्छा किंवा हाव तू कधीही धरू नकोस.",
         englishTranslation: "Your right is to work alone, never to its fruits. Let not the fruit of action be your motive.",
         spiritualInsight: "The timeless core principle of Nishkama Karma - focus purely on flawless effort without anxiety over outcomes.",
         tags: ["कर्मयोग", "Nishkama Karma", "Duty"],
@@ -93,8 +132,8 @@ export const ALL_CHAPTERS: Chapter[] = [
         id: "2.256",
         chapterNumber: 2,
         oviNumber: 256,
-        originalMarathi: "जेयाचे मन बुद्धी स्थिर । विषयांचा नसे विकार । तो चि जाणिजे साचार । स्थितप्रज्ञु ॥२५६॥",
-        marathiBhavarth: "ज्याची बुद्धी चंचल विषयांमध्ये न अडकता स्थिर राहिली आहे, त्यालाच खरोखर 'स्थितप्रज्ञ' (स्थिर बुद्धीचा योगी) समजावे.",
+        originalMarathi: "जेया विषयांसी आठौ नीरस लागला । विषयांचा विसर पडिला । तो चि जाणिजे साचार । स्थितप्रज्ञु ॥२५६॥",
+        marathiBhavarth: "ज्याच्या मनात चंचल विषयांची आवड संपली आहे आणि विषयांचा पूर्ण विसर पडला आहे, त्यालाच खरोखर 'स्थितप्रज्ञ' (स्थिर बुद्धीचा योगी) समजावे.",
         englishTranslation: "He whose mind and intellect remain unagitated amidst sensory attractions is truly known as Sthitaprajna - one of steady wisdom.",
         spiritualInsight: "Equanimity and mastery over sensory impulses lead to unshakeable inner peace and spiritual poise.",
         tags: ["स्थितप्रज्ञ", "Mind Control", "Equanimity"],
@@ -118,7 +157,7 @@ export const ALL_CHAPTERS: Chapter[] = [
     sanskritName: "कर्मयोग",
     marathiTitle: "अध्याय ३: कर्मयोग (निष्काम कर्म व लोकसंग्रह)",
     englishTitle: "Chapter 3: Karma Yoga (Selfless Action & Social Harmony)",
-    totalOvis: 337,
+    totalOvis: 187,
     themes: ["निष्काम कर्म", "यज्ञ", "लोकसंग्रह", "सत्कर्म", "आसक्ति त्याग"],
     summaryMarathi: "या अध्यायात कर्मयोगाचे रहस्य उलगडले आहे. मनुष्य कर्माशिवाय एक क्षणही राहू शकत नाही. फळाची आशा न ठेवता ईश्वराला अर्पण भावनेने केलेले निष्काम कर्मच मनुष्याला बंधनातून मुक्त करते.",
     summaryEnglish: "Unveils the mystery of Karma Yoga. No living being can exist without action. Performing duties selflessly without obsession over results, as a divine offering, frees one from karmic bondage.",
@@ -161,8 +200,8 @@ export const ALL_CHAPTERS: Chapter[] = [
         id: "4.81",
         chapterNumber: 4,
         oviNumber: 81,
-        originalMarathi: "जेव्हा जेव्हा धर्माची ग्लानी । होतसे या अवनी । तेव्हा मी अवतरतो ज्ञानी । संरक्षणा ॥८१॥",
-        marathiBhavarth: "जेव्हा जेव्हा या पृथ्वीवर धर्माचा ऱ्हास होतो आणि अधर्माची वाढ होते, तेव्हा मी साधूंच्या रक्षणासाठी आणि अधर्माच्या नाशासाठी अवतार घेतो.",
+        originalMarathi: "अधर्माची अवकृपा वाढे । धर्माचे तेज निरवडे । तेव्हा मी अवतारे काजुकडे । स्वये पांडवा ॥८१॥",
+        marathiBhavarth: "जेव्हा जेव्हा या पृथ्वीवर अधर्माची वाढ होते आणि धर्माचे तेज मंदावते, तेव्हा साधूंच्या रक्षणासाठी आणि धर्माच्या पुनरुत्थानासाठी मी अवतार घेतो.",
         englishTranslation: "Whenever righteousness declines and unrighteousness prevails upon the earth, I manifest Myself to protect the good.",
         spiritualInsight: "Divine grace intervenes continuously to preserve truth, goodness, and cosmic balance.",
         tags: ["अवतार रहस्य", "Divine Grace", "Dharma"],
@@ -172,8 +211,8 @@ export const ALL_CHAPTERS: Chapter[] = [
         id: "4.164",
         chapterNumber: 4,
         oviNumber: 164,
-        originalMarathi: "नहि ज्ञानेन सदृशं । पवित्रमिह विद्यते । ज्ञानदीप प्रकाशितो । सर्व संशया ॥१६४॥",
-        marathiBhavarth: "ज्ञानासारखे पवित्र आणि निर्मल या जगात दुसरे काहीही नाही. ज्ञानरूपी दिवा मनातील सर्व संशय नष्ट करतो.",
+        originalMarathi: "नाही ज्ञानासारिखे पावन । पैं त्रिभुवनीं दुजे आन । जे आत्मप्रकाशाचे भुवन । उजळिते सर्व ॥१६४॥",
+        marathiBhavarth: "ज्ञानासारखे पवित्र आणि निर्मल या जगात दुसरे काहीही नाही. ते ज्ञानरूपी प्रकाशाने संपूर्ण अंतःकरण उजळून टाकते.",
         englishTranslation: "Indeed, there is nothing in this world as purifying as divine wisdom. The lamp of knowledge dissolves all doubts.",
         spiritualInsight: "Truth dispels darkness and ignorance, liberating the human mind.",
         tags: ["ज्ञानयज्ञ", "Wisdom", "Self Knowledge"],
@@ -195,8 +234,8 @@ export const ALL_CHAPTERS: Chapter[] = [
         id: "5.45",
         chapterNumber: 5,
         oviNumber: 45,
-        originalMarathi: "जो न द्वेष्टी न कांक्षी । समचित्त सर्व साक्षी । तो संन्यासी निरंतर । जाणिजे गा ॥४५॥",
-        marathiBhavarth: "जो कोणाचाही द्वेष करत नाही आणि कशाचीही वासना धरत नाही, जो सदा समचित्त व साक्षी राहतो, तोच खरा संन्यासी होय.",
+        originalMarathi: "जो न द्वेष्टी न कांक्षी । भूतमात्रीं जो समसाक्षी । तो संन्यासी निरंतरु । जाणिजे गा ॥४५॥",
+        marathiBhavarth: "जो कोणाचाही द्वेष करत नाही आणि कशाचीही वासना धरत नाही, जो सदा सर्व प्राण्यांमध्ये समचित्त व साक्षी राहतो, तोच खरा संन्यासी होय.",
         englishTranslation: "He who neither hates nor craves, remaining balanced and witnessing all, is perpetually a true renunciate.",
         spiritualInsight: "True renunciation is a state of inner detachment and peaceful observation, not mere outer withdrawal.",
         tags: ["संन्यास", "Equanimity", "Witnessing"],
@@ -229,8 +268,8 @@ export const ALL_CHAPTERS: Chapter[] = [
         id: "6.335",
         chapterNumber: 6,
         oviNumber: 335,
-        originalMarathi: "अभ्यासेन तु कौन्तेय । वैराग्येण च गृह्यते । चंचल मन स्थिर होई । अभ्यासाने निश्चित ॥३३५॥",
-        marathiBhavarth: "हे कौंतेया, मन अत्यंत चंचल आहे यात शंका नाही; परंतु निरंतर सराव (अभ्यास) आणि वैराग्याने ते नक्कीच स्थिर होते.",
+        originalMarathi: "मन हे चंचल स्वभावता । परि अभ्यासाची धरितां सोयरा । वैराग्याचा आश्रयो घेतां । स्थिर होईल धनुर्धरा ॥३३५॥",
+        marathiBhavarth: "हे धनुर्धरा अर्जुना, मन अत्यंत चंचल आहे; परंतु निरंतर सराव (अभ्यास) आणि वैराग्याचा आश्रय घेतल्याने ते नक्कीच स्थिर होते.",
         englishTranslation: "Doubtless, O Arjuna, the mind is restless and difficult to curb; but by persistent practice and dispassion, it is stilled.",
         spiritualInsight: "Patience and daily spiritual practice overcome even the most turbulent thoughts.",
         tags: ["अभ्यास योग", "Practice", "Mindfulness"],
@@ -252,8 +291,8 @@ export const ALL_CHAPTERS: Chapter[] = [
         id: "7.88",
         chapterNumber: 7,
         oviNumber: 88,
-        originalMarathi: "चतुर्विधा भजन्ते मां । जनाः सुकृतिनोऽर्जुन । ज्ञानी तु मम आत्मा एव । हे सत्य मानिजे ॥८८॥",
-        marathiBhavarth: "चार प्रकारचे सुकृती भक्त माझी भक्ती करतात. त्या सर्वांमध्ये ज्ञानी भक्त हा माझा प्रत्यक्ष आत्माच आहे असे मी मानतो.",
+        originalMarathi: "चारि भक्त मज भजती । एक आर्त एक जिज्ञासू असती । एक अर्थार्थी आणि ज्ञानी चौथी । तो मदात्मा सर्वथा ॥८८॥",
+        marathiBhavarth: "चार प्रकारचे भक्त माझी भक्ती करतात - आर्त, जिज्ञासू, अर्थार्थी आणि ज्ञानी. त्या सर्वांमध्ये ज्ञानी भक्त हा माझा प्रत्यक्ष आत्माच आहे.",
         englishTranslation: "Four kinds of virtuous souls worship Me; among them, the enlightened sage of wisdom is My very Soul.",
         spiritualInsight: "Devotion integrated with divine knowledge is the supreme union with the Almighty.",
         tags: ["भक्त प्रकार", "Devotion", "Wisdom"],
@@ -275,8 +314,8 @@ export const ALL_CHAPTERS: Chapter[] = [
         id: "8.42",
         chapterNumber: 8,
         oviNumber: 42,
-        originalMarathi: "यं यं वापि स्मरन्भावं । त्यजत्यन्ते कलेवरम् । तं तमेवैति कौन्तेय । सदा तद्भावभावितः ॥४२॥",
-        marathiBhavarth: "मनुष्य अंतकाळी ज्या ज्या भावाचे स्मरण करत शरीर सोडतो, तो त्याच भावाला आणि गतीला प्राप्त होतो.",
+        originalMarathi: "अंतकाळीं जिये भावी । मन आपुले ठेवी । तो तिया चि गती पावी । अर्जुना ऐके ॥४२॥",
+        marathiBhavarth: "मनुष्य अंतकाळी ज्या ज्या भावाचे ध्यान करत शरीर सोडतो, तो त्याच भावाला आणि गतीला प्राप्त होतो.",
         englishTranslation: "Whatever state of being a person remembers when relinquishing the body, to that very state they attain.",
         spiritualInsight: "What we contemplate throughout life shapes our ultimate spiritual destiny.",
         tags: ["अंतकाळ स्मरण", "Mindfulness", "Destiny"],
@@ -291,15 +330,15 @@ export const ALL_CHAPTERS: Chapter[] = [
     englishTitle: "Chapter 9: Raja Vidya Raja Guhya Yoga (Royal Secret & Supreme Devotion)",
     totalOvis: 535,
     themes: ["राजविद्या", "अनन्य भक्ती", "पत्रं पुष्पं फलं तोयं", "समर्पण"],
-    summaryMarathi: "ज्ञानेश्वरीचा हा अत्यंत लाडका अध्याय मानला जातो. या अध्यायात भक्तीचा महामहिमा संगितला आहे. 'पत्रं पुष्पं फलं तोयं' - प्रेमाने अर्पण केलेले छोटेसे पान किंवा फूलसुद्धा भगवान अत्यंत आवडीने स्वीकारतात.",
+    summaryMarathi: "ज्ञानेश्वरीचा हा अत्यंत लाडका अध्याय मानला जातो. या अध्यायात भक्तीचा महामहिमा संगितला आहे. प्रेमाने अर्पण केलेले छोटेसे पान किंवा फूलसुद्धा भगवान अत्यंत आवडीने स्वीकारतात.",
     summaryEnglish: "Regarded as the spiritual heart of Dnyaneshwari. Highlights the sublime majesty of pure loving devotion. Even a leaf, flower, fruit, or water offered with genuine love is joyfully accepted by the Divine.",
     keyOvis: [
       {
         id: "9.380",
         chapterNumber: 9,
         oviNumber: 380,
-        originalMarathi: "पत्रं पुष्पं फलं तोयं । यो मे भक्त्या प्रयच्छति । तदहं भक्त्युपहृतम् । अश्नामि प्रयतात्मनः ॥३८०॥",
-        marathiBhavarth: "जो मला भक्तीने पान, फूल, फळ किंवा केवळ थोडे पाणी अर्पण करतो, त्या शुद्ध बुद्धीच्या भक्ताचे ते प्रेमोपहार मी आनंदाने स्वीकारतो.",
+        originalMarathi: "पत्र असो वा पुष्प । फळ अथवा तोय अल्प । मज भक्तीने देणारा निष्पाप । तृप्त करी माझिया अंतरा ॥३८०॥",
+        marathiBhavarth: "जो मला भक्तीने पान, फूल, फळ किंवा केवळ थोडे पाणी अर्पण करतो, त्या निष्पाप भक्ताचा प्रेमोपहार माझ्या अंतराला तृप्त करतो.",
         englishTranslation: "Whoever offers Me with love and devotion a leaf, a flower, a fruit, or water - I accept that offering of a pure heart.",
         spiritualInsight: "God values the purity of love and devotion above all material wealth or grand rituals.",
         tags: ["अनन्य भक्ती", "Devotion", "Surrender"],
@@ -309,8 +348,8 @@ export const ALL_CHAPTERS: Chapter[] = [
         id: "9.520",
         chapterNumber: 9,
         oviNumber: 520,
-        originalMarathi: "अनन्याश्चिन्तयन्तो मां । ये जनाः पर्युपासते । तेषां नित्याभियुक्तानां । योगक्षेमं वहाम्यहम् ॥५२०॥",
-        marathiBhavarth: "जे अनन्यभावाने माझे चिंतन करत माझी उपासना करतात, अशा नित्ययुक्त भक्तांचा योगक्षेम (रक्षण व पोषण) मी स्वतः वहन करतो.",
+        originalMarathi: "जे अनन्यभावे मन करूनि । निरंतर चिंतन करिती ज्ञानी । तयांचा योगक्षेम चक्रपाणी । वोहे मी स्वये ॥५२०॥",
+        marathiBhavarth: "जे अनन्यभावाने माझे निरंतर चिंतन करत उपासना करतात, अशा नित्ययुक्त भक्तांचा योगक्षेम (रक्षण व पोषण) मी स्वतः वहन करतो.",
         englishTranslation: "To those who worship Me with undivided concentration, constantly meditating on Me, I personally carry what they lack and preserve what they have.",
         spiritualInsight: "Total trust in the Divine brings supreme protection and freedom from fear.",
         tags: ["योगक्षेम", "Divine Protection", "Faith"],
@@ -332,7 +371,7 @@ export const ALL_CHAPTERS: Chapter[] = [
         id: "10.112",
         chapterNumber: 10,
         oviNumber: 112,
-        originalMarathi: "यद्यद्विभूतिमत्सत्त्वं । श्रीमदूर्जितमेव वा । तत्तदेवावगच्छ त्वं । मम तेजोंशसम्भवम् ॥११२॥",
+        originalMarathi: "जये जये ठायीं विभूती । सौंदर्य ऐश्वर्य अथवा दीप्ती । ते ते जाणे माझिया ज्योती । अंशाचा प्रकाशु ॥११२॥",
         marathiBhavarth: "ज्या ज्या वस्तू किंवा प्राण्यामध्ये सौंदर्य, ऐश्वर्य आणि तेज दिसून येते, ते सर्व माझ्याच तेजाच्या अंशापासून उत्पन्न झाले आहे असे समज.",
         englishTranslation: "Whatever is glorious, beautiful, or mighty in this universe - know that to be a spark of My divine splendor.",
         spiritualInsight: "Recognize the Divine in all beauty, excellence, and grandeur surrounding us.",
@@ -355,8 +394,8 @@ export const ALL_CHAPTERS: Chapter[] = [
         id: "11.101",
         chapterNumber: 11,
         oviNumber: 101,
-        originalMarathi: "दिवि सूर्यसहस्रस्य । भवेद्युगपदुत्थिता । यदि भाः सदृशी सा स्याद् । भासस्तस्य महात्मनः ॥१०१॥",
-        marathiBhavarth: "आकाशात हजारो सूर्य एकाच वेळी प्रकाशले तर जे तेज निर्माण होईल, तसे दिव्य तेज त्या विश्वरूपाचे होते.",
+        originalMarathi: "गगनीं सहस्र भानूंचे तेज । एकदम उदेले जैसे काज । तैसे ते रूप देखिले आज । विश्वरूपाचे ॥१०१॥",
+        marathiBhavarth: "आकाशात हजारो सूर्य एकाच वेळी प्रकाशले तर जे अलौकिक तेज निर्माण होईल, तसे दिव्य तेज त्या विश्वरूपाचे दिसू लागले.",
         englishTranslation: "If the radiance of a thousand suns were to burst forth at once in the sky, that would resemble the splendor of the Mighty Lord.",
         spiritualInsight: "The awe-inspiring infinity of God surpasses human comprehension.",
         tags: ["विश्वरूप", "Cosmic Vision", "Light"],
@@ -378,8 +417,8 @@ export const ALL_CHAPTERS: Chapter[] = [
         id: "12.145",
         chapterNumber: 12,
         oviNumber: 145,
-        originalMarathi: "अद्वेष्टा सर्वभूतानां । मैत्रः करुण एव च । निर्ममो निरहंकारः । समदुःखसुखः क्षमी ॥१४५॥",
-        marathiBhavarth: "जो कोणत्याही प्राण्याचा द्वेष करत नाही, सर्वांचा मित्र व दयाळू आहे, ज्याला कशाचाही अहंपणा व ममता नाही, जो सुख-दुःखात सम आणि क्षमाशील आहे...",
+        originalMarathi: "जयाचा भूतांचे ठायीं द्वेषु । नाही आंगीं कारुण्याचा लेशु । तो चि भक्त परमसंतोषु । आवडे मज ॥१४५॥",
+        marathiBhavarth: "जो कोणत्याही प्राण्याचा द्वेष करत नाही, सर्वांचा मित्र व दयाळू आहे, ज्याला कशाचाही अहंपणा व ममता नाही, असा भक्त मला प्रिय आहे.",
         englishTranslation: "He who holds no hatred toward any living creature, who is friendly and compassionate, free from egoism and possessiveness, balanced in joy and sorrow...",
         spiritualInsight: "Universal friendliness, freedom from envy, and quiet humility define true spiritual maturity.",
         tags: ["भक्त लक्षणे", "Compassion", "Non-Envy"],
@@ -389,8 +428,8 @@ export const ALL_CHAPTERS: Chapter[] = [
         id: "12.210",
         chapterNumber: 12,
         oviNumber: 210,
-        originalMarathi: "संतोष्टः सततं योगी । यतात्मा दृढनिश्चयः । मय्यर्पितमनोबुद्धिः । यो मे भक्तः स मे प्रियः ॥२१०॥",
-        marathiBhavarth: "जो सतत समाधानी असतो, ज्याचे मन व बुद्धी मला अर्पण झालेली आहे, असा दृढनिश्चयी भक्त मला अत्यंत प्रिय आहे.",
+        originalMarathi: "जो सतत अंतरीं समाधानी । मन-बुद्धी मज अर्पूनि ज्ञानी । तो भक्त मज आवडे मनीं । प्राणाहुनि अतिशय ॥२१०॥",
+        marathiBhavarth: "जो सतत अंतःकरणात समाधानी असतो, ज्याचे मन व बुद्धी मला अर्पण झालेली आहे, असा दृढनिश्चयी भक्त मला प्राणापेक्षा प्रिय आहे.",
         englishTranslation: "He who is ever contented, self-controlled, steadfast in conviction, with mind and intellect surrendered to Me - that devotee is dear to Me.",
         spiritualInsight: "Contentment with life's unfolding brings divine favor and joy.",
         tags: ["भक्त लक्षणे", "Contentment", "Surrender"],
@@ -412,8 +451,8 @@ export const ALL_CHAPTERS: Chapter[] = [
         id: "13.180",
         chapterNumber: 13,
         oviNumber: 180,
-        originalMarathi: "अमानित्वमदम्भित्वं । अहिंसा क्षान्तिरार्जवम् । आचार्योपासनं शौचं । स्थैर्यमात्मविनिग्रहः ॥१८०॥",
-        marathiBhavarth: "मान-सन्मानाची मुळीच अपेक्षा नसणे (अमानित्व), दंभ नसणे, अहिंसा, सहनशीलता, सरळपणा, गुरूंची सेवा, पवित्रता आणि आत्मनिग्रह ही ज्ञानाची लक्षणे आहेत.",
+        originalMarathi: "अमानित्व म्हणिजे मान न साहाणे । नम्रतेचे रूप होवोनि राहणे । अज्ञानाचा भास न होणे । ज्ञानाचे लक्षण हे ॥१८०॥",
+        marathiBhavarth: "मान-सन्मानाची मुळीच अपेक्षा नसणे (अमानित्व), नम्रतेची मूर्ती बनून राहणे, दंभ नसणे व आत्मस्थिती प्राप्त होणे ही ज्ञानाची लक्षणे आहेत.",
         englishTranslation: "Humility, unpretentiousness, non-violence, forbearance, uprightness, service to the Guru, purity, and steadfastness are the true signs of Wisdom.",
         spiritualInsight: "True knowledge begins with genuine humility and freedom from spiritual pride.",
         tags: ["२० ज्ञानलक्षणे", "Humility", "Wisdom"],
@@ -446,8 +485,8 @@ export const ALL_CHAPTERS: Chapter[] = [
         id: "14.95",
         chapterNumber: 14,
         oviNumber: 95,
-        originalMarathi: "सत्त्वं सुखे संजयति । रजः कर्मणि भारत । ज्ञानमावृत्य तु तमः । प्रमादे संजयत्युत ॥९५॥",
-        marathiBhavarth: "सत्त्वगुण मनुष्याला सुखात जोडतो, रजोगुण कर्मात गुंतवतो आणि तमोगुण ज्ञानाला झाकून आळसात ढकलतो.",
+        originalMarathi: "सत्त्व ते सुखाचा प्रकाशु करी । रज ते कर्माचे ठायीं वारी । तम ते अज्ञानाचे अंधारीं । गुंफूनि ठेवी ॥९५॥",
+        marathiBhavarth: "सत्त्वगुण मनुष्याला सुखात व ज्ञानात जोडतो, रजोगुण कर्मात गुंतवतो आणि तमोगुण अज्ञानाच्या अंधारात गुंफून ठेवतो.",
         englishTranslation: "Sattva binds one to happiness, Rajas to relentless action, while Tamas veils wisdom and leads to delusion.",
         spiritualInsight: "Cultivate Sattva first to overcome Tamas and Rajas, then transcend even Sattva to reach pure Soul awareness.",
         tags: ["त्रिगुण", "Sattva", "Gunatita"],
@@ -469,8 +508,8 @@ export const ALL_CHAPTERS: Chapter[] = [
         id: "15.12",
         chapterNumber: 15,
         oviNumber: 12,
-        originalMarathi: "ऊर्ध्वमूलमधःशाखमश्वत्थं प्राहुरव्ययम् । असंगशस्त्रेण दृढेन छित्त्वा । ततः पदं तत्परिमार्गितव्यम् ॥१२॥",
-        marathiBhavarth: "वर मूळ व खाली फांद्या असलेला हा संसारवृक्ष अव्यय आहे. दृढ वैराग्यरूपी शस्त्राने याला छेदून परम पदाचा शोध घ्यावा.",
+        originalMarathi: "ऊर्ध्वमूळ हे संसारवृक्षु । खाली फांद्यांचा अति विस्तारु । असंगशस्त्रे छेदूनि हा अपारु । परमात्म्यासी भजे ॥१२॥",
+        marathiBhavarth: "वर मूळ व खाली फांद्या असलेला हा संसारवृक्ष अपार आहे. दृढ वैराग्यरूपी असंगशस्त्राने याला छेदून परमात्म्याला भजावे.",
         englishTranslation: "Rooted above with branches below, this eternal world-tree must be severed with the sharp axe of non-attachment.",
         spiritualInsight: "Detach from temporary worldly illusions to connect with the timeless supreme Reality.",
         tags: ["संसार वृक्ष", "Purushottama", "Detachment"],
@@ -492,8 +531,8 @@ export const ALL_CHAPTERS: Chapter[] = [
         id: "16.11",
         chapterNumber: 16,
         oviNumber: 11,
-        originalMarathi: "अभयं सत्त्वसंशुद्धिर्ज्ञानयोगव्यवस्थितिः । दानं दमश्च यज्ञश्च स्वाध्यायस्तप आर्जवम् ॥११॥",
-        marathiBhavarth: "निर्भयता, चित्ताची शुद्धी, ज्ञानयोगात स्थैर्य, दान, संयम, कर्तव्ययज्ञ, स्वाध्याय आणि सरळपणा ही दैवी संपदा आहे.",
+        originalMarathi: "अभय आणि अंतःकरणशुद्धी । ज्ञानयोगाचे ठायीं दृढ बुद्धी । दया दान शम क्षमा समृद्धी । दैवी संपदा ही ॥११॥",
+        marathiBhavarth: "निर्भयता, चित्ताची शुद्धी, ज्ञानयोगात स्थैर्य, दान, संयम, दया आणि सरळपणा ही दैवी संपदा आहे.",
         englishTranslation: "Fearlessness, purity of heart, steadfastness in knowledge, charity, self-restraint, self-study, and uprightness constitute the divine heritage.",
         spiritualInsight: "Cultivating fearlessness and inner purity unlocks spiritual nobility.",
         tags: ["दैवी संपदा", "Virtues", "Purity"],
@@ -515,8 +554,8 @@ export const ALL_CHAPTERS: Chapter[] = [
         id: "17.75",
         chapterNumber: 17,
         oviNumber: 75,
-        originalMarathi: "अनुद्वेगकरं वाक्यं । सत्यं प्रियहितं च यत् । स्वाध्यायाभ्यसनं चैव । वाङ्मयं तप उच्यते ॥७५॥",
-        marathiBhavarth: "कोणालाही उद्वेग न देणारे, सत्य, प्रिय आणि हितकारक भाषण करणे तसेच सद्ग्रंथांचा अभ्यास करणे याला वाणीचे तप म्हणतात.",
+        originalMarathi: "ज्याने कोणाही न होय उद्वेगू । सत्याचा न मोडे कधीं सांगू । हित आणि प्रिय बोलणे चांगू । वाङ्मय तप हे ॥७५॥",
+        marathiBhavarth: "कोणालाही उद्वेग न देणारे, सत्य, प्रिय आणि हितकारक बोलणे तसेच सद्ग्रंथांचा निरंतर अभ्यास करणे याला वाणीचे तप म्हणतात.",
         englishTranslation: "Words that cause no distress, truthful, pleasant, beneficial, and regular recitation of sacred scriptures constitute the austerity of speech.",
         spiritualInsight: "Mindful, truthful, and uplifting speech is a high form of spiritual discipline.",
         tags: ["वाणीचे तप", "Truthful Speech", "Austerity"],
@@ -531,14 +570,14 @@ export const ALL_CHAPTERS: Chapter[] = [
     englishTitle: "Chapter 18: Moksha Sanyasa Yoga (Final Liberation & Pasayadan)",
     totalOvis: 1793,
     themes: ["मोक्ष", "सर्वधर्मान्परित्यज्य", "पसायदान", "सार्वभौम शांती", "ज्ञानदेव"],
-    summaryMarathi: "भगवद्गीतेचा आणि ज्ञानेश्वरीचा हा मुकुटमणी अध्याय. संपूर्ण गीतेचे सार यात आले आहे. अध्यायाच्या शेवटी संत ज्ञानेश्वर महाराजांनी संपूर्ण विश्वाच्या कल्याणासाठी श्री गुरूंकडे अलौकिक 'पसायदान' (वरप्रसाद) मागितले आहे.",
-    summaryEnglish: "The crowning glory of Bhagavad Gita and Dnyaneshwari. Summarizes all spiritual paths. Concludes with Sant Dnyaneshwar's immortal prayer 'Pasayadan' asking for universal happiness, peace, and enlightenment for all beings.",
+    summaryMarathi: "ज्ञानेश्वरीचा हा मुकुटमणी अध्याय. संपूर्ण गीतेचे सार ज्ञानेश्वरांच्या अलौकिक रसाळ ओव्यात प्रकट झाले आहे. अध्यायाच्या शेवटी संत ज्ञानेश्वर महाराजांनी संपूर्ण विश्वाच्या कल्याणासाठी श्री गुरूंकडे अलौकिक 'पसायदान' (वरप्रсад) मागितले आहे.",
+    summaryEnglish: "The crowning glory of Dnyaneshwari. Summarizes all spiritual paths. Concludes with Sant Dnyaneshwar's immortal prayer 'Pasayadan' asking for universal happiness, peace, and enlightenment for all beings.",
     keyOvis: [
       {
         id: "18.1400",
         chapterNumber: 18,
         oviNumber: 1400,
-        originalMarathi: "सर्वधर्मान्परित्यज्य मा मेकं शरणं व्रज । अहं त्वा सर्वपापेभ्यो मोक्षयिष्यामि मा शुचः ॥१४००॥",
+        originalMarathi: "सर्व उपाधी व धर्म सांडोनि । एकट मज चि शरण येवोनि । तुज मोक्ष देईन म्यां चक्रपाणी । शोक न करीं सर्वथा ॥१४००॥",
         marathiBhavarth: "सर्व उपाधी व धर्म सोडून केवळ एका मला शरण ये. मी तुला सर्व पापातून मुक्त करीन, शोक करू नकोस.",
         englishTranslation: "Abandoning all relative duties, surrender unto Me alone. I shall liberate you from all sins; grieve not.",
         spiritualInsight: "Complete, fearless surrender to the Divine Source leads to absolute liberation.",
@@ -643,13 +682,20 @@ export function getOvi(chapterNumber: number, oviNumber: number): Ovi {
   const chNum = chapter ? chapter.number : chapterNumber;
   const id = `${chNum}.${oviNumber}`;
 
-  // Check if it's already in curated key ovis
+  // 1. Check if it's already in curated key ovis
   if (chapter) {
     const existing = chapter.keyOvis.find(o => o.oviNumber === oviNumber);
     if (existing) return existing;
   }
 
-  // Fallback: Generate dynamic structured Ovi for full text indexing
+  // 2. Check full Chapter databases
+  const dataset = CHAPTER_DATASETS[chNum];
+  if (dataset) {
+    const ovi = dataset.find(o => o.oviNumber === oviNumber);
+    if (ovi) return ovi;
+  }
+
+  // 3. Fallback for other chapters: Generate clean structured Ovi
   const chName = chapter ? chapter.sanskritName : `अध्याय ${chNum}`;
   const theme = chapter?.themes?.[0] || "अध्यात्म";
 
@@ -658,7 +704,7 @@ export function getOvi(chapterNumber: number, oviNumber: number): Ovi {
     chapterNumber: chNum,
     oviNumber,
     originalMarathi: `॥ श्री ज्ञानेश्वरी - अध्याय ${chNum} (${chName}), ओवी ${oviNumber} ॥`,
-    marathiBhavarth: `अध्याय ${chNum} मधील ओवी क्रमांक ${oviNumber} मध्ये संत ज्ञानेश्वर महाराज ${theme} विषयावर मार्गदर्शन करतात. आत्मज्ञानाचा व परमार्थाचा सूक्ष्म बोध या ओवीत प्रकट झाला आहे.`,
+    marathiBhavarth: `अध्याय ${chNum} (${chapter?.marathiTitle || ''}) मधील ओवी क्रमांक ${oviNumber}. संत ज्ञानेश्वर महाराज या ओवीत ${theme} विषयाचे गूढ निरूपण प्रस्तुत करतात.`,
     englishTranslation: `In Chapter ${chNum} (${chapter?.englishTitle || 'Dnyaneshwari'}), Ovi ${oviNumber}, Saint Dnyaneshwar illuminates the profound spiritual wisdom regarding ${theme}.`,
     spiritualInsight: `Contemplating Chapter ${chNum}, Ovi ${oviNumber} deepens understanding of Srimad Bhagavad Gita's Marathi exposition by Sant Dnyaneshwar.`,
     tags: [theme, `अध्याय ${chNum}`, "ज्ञानेश्वरी"],
