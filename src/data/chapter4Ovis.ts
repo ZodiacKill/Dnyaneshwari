@@ -1,105 +1,1600 @@
 import { Ovi } from "../types";
 
-// Helper function to create structured Ovis for Chapter 4
-function createChapter4Ovis(): Ovi[] {
-  const ovis: Ovi[] = [];
-  const total = 224;
-
-  // Key curated Ovis with authentic Sant Dnyaneshwar Maharaj Marathi verses
-  const keyOviMap = new Map<number, Partial<Ovi>>([
-    [1, {
-      originalMarathi: "ॐ नमो श्रीविष्णुप्रिया । जगदात्मया सुखनिधिया । तुझा जयजयकारू श्रीहरिया । त्रिभुवनीं ॥ १ ॥",
-      marathiBhavarth: "हे श्रीहरि, भगवंता, तू सर्व जगाचा आत्मा आणि आनंदाचा सागर आहेस. तिन्ही लोकांत तुझा जयजयकार असो.",
-      englishTranslation: "O Sri Hari, You are the Supreme Soul of the cosmos and the infinite ocean of bliss. Victory to You across all three worlds!",
-      spiritualInsight: "Invocatory reverent praise opening the revelation of divine incarnation.",
-      tags: ["मंगलाचरण", "श्रीहरि", "अध्याय ४"],
-      isFamous: true
-    }],
-    [40, {
-      originalMarathi: "इमं विवस्वते योगं प्रोक्तवानहमव्ययम् । हा योगु म्यां सूर्यासी साङ्गिंतेला प्रथम ॥ ४० ॥",
-      marathiBhavarth: "श्रीकृष्ण म्हणतात: हा अविनाशी योग मी सर्वप्रथम सूर्याला (विवस्वताला) सांगितला होता.",
-      englishTranslation: "Sri Krishna says: I first revealed this imperishable discipline of Yoga to Vivasvan, the Sun god.",
-      spiritualInsight: "The ancient lineage (Parampara) of timeless spiritual knowledge.",
-      tags: ["गुरुपरंपरा", "सूर्य", "ज्ञानयोग"]
-    }],
-    [81, {
-      originalMarathi: "अधर्माची अवकृपा वाढे । धर्माचे तेज निरवडे । तेव्हा मी अवतारे काजुकडे । स्वये पांडवा ॥ ८१ ॥",
-      marathiBhavarth: "जेव्हा जेव्हा या पृथ्वीवर अधर्माची वाढ होते आणि धर्माचे तेज मंदावते, तेव्हा साधूंच्या रक्षणासाठी आणि धर्माच्या पुनरुत्थानासाठी मी अवतार घेतो.",
-      englishTranslation: "Yada yada hi dharmasya glanir bhavati bharata—whenever righteousness declines and unrighteousness prevails, I manifest Myself to protect the good!",
-      spiritualInsight: "The eternal law of divine incarnation for cosmic harmony and moral restoration.",
-      tags: ["अवतार रहस्य", "धर्मरक्षण", "पांडव"],
-      isFamous: true
-    }],
-    [82, {
-      originalMarathi: "परित्राणाय साधूनां विनाशाय च दुष्कृताम् । धर्मसंस्थापनार्थाय सम्भवामि युगे युगे ॥ ८२ ॥",
-      marathiBhavarth: "सज्जनांच्या रक्षणार्थ, दुर्जनांच्या विनाशार्थ आणि धर्माच्या दृढ स्थापनेसाठी मी युगायुगात अवतार घेतो.",
-      englishTranslation: "To protect the virtuous, destroy evil-doers, and firmly re-establish Dharma, I incarnate age after age.",
-      spiritualInsight: "The three divine purposes of Avatarhood.",
-      tags: ["अवतार", "साधुरक्षण", "युगयुग"],
-      isFamous: true
-    }],
-    [100, {
-      originalMarathi: "ये यथा मां प्रपद्यन्ते तांस्तथैव भजाम्यहम् । जो जिया भावाने मज भजे । तयासी तैसाचि मी भेटे ॥ १०० ॥",
-      marathiBhavarth: "जो मनुष्य ज्या भावाने मला शरण येतो, त्याला मी त्याच रूपात प्राप्त होतो. सर्व मनुष्य माझ्याच मार्गाचे अनुसरण करतात.",
-      englishTranslation: "In whatever way people approach and surrender to Me, I fulfill them accordingly. All paths lead ultimately to Me.",
-      spiritualInsight: "Divine reciprocity—God meets every seeker according to their sincerity and vision.",
-      tags: ["शरणागती", "सर्वभाव", "समदृष्टी"],
-      isFamous: true
-    }],
-    [164, {
-      originalMarathi: "नाही ज्ञानासारिखे पावन । पैं त्रिभुवनीं दुजे आन । जे आत्मप्रकाशाचे भुवन । उजळिते सर्व ॥ १६४ ॥",
-      marathiBhavarth: "ज्ञानासारखे पवित्र आणि निर्मल या जगात दुसरे काहीही नाही. ते ज्ञानरूपी प्रकाशाने संपूर्ण अंतःकरण उजळून टाकते.",
-      englishTranslation: "Na hi jnanena sadrisam pavitram iha vidyate—indeed, nothing in this world is as purifying as sacred Self-knowledge!",
-      spiritualInsight: "Self-knowledge is the ultimate purifier that dissolves all doubts and delusion.",
-      tags: ["ज्ञानयज्ञ", "पवित्र", "आत्मप्रकाश"],
-      isFamous: true
-    }],
-    [165, {
-      originalMarathi: "श्रद्धावाँल्लभते ज्ञानं तत्परः संयतेन्द्रियः । श्रद्धेने इंद्रिये जिंकोनि । ज्ञान पावे पुरुष ज्ञानी ॥ १६५ ॥",
-      marathiBhavarth: "ज्याची ईश्वरावर श्रद्धा आहे आणि ज्याने इंद्रियांवर ताबा मिळवला आहे, त्यालाच हे परमज्ञान प्राप्त होते आणि तो शांती पावतो.",
-      englishTranslation: "One who possesses deep faith, devotion, and sensory self-control attains Supreme Wisdom and abides in absolute peace.",
-      spiritualInsight: "Faith (Shraddha) and sensory mastery are prerequisites for divine wisdom.",
-      tags: ["श्रद्धा", "इंद्रियजय", "शांतता"]
-    }],
-    [224, {
-      originalMarathi: "इति श्रीज्ञानदेवविरचितायां भावार्थदीपिकायां चतुर्थोध्यायः ॥ २२४ ॥",
-      marathiBhavarth: "अशा प्रकारे श्री ज्ञानदेवविरचित भावार्थदीपिका (ज्ञानेश्वरी) ग्रंथातील 'ज्ञानकर्मसंन्यासयोग' नावाचा चौथा अध्याय पूर्ण झाला.",
-      englishTranslation: "Thus ends the Fourth Chapter entitled 'Jnana Karma Sanyasa Yoga' in the Bhavartha Dipika composed by Sant Dnyaneshwar Maharaj.",
-      spiritualInsight: "Conclusion of Chapter 4 illuminating the fire of wisdom.",
-      tags: ["इति चतुर्थोध्यायः", "ज्ञानदेव", "ज्ञानकर्मसंन्यासयोग"]
-    }]
-  ]);
-
-  for (let i = 1; i <= total; i++) {
-    const custom = keyOviMap.get(i);
-    if (custom) {
-      ovis.push({
-        id: `4.${i}`,
-        chapterNumber: 4,
-        oviNumber: i,
-        originalMarathi: custom.originalMarathi!,
-        marathiBhavarth: custom.marathiBhavarth!,
-        englishTranslation: custom.englishTranslation!,
-        spiritualInsight: custom.spiritualInsight!,
-        tags: custom.tags || ["ज्ञानकर्मसंन्यासयोग", "ज्ञानयज्ञ"],
-        isFamous: custom.isFamous || false
-      });
-    } else {
-      ovis.push({
-        id: `4.${i}`,
-        chapterNumber: 4,
-        oviNumber: i,
-        originalMarathi: `अध्याय ४, ओवी ${i}: कर्म आणि ज्ञानाचा योग जो संत ज्ञानेश्वर महाराज उलगडतात... ॥ ${i} ॥`,
-        marathiBhavarth: `अध्याय ४ मधील ओवी क्रमांक ${i}. संत ज्ञानेश्वर महाराज या ओवीत कर्मसंन्यास, अवतार रहस्य आणि ज्ञानयज्ञाचे महत्त्व विशद करतात.`,
-        englishTranslation: `Chapter 4, Ovi ${i}: Saint Dnyaneshwar explains the harmony of selfless action, divine incarnation, and purifying spiritual wisdom.`,
-        spiritualInsight: `Action dedicated as a divine sacrifice (Jnana Yajna) purifies the heart and reveals the supreme Self.`,
-        tags: ["ज्ञानकर्मसंन्यासयोग", "अध्याय ४", "ज्ञानयज्ञ"],
-        isFamous: false
-      });
-    }
+export const CHAPTER_4_FULL_OVIS: Ovi[] = [
+  {
+    "id": "4.1",
+    "chapterNumber": 4,
+    "oviNumber": 1,
+    "originalMarathi": "आजि श्रवणेंद्रिया पिकलें । जे येणें गीतानिधान देखिलें । आता स्वप्नचि हें तुकलें । साचासरिसें ॥ १ ॥"
+  },
+  {
+    "id": "4.2",
+    "chapterNumber": 4,
+    "oviNumber": 2,
+    "originalMarathi": "आधी विवेकाची गोठी । वरी प्रतिपादी कृष्ण जगजेठी । आणि भक्तराजु किरीटी । परिसत असे ॥ २ ॥"
+  },
+  {
+    "id": "4.3",
+    "chapterNumber": 4,
+    "oviNumber": 3,
+    "originalMarathi": "जैसा पंचमालापु सुगंधु । कीं परिमळ आणि सुस्वादु । तं भला जाहला विनोदु । कथेचा इये ॥ ३ ॥"
+  },
+  {
+    "id": "4.4",
+    "chapterNumber": 4,
+    "oviNumber": 4,
+    "originalMarathi": "कैसी आगळिक दैवाची । जे गंगा वोळली अमृताची । हो कां जपतपें श्रोतयांची । फळा आली ॥ ४ ॥"
+  },
+  {
+    "id": "4.5",
+    "chapterNumber": 4,
+    "oviNumber": 5,
+    "originalMarathi": "आतां इंद्रियजात आघवें । तिहीं श्रवणाचे घर रिघावें । मग संवादसुख भोगावें । गीताख्य हें ॥ ५ ॥"
+  },
+  {
+    "id": "4.6",
+    "chapterNumber": 4,
+    "oviNumber": 6,
+    "originalMarathi": "हा अतिसो अतिप्रसंगे । सांडूनि कथाचि ते सांगे । जे कृष्णार्जुन दोघे । बोलत होते ॥ ६ ॥"
+  },
+  {
+    "id": "4.7",
+    "chapterNumber": 4,
+    "oviNumber": 7,
+    "originalMarathi": "ते वेळी संजयों रायातें म्हणे । अर्जुन अधिष्ठिला दैवगुणें । जे अतिप्रीती नारायणें । बोलिजतु असे ॥ ७ ॥"
+  },
+  {
+    "id": "4.8",
+    "chapterNumber": 4,
+    "oviNumber": 8,
+    "originalMarathi": "जें न संगेचि पितया वसुदेवासी । जें न संगे माते देवकीसी । जें न संगेचि बळिभद्रासी । तें गुह्य अर्जुनेंसी बोलत ॥ ८ ॥"
+  },
+  {
+    "id": "4.9",
+    "chapterNumber": 4,
+    "oviNumber": 9,
+    "originalMarathi": "देवी लक्ष्मीयेवढी जवळीक । तेही न देखे या प्रेमाचे सुख । आणि कृष्णस्नेहाचें पिक । यांतेचि आथी ॥ ९ ॥"
+  },
+  {
+    "id": "4.10",
+    "chapterNumber": 4,
+    "oviNumber": 10,
+    "originalMarathi": "सनकादिकांच्या आशा । वाढिनल्या होत्या कीर बहुवसा । परी त्याही येणें माने यशा । येतीचिना ॥ १० ॥"
+  },
+  {
+    "id": "4.11",
+    "chapterNumber": 4,
+    "oviNumber": 11,
+    "originalMarathi": "या जगदीश्वराचें प्रेम । एथ दिसतसे निरुपम । कैसें पार्थें येणें सर्वोत्तम । पुण्य केलें ॥ ११ ॥"
+  },
+  {
+    "id": "4.12",
+    "chapterNumber": 4,
+    "oviNumber": 12,
+    "originalMarathi": "हो कां जयाचिया प्रीती । अमूर्त हा आला व्यक्ती । मज एकवंकी याची स्थिती । आवडतु असे ॥ १२ ॥"
+  },
+  {
+    "id": "4.13",
+    "chapterNumber": 4,
+    "oviNumber": 13,
+    "originalMarathi": "एर्‍हवीं हा योगिया नाडळे । वेदार्थासी नाकळे । जेथ ध्यानाचेही डोळे । पावतीना ॥ १३ ॥"
+  },
+  {
+    "id": "4.14",
+    "chapterNumber": 4,
+    "oviNumber": 14,
+    "originalMarathi": "तें हा निजस्वरूप । अनादि निष्कंप । परी येणे मानें सकृप । जाहला असे ॥ १४ ॥"
+  },
+  {
+    "id": "4.15",
+    "chapterNumber": 4,
+    "oviNumber": 15,
+    "originalMarathi": "हा त्रैलोक्यपटाचि घडी । आकाराची पैलथडी । कैसा याचिये आवडी । आवरला असे ॥ १५ ॥"
+  },
+  {
+    "id": "4.16",
+    "chapterNumber": 4,
+    "oviNumber": 1,
+    "originalMarathi": "श्रीभगनानुवाच: इमं विवस्वते योगं प्रोक्तवानहमव्ययम् । विवस्वान् मनवे प्राह मनुरिक्ष्वाकवेऽब्रवीत् ॥ १ ॥"
+  },
+  {
+    "id": "4.17",
+    "chapterNumber": 4,
+    "oviNumber": 16,
+    "originalMarathi": "मग देव म्हणे अगा पंडुसुता । हाचि योगु आम्हीं विवस्वता । कथिला परी ते वार्ता । बहुवां दिवसांची ॥ १६ ॥"
+  },
+  {
+    "id": "4.18",
+    "chapterNumber": 4,
+    "oviNumber": 17,
+    "originalMarathi": "मग तेणें विवस्वतें रवी । हे योगस्थिति आघवी । निरूपिली बरवी । मनूप्रती ॥ १७ ॥"
+  },
+  {
+    "id": "4.19",
+    "chapterNumber": 4,
+    "oviNumber": 18,
+    "originalMarathi": "मनूनें आपण अनुष्ठिली । मग इक्ष्वाकुवा उपदेशिली । ऐसी परंपरा विस्तारिली । आद्य हे गा ॥ १८ ॥"
+  },
+  {
+    "id": "4.20",
+    "chapterNumber": 4,
+    "oviNumber": 2,
+    "originalMarathi": "एवं परंपराप्राप्तमिमं राजर्षयो विदुः । स कालेनेह महता योगो नष्टः परंतप ॥ २ ॥"
+  },
+  {
+    "id": "4.21",
+    "chapterNumber": 4,
+    "oviNumber": 19,
+    "originalMarathi": "मग आणिकही या योगाते । राजर्षि जाहले जाणते । परी तेथोनि आतां सांप्रतें । नेणिजे कोणी ॥ १९ ॥"
+  },
+  {
+    "id": "4.22",
+    "chapterNumber": 4,
+    "oviNumber": 20,
+    "originalMarathi": "जे प्राणियां कामी भरू । देहाचिवरी आदरु । म्हणोनि पडला विसरु । आत्मबोधाचा ॥ २० ॥"
+  },
+  {
+    "id": "4.23",
+    "chapterNumber": 4,
+    "oviNumber": 21,
+    "originalMarathi": "अव्हांटलिया आस्थाबुद्धि । विषयसुखचि परमावधि । जीवु तैसा उपाधि । आवडे लोकां ॥ २१ ॥"
+  },
+  {
+    "id": "4.24",
+    "chapterNumber": 4,
+    "oviNumber": 22,
+    "originalMarathi": "एर्‍हवीं तरी खवणेयांच्या गांवीं । पाटाऊवें काय करावीं । सांगे जात्यंधा रवी । काय आथी ॥ २२ ॥"
+  },
+  {
+    "id": "4.25",
+    "chapterNumber": 4,
+    "oviNumber": 23,
+    "originalMarathi": "कां बहिरयांचां आस्थानीं । कवणे गीतातें मानी । कीं कोल्हेया चांदणीं । आवडी उपजे ॥ २३ ॥"
+  },
+  {
+    "id": "4.26",
+    "chapterNumber": 4,
+    "oviNumber": 24,
+    "originalMarathi": "पैं चंद्रोदया आरौतें । जयांचे डोळे फुटती असते । ते काऊळे केवीं चंद्रातें । ओळखती ॥ २४ ॥"
+  },
+  {
+    "id": "4.27",
+    "chapterNumber": 4,
+    "oviNumber": 25,
+    "originalMarathi": "तैसे वैराग्याची शिंव न देखती । जे विवेकाची भाषा नेणती । ते मूर्ख केंवीं पावती । मज ईश्वराते ॥ २५ ॥"
+  },
+  {
+    "id": "4.28",
+    "chapterNumber": 4,
+    "oviNumber": 26,
+    "originalMarathi": "कैसा नेणों मोहो वाढीनला । तेणें बहुतेक काळु व्यर्थ गेला । म्हणोनि योगु हा लोपला । लोकीं इये ॥ २६ ॥"
+  },
+  {
+    "id": "4.29",
+    "chapterNumber": 4,
+    "oviNumber": 3,
+    "originalMarathi": "स एवायं मया तेऽद्य योगः प्रोक्तः पुरातनः । भक्तोऽसि मे सखा चेति रहस्यं ह्येतदुत्तमम् ॥ ३ ॥"
+  },
+  {
+    "id": "4.30",
+    "chapterNumber": 4,
+    "oviNumber": 27,
+    "originalMarathi": "तोचि हा आजि आतां । तुजप्रती कुंतीसुता । सांगितला आम्हीं तत्वता । भ्रांति न करीं ॥ २७ ॥"
+  },
+  {
+    "id": "4.31",
+    "chapterNumber": 4,
+    "oviNumber": 28,
+    "originalMarathi": "हें जीवींचे निज गुज । परी केवीं राखों तुज । जे पढियेसी तूं मज । म्हणऊनियां ॥ २८ ॥"
+  },
+  {
+    "id": "4.32",
+    "chapterNumber": 4,
+    "oviNumber": 29,
+    "originalMarathi": "तूं प्रेमाचा पुतळा । भक्तीचा जिव्हाळा । मैत्रियेची चित्कळा । धनुर्धरा ॥ २९ ॥"
+  },
+  {
+    "id": "4.33",
+    "chapterNumber": 4,
+    "oviNumber": 30,
+    "originalMarathi": "तूं अनुसंगाचा ठावो । आतां तुज काय वंचूं जावों । जरी संग्रामारूढ आहों । जाहलों आम्ही ॥ ३० ॥"
+  },
+  {
+    "id": "4.34",
+    "chapterNumber": 4,
+    "oviNumber": 31,
+    "originalMarathi": "तरी नावेक हें सहावें । गाजाबज्यही न धरावें । परी तुझें अज्ञानत्व हरावें । लागे आधीं ॥ ३१ ॥"
+  },
+  {
+    "id": "4.35",
+    "chapterNumber": 4,
+    "oviNumber": 4,
+    "originalMarathi": "अर्जुन उवाच: अपरं भवतो जन्मं परं जन्म विवस्वतः । कथमेतद् विजानीयां त्वमादौ प्रोक्तवानिति ॥ ४ ॥"
+  },
+  {
+    "id": "4.36",
+    "chapterNumber": 4,
+    "oviNumber": 32,
+    "originalMarathi": "तंव अर्जुन म्हणे हरी । माय आपुलेयाचा स्नेहो करी । एथ विस्मो काय अवधारीं । कृपानिधी ॥ ३२ ॥"
+  },
+  {
+    "id": "4.37",
+    "chapterNumber": 4,
+    "oviNumber": 33,
+    "originalMarathi": "तूं संसारश्रांतांची साऊली । अनाथ जीवांची माऊली । आमुतें कीर प्रसवली । तुझीच कृपा ॥ ३३ ॥"
+  },
+  {
+    "id": "4.38",
+    "chapterNumber": 4,
+    "oviNumber": 34,
+    "originalMarathi": "देवा पांगुळ एकादें विईजे । तरी जन्मोनि जोजारू साहिजे । हें बोलों काय तुझें । तुजचि पुढां ॥ ३४ ॥"
+  },
+  {
+    "id": "4.39",
+    "chapterNumber": 4,
+    "oviNumber": 35,
+    "originalMarathi": "आतां पुसेन जें मी कांही । तेथ निकें चित्त देईं । तेवींचि देवें कोपावें ना कांही । बोला एका ॥ ३५ ॥"
+  },
+  {
+    "id": "4.40",
+    "chapterNumber": 4,
+    "oviNumber": 36,
+    "originalMarathi": "तरी मागील जे वार्ता । तुवां सांगितली होती अनंता । ते नावेक मज चित्ता । मानेचिना ॥ ३६ ॥"
+  },
+  {
+    "id": "4.41",
+    "chapterNumber": 4,
+    "oviNumber": 37,
+    "originalMarathi": "जे तो विवस्वतु म्हणजे कायी । ऐसें हें वडिलां ठाऊवें नाहीं । तरी तुवांचि केवीं पाहीं । उपदेशिला ॥ ३७ ॥"
+  },
+  {
+    "id": "4.42",
+    "chapterNumber": 4,
+    "oviNumber": 38,
+    "originalMarathi": "तो तरी आइकिजे बहुतां काळांचा । आणि तूं तंव कृष्ण सांपेचा । म्हणोनि गा इये मातुचा । विसंवादु ॥ ३८ ॥"
+  },
+  {
+    "id": "4.43",
+    "chapterNumber": 4,
+    "oviNumber": 39,
+    "originalMarathi": "तेवींचि देवा चरित्र तुझें । आपण कांही काय जाणिजे । हें लटिके केवीं म्हणिजे । एकिहेळां ॥ ३९ ॥"
+  },
+  {
+    "id": "4.44",
+    "chapterNumber": 4,
+    "oviNumber": 40,
+    "originalMarathi": "परी हेचि मातु आघवी । मी परियेसें तैशी सांगावी । जे तुवांचि तया रवीं केवीं । उपदेशु केला ॥ ४० ॥"
+  },
+  {
+    "id": "4.45",
+    "chapterNumber": 4,
+    "oviNumber": 5,
+    "originalMarathi": "श्री भगवानुवाच: बहूनि मे व्यतीतानि जन्मानि तव चार्जुन । तान्यहं वेद सर्वाणि न त्वं वेत्थ परंतप ॥ ५ ॥"
+  },
+  {
+    "id": "4.46",
+    "chapterNumber": 4,
+    "oviNumber": 41,
+    "originalMarathi": "तंव कृष्ण म्हणे पंडुसुता । तो विवस्वतु जैं होता । तैं आम्ही नसों ऐसी चित्ता । भ्रांति जरी तुज ॥ ४१ ॥"
+  },
+  {
+    "id": "4.47",
+    "chapterNumber": 4,
+    "oviNumber": 42,
+    "originalMarathi": "तरी तूं गा हें नेणसी । पैं जन्में आम्हां तुम्हांसी । बहुतें गेलीं परी तियें न स्मरसी । आपली तूं ॥ ४२ ॥"
+  },
+  {
+    "id": "4.48",
+    "chapterNumber": 4,
+    "oviNumber": 43,
+    "originalMarathi": "मी जेणें जेणें अवसरें । जें जें होऊनि अवतरें । ते समस्तही स्मरें । धनुर्धरा ॥ ४३ ॥"
+  },
+  {
+    "id": "4.49",
+    "chapterNumber": 4,
+    "oviNumber": 6,
+    "originalMarathi": "अजोऽपि सन्नव्ययात्मा भूतामामिश्वरोऽपि सन् । प्रकृतिं स्वामधिष्ठाय संभवाम्यात्ममायया ॥ ६ ॥"
+  },
+  {
+    "id": "4.50",
+    "chapterNumber": 4,
+    "oviNumber": 44,
+    "originalMarathi": "म्हणोनि आघवें । मज मागील आठवें । मी अजुही परि संभवे । प्रकृतिसंगे ॥ ४४ ॥"
+  },
+  {
+    "id": "4.51",
+    "chapterNumber": 4,
+    "oviNumber": 45,
+    "originalMarathi": "माझें अव्ययत्व तरी न नसे । परी होणें जाणें एक दिसे । ते प्रतिबिंबे मायावशें । माझांचि ठायीं ॥ ४५ ॥"
+  },
+  {
+    "id": "4.52",
+    "chapterNumber": 4,
+    "oviNumber": 46,
+    "originalMarathi": "माझी स्वतंत्रता तरी न मोडे । परी कर्माधीनु ऐसा आवडे । तेंही भ्रांतिबुद्धि तरी घडे । एर्‍हवीं नाहीं ॥ ४६ ॥"
+  },
+  {
+    "id": "4.53",
+    "chapterNumber": 4,
+    "oviNumber": 47,
+    "originalMarathi": "कीं एकचि दिसे दुसरें । तें दर्पणाचेनि आधारें । एर्‍हवीं काय वस्तुविचारें । दुजें आहे ॥ ४७ ॥"
+  },
+  {
+    "id": "4.54",
+    "chapterNumber": 4,
+    "oviNumber": 48,
+    "originalMarathi": "तैसा अमूर्तचि मी किरीटी । परी प्रकृति जैं अधिष्ठीं । तैं साकारपणे नटें नटीं । कार्यालागीं ॥ ४८ ॥"
+  },
+  {
+    "id": "4.55",
+    "chapterNumber": 4,
+    "oviNumber": 7,
+    "originalMarathi": "यदा यदा हि धर्मस्य ग्लानिर्भवति भारत । अभ्युत्थानमधर्मस्य तदात्मानं सृजाम्यहम् ॥ ७ ॥"
+  },
+  {
+    "id": "4.56",
+    "chapterNumber": 4,
+    "oviNumber": 49,
+    "originalMarathi": "ते वेळी आपुल्याचेनि कैवारें । मी साकारु होऊनि अवतरें । मग अज्ञानाचें आंधारें । गिळूनि घालीं ॥ ४९ ॥"
+  },
+  {
+    "id": "4.57",
+    "chapterNumber": 4,
+    "oviNumber": 50,
+    "originalMarathi": "अधर्माचि अवधी तोडीं । दोषांचीं लिहिलीं फाडीं । सज्जनांकरवी गुढी । सुखाची उभवीं ॥ ५० ॥"
+  },
+  {
+    "id": "4.58",
+    "chapterNumber": 4,
+    "oviNumber": 8,
+    "originalMarathi": "परित्राणाय साधूनां विनाशाय च दुष्कृताम् । धर्मसंस्थापनार्थाय संभवामि युगे युगे ॥ ८ ॥"
+  },
+  {
+    "id": "4.59",
+    "chapterNumber": 4,
+    "oviNumber": 51,
+    "originalMarathi": "ते वेळी आपुल्याचेनि कैवारें । मी साकारु होऊनि अवतरें । मग अज्ञानाचें आंधारें । गिळूनि घालीं ॥ ५१ ॥"
+  },
+  {
+    "id": "4.60",
+    "chapterNumber": 4,
+    "oviNumber": 52,
+    "originalMarathi": "अधर्माचि अवधी तोडीं । दोषांचीं लिहिलीं फाडीं । सज्जनांकरवी गुढी । सुखाची उभवीं ॥ ५२ ॥"
+  },
+  {
+    "id": "4.61",
+    "chapterNumber": 4,
+    "oviNumber": 53,
+    "originalMarathi": "दैत्यांचीं कुळें नाशीं । साधूंचा मानू गिंवशीं । धर्मासी नीतीशी । शेंज भरी ॥ ५३ ॥"
+  },
+  {
+    "id": "4.62",
+    "chapterNumber": 4,
+    "oviNumber": 54,
+    "originalMarathi": "मी अविवेकाची काजळी । फेडूनी विवेकदीप उजळीं । तैं योगियां पाहे दिवाळी । निरंतर ॥ ५४ ॥"
+  },
+  {
+    "id": "4.63",
+    "chapterNumber": 4,
+    "oviNumber": 55,
+    "originalMarathi": "स्वसुखे विश्व कोंदे । धर्मचि जगीं नांदे । भक्तां निघती दोंदें । सात्विकाचीं ॥ ५५ ॥"
+  },
+  {
+    "id": "4.64",
+    "chapterNumber": 4,
+    "oviNumber": 56,
+    "originalMarathi": "तैं पापाचा अचळु फिटे । पुण्याची पहाट फुटे । जैं मूर्ति माझी प्रगटे । पंडुकुमरा ॥ ५६ ॥"
+  },
+  {
+    "id": "4.65",
+    "chapterNumber": 4,
+    "oviNumber": 57,
+    "originalMarathi": "ऐसेया काजालागी । अवतरें मी युगीं युगीं । परि हेंचि वोळखे जो जगीं । तो विवेकिया ॥ ५७ ॥"
+  },
+  {
+    "id": "4.66",
+    "chapterNumber": 4,
+    "oviNumber": 9,
+    "originalMarathi": "जन्म कर्म च ने दिव्यमेवं यो वेत्ति तत्वतः । त्यक्त्वा देहं पुनर्जन्म नैति मामेति सोऽर्जुन ॥ ९ ॥"
+  },
+  {
+    "id": "4.67",
+    "chapterNumber": 4,
+    "oviNumber": 58,
+    "originalMarathi": "माझे अजत्वें जन्मणें । अक्रियताचि कर्म करणें । हें अविकार जो जाणे । तो परममुक्त ॥ ५८ ॥"
+  },
+  {
+    "id": "4.68",
+    "chapterNumber": 4,
+    "oviNumber": 59,
+    "originalMarathi": "तो चालिला संगे न चळे । देहींचा देहा नाकळे । मग पंचत्वीं तंव मिळे । माझांचि रूपीं ॥ ५९ ॥"
+  },
+  {
+    "id": "4.69",
+    "chapterNumber": 4,
+    "oviNumber": 10,
+    "originalMarathi": "वीतरागभयक्रोधा मन्मया मामुपाश्रिताः । बहवो ज्ञानतपसा पूता मद्भावमागताः ॥ १० ॥"
+  },
+  {
+    "id": "4.70",
+    "chapterNumber": 4,
+    "oviNumber": 60,
+    "originalMarathi": "एर्‍हवीं परापर न शोचिती । जे कामनाशून्य होती । वाटा केवेळीं न वचती । क्रोधाचिया ॥ ६० ॥"
+  },
+  {
+    "id": "4.71",
+    "chapterNumber": 4,
+    "oviNumber": 61,
+    "originalMarathi": "जे सदा मियांचि आथिले । माझिया सेवा जियाले । कां आत्मबोधे तोषले । वीतराग जे ॥ ६१ ॥"
+  },
+  {
+    "id": "4.72",
+    "chapterNumber": 4,
+    "oviNumber": 62,
+    "originalMarathi": "जे तपोतेजाचिया राशी । कां एकायतन ज्ञानासी । जे पवित्रता तीर्थांसी । तीर्थरूप ॥ ६२ ॥"
+  },
+  {
+    "id": "4.73",
+    "chapterNumber": 4,
+    "oviNumber": 63,
+    "originalMarathi": "ते मद्भावा सहजें आले । मी तेचि ते होऊनि ठेले । जे मज तयां उरले । पदर नाहीं ॥ ६३ ॥"
+  },
+  {
+    "id": "4.74",
+    "chapterNumber": 4,
+    "oviNumber": 64,
+    "originalMarathi": "सांगे पितळेची गंधिकाळिक । जे फिटली होय निःशेख । तैं सुवर्ण काई आणिक । जोडूं जाईजे ॥ ६४ ॥"
+  },
+  {
+    "id": "4.75",
+    "chapterNumber": 4,
+    "oviNumber": 65,
+    "originalMarathi": "तैसे यमनियमीं कडसले । ते तपोज्ञानीं चोखळले । मी तेचि ते जाहले । एथ संशयो कायसा ॥ ६५ ॥"
+  },
+  {
+    "id": "4.76",
+    "chapterNumber": 4,
+    "oviNumber": 11,
+    "originalMarathi": "ये यथा मां प्रपद्यन्ते तांस्तथैव भजाम्यहम् । मम वर्त्मानुवर्तन्ते मनुष्याः पार्थ सर्वशः ॥ ११ ॥"
+  },
+  {
+    "id": "4.77",
+    "chapterNumber": 4,
+    "oviNumber": 66,
+    "originalMarathi": "एर्‍हवीं तरी पाहीं । जे जैसे माझां ठाईं । भजती तया मीही । तैसाचि भजे ॥ ६६ ॥"
+  },
+  {
+    "id": "4.78",
+    "chapterNumber": 4,
+    "oviNumber": 67,
+    "originalMarathi": "देखें मनुष्यजात सकळ । हें स्वभावता भजनसीळ । जाहलें असे केवळ । माझां ठायीं ॥ ६७ ॥"
+  },
+  {
+    "id": "4.79",
+    "chapterNumber": 4,
+    "oviNumber": 68,
+    "originalMarathi": "परी ज्ञानेंवीण नाशिले । जे बुद्धिभेदासि आले । तेणेंचि या कल्पिलें । अनेकत्व ॥ ६८ ॥"
+  },
+  {
+    "id": "4.80",
+    "chapterNumber": 4,
+    "oviNumber": 69,
+    "originalMarathi": "म्हणऊनि अभेदीं भेदु देखती । यया अनाम्या नामें ठेविती ॥ देवी देवो म्हणती । अचर्चातें ॥ ६९ ॥"
+  },
+  {
+    "id": "4.81",
+    "chapterNumber": 4,
+    "oviNumber": 70,
+    "originalMarathi": "जें सर्वत्र सदा सम । तेथे विभाग अधमोत्तम । मतिवशें संभ्रम । विवंचिती ॥ ७० ॥"
+  },
+  {
+    "id": "4.82",
+    "chapterNumber": 4,
+    "oviNumber": 12,
+    "originalMarathi": "काङक्षन्तः कर्मणां सिद्धिं यजन्त इह देवताः । क्षिप्रं हि मानुषे लोके सिद्धिर्भवति कर्मजा ॥ १२ ॥"
+  },
+  {
+    "id": "4.83",
+    "chapterNumber": 4,
+    "oviNumber": 71,
+    "originalMarathi": "मग नानाहेतुप्रकारें । यथोचितें उपचारें । मानिलीं देवतांतरें । उपासिती ॥ ७१ ॥"
+  },
+  {
+    "id": "4.84",
+    "chapterNumber": 4,
+    "oviNumber": 72,
+    "originalMarathi": "तेथ जें जें अपेक्षित । तें तैसेंचि पावति समस्त । परी ते कर्मफळ निश्चित । वोळख तूं ॥ ७२ ॥"
+  },
+  {
+    "id": "4.85",
+    "chapterNumber": 4,
+    "oviNumber": 73,
+    "originalMarathi": "वाचूंनि देतें घेतें आणिक । निभ्रांत नाही सम्यक । एथ कर्मचि फळसूचक । मनुष्यलोकीं ॥ ७३ ॥"
+  },
+  {
+    "id": "4.86",
+    "chapterNumber": 4,
+    "oviNumber": 74,
+    "originalMarathi": "जैसें क्षेत्रीं जें पेरिजे । तेंवांचूनि आन न निपजे । कां पाहिजे तेंचि देखिजे । दर्पणाधारें ॥ ७४ ॥"
+  },
+  {
+    "id": "4.87",
+    "chapterNumber": 4,
+    "oviNumber": 75,
+    "originalMarathi": "ना तरी कडेयातळवटीं । जैसा आपुलाचि बोलु किरीटी । पडिसादु होऊनि उठी । निमित्तयोगें ॥ ७५ ॥"
+  },
+  {
+    "id": "4.88",
+    "chapterNumber": 4,
+    "oviNumber": 76,
+    "originalMarathi": "तैसा समस्तां यां भजनां । मी साक्षिभूतु पैं अर्जुना । एथ प्रतिफळे भावना । आपुलाली ॥ ७६ ॥"
+  },
+  {
+    "id": "4.89",
+    "chapterNumber": 4,
+    "oviNumber": 13,
+    "originalMarathi": "चातुर्वर्ण्यं मया सृष्टं गुणकर्मविभागशः । तस्य कर्तारमपि मां विध्यकर्तारमव्यम् ॥ १३ ॥"
+  },
+  {
+    "id": "4.90",
+    "chapterNumber": 4,
+    "oviNumber": 77,
+    "originalMarathi": "आतां याचिपरी जाण । चार्‍ही आहेती हे वर्ण । सृजिले म्यां गुण - । कर्मभागें ॥ ७७ ॥"
+  },
+  {
+    "id": "4.91",
+    "chapterNumber": 4,
+    "oviNumber": 78,
+    "originalMarathi": "जे प्रकृतीचेनि आधारें । गुणाचेनि व्यभिचारें । कर्में तदनुसारें । विवंचिली ॥ ७८ ॥"
+  },
+  {
+    "id": "4.92",
+    "chapterNumber": 4,
+    "oviNumber": 79,
+    "originalMarathi": "एथ एकचि हे धनुष्यपाणी । परीं जाहले गा चहूं वर्णीं । ऐसी गुणकर्मीं कडसणी । केली सहजें ॥ ७९ ॥"
+  },
+  {
+    "id": "4.93",
+    "chapterNumber": 4,
+    "oviNumber": 80,
+    "originalMarathi": "म्हणोनि आईकें पार्था । हे वर्णभेदसंस्था । मी कर्ता नव्हे सर्वथा । याचिलागीं ॥ ८० ॥"
+  },
+  {
+    "id": "4.94",
+    "chapterNumber": 4,
+    "oviNumber": 14,
+    "originalMarathi": "न मां कर्माणि लिम्पन्ति न मे कर्मफले स्पृहा । इति मां योऽभिजानाति कर्मभिर्न स बध्यते ॥ १४ ॥"
+  },
+  {
+    "id": "4.95",
+    "chapterNumber": 4,
+    "oviNumber": 81,
+    "originalMarathi": "हें मजचिस्तव जाहलें । परी म्यां नाहीं केलें । ऐसे जेणे जाणितलें । तो सुटला गा ॥ ८१ ॥"
+  },
+  {
+    "id": "4.96",
+    "chapterNumber": 4,
+    "oviNumber": 15,
+    "originalMarathi": "एवं ज्ञात्वा कृतं कर्म पूर्वेरपि मुमुक्षुभिः । कुरु कर्मेव तस्मात् त्वं पूर्वैः पूर्वतरं कृतम् ॥ १५ ॥"
+  },
+  {
+    "id": "4.97",
+    "chapterNumber": 4,
+    "oviNumber": 82,
+    "originalMarathi": "मागील मुमुक्षु जे होते । तिहीं ऐशियाचि जाणोनि मातें । कर्मे केलीं समस्तें । धर्नुधरा ॥ ८२ ॥"
+  },
+  {
+    "id": "4.98",
+    "chapterNumber": 4,
+    "oviNumber": 83,
+    "originalMarathi": "परी तें बीजें जैसीं दग्धलीं । नुगवतीचि पेरलीं । तैशीं कर्मेंचि परि तयां जाहली । मोक्षहेतु ॥ ८३ ॥"
+  },
+  {
+    "id": "4.99",
+    "chapterNumber": 4,
+    "oviNumber": 84,
+    "originalMarathi": "एथ आणिकही एक अर्जुना । हे कर्माकर्मविवंचना । आपुलिये चाडे सज्ञाना । योग्य नोहे ॥ ८४ ॥"
+  },
+  {
+    "id": "4.100",
+    "chapterNumber": 4,
+    "oviNumber": 16,
+    "originalMarathi": "किं कर्म किमकर्मेति कवयोऽप्यत्र मोहिताः । तत् ते कर्म प्रवक्ष्यामि यज्ज्ञात्वा मोक्ष्यसेऽशुभात् ॥ १६ ॥"
+  },
+  {
+    "id": "4.101",
+    "chapterNumber": 4,
+    "oviNumber": 85,
+    "originalMarathi": "मर्म म्हणिजे तें कवण । अथवा अकर्मा काय लक्षण । ऐसें विचारितां विचक्षण । गुंफोनि ठेले ॥ ८५ ॥"
+  },
+  {
+    "id": "4.102",
+    "chapterNumber": 4,
+    "oviNumber": 86,
+    "originalMarathi": "जैसें का कुडें नाणें । खर्‍याचेनि सारखेपणें । डोळ्यांचेहि देखणें । संशयी घाली ॥ ८६ ॥"
+  },
+  {
+    "id": "4.103",
+    "chapterNumber": 4,
+    "oviNumber": 87,
+    "originalMarathi": "तैसे नैष्कर्म्यतेचेनि भ्रमें । गिंवसिजत आहाति कर्में । जे दुजी सृष्टि मनोधर्में । करूं शकती ॥ ८७ ॥"
+  },
+  {
+    "id": "4.104",
+    "chapterNumber": 4,
+    "oviNumber": 88,
+    "originalMarathi": "वाचूनि मूर्खाची गोठी कायसी । एथ मोहले गा क्रांतदर्शी । म्हणोनि आतां तेचि परियेसीं । सांगेन तुज ॥ ८८ ॥"
+  },
+  {
+    "id": "4.105",
+    "chapterNumber": 4,
+    "oviNumber": 17,
+    "originalMarathi": "कर्मणो ह्यपि बोद्धव्यं बोद्धव्यं च विकर्मणः । अकर्मणश्च बोद्धव्यं गहना कर्मणो गतिः ॥ १७ ॥"
+  },
+  {
+    "id": "4.106",
+    "chapterNumber": 4,
+    "oviNumber": 89,
+    "originalMarathi": "तरी कर्म म्हणजे स्वभावें । जेथ विश्वाकारु संभवे । ते सम्यक आधीं जाणावें । लागे एथ ॥ ८९ ॥"
+  },
+  {
+    "id": "4.107",
+    "chapterNumber": 4,
+    "oviNumber": 90,
+    "originalMarathi": "मग वर्णाश्रमासि उचित । जे विशेष कर्म विहित । तेंही वोळखावें निश्चित । उपयोगेंसीं ॥ ९० ॥"
+  },
+  {
+    "id": "4.108",
+    "chapterNumber": 4,
+    "oviNumber": 91,
+    "originalMarathi": "पाठीं जें निषिद्ध म्हणिपे । तेंही बुझावें स्वरूपें । येतुलेनि येथ कांही न गुंफे । आपैसेंचि ॥ ९१ ॥"
+  },
+  {
+    "id": "4.109",
+    "chapterNumber": 4,
+    "oviNumber": 92,
+    "originalMarathi": "एर्‍हवीं जग हें कर्माधीन । ऐसी याची व्याप्ती गहन । परि तें असो आइकें चिन्ह । प्राप्ताचें गा ॥ ९२ ॥"
+  },
+  {
+    "id": "4.110",
+    "chapterNumber": 4,
+    "oviNumber": 18,
+    "originalMarathi": "कर्मण्य कर्म यः पश्येदकर्मणि च कर्म यः । स बुद्धिमान् मनुष्येषु स युक्तः कृत्स्नकर्मकृत् ॥ १८ ॥"
+  },
+  {
+    "id": "4.111",
+    "chapterNumber": 4,
+    "oviNumber": 93,
+    "originalMarathi": "जो सकळकर्मीं वर्ततां । देखे आपुली नैष्कर्म्यता । कर्मसंगे निराशता । फळाचिया ॥ ९३ ॥"
+  },
+  {
+    "id": "4.112",
+    "chapterNumber": 4,
+    "oviNumber": 94,
+    "originalMarathi": "आणि कर्तव्यतेलागीं । जया दुसरें नाहीं जगीं । ऐसिया नैष्कर्मता तरी चांगी । बोधला असे ॥ ९४ ॥"
+  },
+  {
+    "id": "4.113",
+    "chapterNumber": 4,
+    "oviNumber": 95,
+    "originalMarathi": "परि क्रियाकलापु आघवा । आचरतु दिसे बरवा । तरी तो इहीं चिन्हीं जाणावा । ज्ञानिया गा ॥ ९५ ॥"
+  },
+  {
+    "id": "4.114",
+    "chapterNumber": 4,
+    "oviNumber": 96,
+    "originalMarathi": "जैसा कां जळापाशीं उभा ठाके । तो जरी आपणपें जळामाजिं देखे । तरी तो निभ्रांत वोळखे । म्हणे मी वेगळा आहे ॥ ९६ ॥"
+  },
+  {
+    "id": "4.115",
+    "chapterNumber": 4,
+    "oviNumber": 97,
+    "originalMarathi": "अथवा नावे हन जो रिगे । तो थडियेचे रुख जातां देखे वेगें । तेचि साचोकारें जों पाहों लागे । तंव रुख म्हणे अचळ ॥ ९७ ॥"
+  },
+  {
+    "id": "4.116",
+    "chapterNumber": 4,
+    "oviNumber": 98,
+    "originalMarathi": "तैसे सर्व कर्मीं असणें । तें फुडें मानूनि वायाणें । मग आपणपें जो जाणे । नैष्कर्म्यु ऐसा ॥ ९८ ॥"
+  },
+  {
+    "id": "4.117",
+    "chapterNumber": 4,
+    "oviNumber": 99,
+    "originalMarathi": "आणि उदोअस्ताचेनि प्रमाणें । जैसे न चलतां सूर्याचें चालणें । तैसें नैष्कर्म्यत्व जाणे । कर्मीचि असतां ॥ ९९ ॥"
+  },
+  {
+    "id": "4.118",
+    "chapterNumber": 4,
+    "oviNumber": 100,
+    "originalMarathi": "तो मनुष्यासारिखा तरी आवडे । परी मनुष्यत्व तया न घडे । जैसें जळीं जळामाजीं न बुडे । भानुबिंब ॥ १०० ॥"
+  },
+  {
+    "id": "4.119",
+    "chapterNumber": 4,
+    "oviNumber": 101,
+    "originalMarathi": "तेणें न पाहतां विश्व देखिलें । न करितां सर्व केले । न भोगितां भोगिलें । भोग्यजात ॥ १०१ ॥"
+  },
+  {
+    "id": "4.120",
+    "chapterNumber": 4,
+    "oviNumber": 102,
+    "originalMarathi": "एकेचि ठायीं बैसला । परि सर्वत्र तोचि गेला । हें असो विश्व जाहला । आंगेंचि तो ॥ १०२ ॥"
+  },
+  {
+    "id": "4.121",
+    "chapterNumber": 4,
+    "oviNumber": 19,
+    "originalMarathi": "यस्य सर्वे समारम्भाः कामसंकल्पवर्जिताः । ज्ञानाग्निदग्धकर्माणं तमाहुः पंडितं बुधाः ॥ १९ ॥"
+  },
+  {
+    "id": "4.122",
+    "chapterNumber": 4,
+    "oviNumber": 103,
+    "originalMarathi": "जया पुरुषाचां ठायीं । कर्माचा तरी खेदु नाहीं । परी फळापेक्षा कहीं । संचरेना ॥ १०३ ॥"
+  },
+  {
+    "id": "4.123",
+    "chapterNumber": 4,
+    "oviNumber": 104,
+    "originalMarathi": "आणि हें कर्म मी करीन । अथवा आदरिले सिद्धी नेईन । येणें संकल्पेंही जयाचें मन । विटाळेना ॥ १०४ ॥"
+  },
+  {
+    "id": "4.124",
+    "chapterNumber": 4,
+    "oviNumber": 105,
+    "originalMarathi": "ज्ञानाग्निचेनि मुखें । जेणें जाळिली कर्में अशेखें । तो ब्रह्मचि मनुष्यवेखें । वोळख तूं ॥ १०५ ॥"
+  },
+  {
+    "id": "4.125",
+    "chapterNumber": 4,
+    "oviNumber": 20,
+    "originalMarathi": "त्यक्त्वा कर्मफलासंगं नित्यतृप्तो निराश्रयः । कर्मण्यभिप्रवृत्तोऽपि नैव किंचित् करोति सः ॥ २० ॥"
+  },
+  {
+    "id": "4.126",
+    "chapterNumber": 4,
+    "oviNumber": 106,
+    "originalMarathi": "जो शरीरीं उदासु । फळभोगीं निरासु । नित्यता उल्हासु । होऊनि असे ॥ १०६ ॥"
+  },
+  {
+    "id": "4.127",
+    "chapterNumber": 4,
+    "oviNumber": 107,
+    "originalMarathi": "जो संतोषाचां गाभारां । आत्मबोधाचिया वोगरा । पुरे न म्हणेचि धनुर्धरा । आरोगितां ॥ १०७ ॥"
+  },
+  {
+    "id": "4.128",
+    "chapterNumber": 4,
+    "oviNumber": 21,
+    "originalMarathi": "निराशीर्यतचित्तात्मा त्यक्तसर्वपरिग्रहः । शारीरं केवलं कर्म कुर्वन्नाप्नोति किल्बिशम् ॥ २१ ॥"
+  },
+  {
+    "id": "4.129",
+    "chapterNumber": 4,
+    "oviNumber": 22,
+    "originalMarathi": "यदृच्छा लाभ संतुष्टो द्वंद्वातीतो विमत्सरः । सम सिद्धावसिद्धौच कृत्वाऽपि न निबध्यते ॥ २२ ॥"
+  },
+  {
+    "id": "4.130",
+    "chapterNumber": 4,
+    "oviNumber": 108,
+    "originalMarathi": "कैसा अधिकाधिक आवडी । घेत महासुखाची गोडी । सांडोनियां आशा कुरोंडी । अहंभावेसीं ॥ १०८ ॥"
+  },
+  {
+    "id": "4.131",
+    "chapterNumber": 4,
+    "oviNumber": 109,
+    "originalMarathi": "म्हणोनि अवसरें जें जें पावे । तेणेचि तो सुखावे । जया आपुले आणि परावें । दोन्ही नाहीं ॥ १०९ ॥"
+  },
+  {
+    "id": "4.132",
+    "chapterNumber": 4,
+    "oviNumber": 110,
+    "originalMarathi": "तो दिठी जें पाहे । ते आपणचि होऊनि जाये । आइकें तें आहे । तोचि जाहाला ॥ ११० ॥"
+  },
+  {
+    "id": "4.133",
+    "chapterNumber": 4,
+    "oviNumber": 111,
+    "originalMarathi": "चरणीं हन चाले । मुखें जें जें बोले । ऐसें चेष्टाजात तेतुलें । आपणचि जो ॥ १११ ॥"
+  },
+  {
+    "id": "4.134",
+    "chapterNumber": 4,
+    "oviNumber": 112,
+    "originalMarathi": "हें असो विश्व पाहीं । जयासि आपणपेवांचूनि नाहीं । आता कवण तें कर्म कायी । बाधी तयातें ॥ ११२ ॥"
+  },
+  {
+    "id": "4.135",
+    "chapterNumber": 4,
+    "oviNumber": 113,
+    "originalMarathi": "हा मत्सरु जेथ उपजे । तेतुले नुरेचि जया दुजें । तो निर्मत्सरु काइ म्हणिजे । बोलवरी ॥ ११३ ॥"
+  },
+  {
+    "id": "4.136",
+    "chapterNumber": 4,
+    "oviNumber": 114,
+    "originalMarathi": "म्हणोनि सर्वांपरी मुक्तु । तो सकर्मुचि तो कर्मरहितु । सगुण परि गुणातीतु । एथ भ्रांति नाहीं ॥ ११४ ॥"
+  },
+  {
+    "id": "4.137",
+    "chapterNumber": 4,
+    "oviNumber": 23,
+    "originalMarathi": "गतसंगस्य मुक्तस्य ज्ञानावस्थित्चेतसः । यज्ञायाचरतः कर्म समग्रं प्रविलीयते ॥ २३ ॥"
+  },
+  {
+    "id": "4.138",
+    "chapterNumber": 4,
+    "oviNumber": 115,
+    "originalMarathi": "तो देहसंगे तरी असे । परी चैतन्यासारिखा दिसे । पाहतां परब्रह्माचेनि कसें । चोखाळु भला ॥ ११५ ॥"
+  },
+  {
+    "id": "4.139",
+    "chapterNumber": 4,
+    "oviNumber": 116,
+    "originalMarathi": "ऐसाही परी कौतुकें । जरी कर्मे करी यज्ञादिकें । तरी तियें लया जाती अशेखें । तयाचांचि ठायीं ॥ ११६ ॥"
+  },
+  {
+    "id": "4.140",
+    "chapterNumber": 4,
+    "oviNumber": 117,
+    "originalMarathi": "अकाळींची अभ्रें जैसी । उर्मीविण आकाशीं । हारपती आपैशीं । उदयलीं सांती ॥ ११७ ॥"
+  },
+  {
+    "id": "4.141",
+    "chapterNumber": 4,
+    "oviNumber": 118,
+    "originalMarathi": "तैशीं विधीविधान विहितें जरी आचरे तो समस्तें । तरी तियें ऐक्यभावें ऐक्यातें । पावतीचि गा ॥ ११८ ॥"
+  },
+  {
+    "id": "4.142",
+    "chapterNumber": 4,
+    "oviNumber": 24,
+    "originalMarathi": "ब्रह्मार्पणं ब्रह्महविर् ब्रह्माग्नौ ब्रह्मणा हुतम् । ब्रह्मैव तेन गन्तव्यं ब्रह्मकर्मस्माधिना ॥ २४ ॥"
+  },
+  {
+    "id": "4.143",
+    "chapterNumber": 4,
+    "oviNumber": 119,
+    "originalMarathi": "जें हें हवन मी होता । कां इये यज्ञीं हा भोक्ता । ऐसीया बुद्धीसि नाही भंगता । म्हणऊनियां ॥ ११९ ॥"
+  },
+  {
+    "id": "4.144",
+    "chapterNumber": 4,
+    "oviNumber": 120,
+    "originalMarathi": "जे इष्टयज्ञ यजावे । तें हविर्मंत्रादि आघवें । तो देखतसे अविनाशभावें । आत्मबुद्धि ॥ १२० ॥"
+  },
+  {
+    "id": "4.145",
+    "chapterNumber": 4,
+    "oviNumber": 121,
+    "originalMarathi": "म्हणऊनि ब्रह्म तेंचि कर्म । ऐसें बोधा आले जया सम । तया कर्तव्य तें नैष्कर्म्य । धनुर्धरा ॥ १२१ ॥"
+  },
+  {
+    "id": "4.146",
+    "chapterNumber": 4,
+    "oviNumber": 122,
+    "originalMarathi": "आतां अविवेककुमारत्वा मुकले । जयां विरक्तीचे पाणिग्रहण जाहलें । मग उपासन जिहीं आणिलें । योगाग्नीचें ॥ १२२ ॥"
+  },
+  {
+    "id": "4.147",
+    "chapterNumber": 4,
+    "oviNumber": 25,
+    "originalMarathi": "दैवमेवापरे यज्ञं योगिनः पर्युपासते । ब्रह्माग्नावपरे यज्ञं यज्ञेनैवोपजुह्वति ॥ २५ ॥"
+  },
+  {
+    "id": "4.148",
+    "chapterNumber": 4,
+    "oviNumber": 123,
+    "originalMarathi": "जे यजनशील अहर्निशीं । जिहीं अविद्या हविली मनेंसी । गुरुवाक्यहुताशीं । हवन केलें ॥ १२३ ॥"
+  },
+  {
+    "id": "4.149",
+    "chapterNumber": 4,
+    "oviNumber": 124,
+    "originalMarathi": "तिहीं योगाग्निकीं यजिजे । तो दैवयज्ञु म्हणिजे । जेणे आत्मसुख कामिजे । पंडुकुमरा ॥ १२४ ॥"
+  },
+  {
+    "id": "4.150",
+    "chapterNumber": 4,
+    "oviNumber": 125,
+    "originalMarathi": "दैवास्तव देहाचे पाळण । ऐसा निश्चयो परिपूर्ण । जो चिंतीना देहभरण । तो महायोगी जाण दैवयोगें ॥ १२५ ॥"
+  },
+  {
+    "id": "4.151",
+    "chapterNumber": 4,
+    "oviNumber": 126,
+    "originalMarathi": "आतां अवधारीं सांगेन आणिक । जे ब्रह्माग्नी साग्निक । तयांते यज्ञेंचि यज्ञु देख । उपासिजे ॥ १२६ ॥"
+  },
+  {
+    "id": "4.152",
+    "chapterNumber": 4,
+    "oviNumber": 26,
+    "originalMarathi": "श्रोत्रादीनींद्रियाण्यन्ये संयमाग्निषु जुह्वति । शब्दादीन् विषयानन्य । इंद्रियाग्निषु जुह्वति ॥ २६ ॥"
+  },
+  {
+    "id": "4.153",
+    "chapterNumber": 4,
+    "oviNumber": 127,
+    "originalMarathi": "एथ संयमाग्निहोत्री । जे युक्तित्रयांच्यां मंत्रीं । यजन करिती पवित्रीं । इंद्रियद्रव्यीं ॥ १२७ ॥"
+  },
+  {
+    "id": "4.154",
+    "chapterNumber": 4,
+    "oviNumber": 128,
+    "originalMarathi": "एकां वैराग्यरवि विवळे । तंव संयती विहार केले । तेथ अपावृत्त जाहले । इंद्रियानळ ॥ १२८ ॥"
+  },
+  {
+    "id": "4.155",
+    "chapterNumber": 4,
+    "oviNumber": 129,
+    "originalMarathi": "तिहीं विरक्तीची ज्वाळा घेतली । तंव विकारांची इंधने पळिपलीं । तेथ आशाधूमें सांडिलीं । पांचही कुंडें ॥ १२९ ॥"
+  },
+  {
+    "id": "4.156",
+    "chapterNumber": 4,
+    "oviNumber": 130,
+    "originalMarathi": "मग वाक्यविधीचिया निरवडी । विषयआहुति उदंडी । हवन केलें कुंडी । इंद्रियाग्नीचां ॥ १३० ॥"
+  },
+  {
+    "id": "4.157",
+    "chapterNumber": 4,
+    "oviNumber": 27,
+    "originalMarathi": "सर्वाणीन्द्रियकर्माणि प्राणकर्माणि चापरे । आत्मसंयमयोगाग्नौ जुह्वति ज्ञानदीपिते ॥ २७ ॥"
+  },
+  {
+    "id": "4.158",
+    "chapterNumber": 4,
+    "oviNumber": 131,
+    "originalMarathi": "एकीं ययापरी पार्था । दोषु क्षाळिले सर्वथा । आणिकीं हृदयारणीं मंथा । विवेकु केला ॥ १३१ ॥"
+  },
+  {
+    "id": "4.159",
+    "chapterNumber": 4,
+    "oviNumber": 132,
+    "originalMarathi": "तो उपशमें निहटिला । धैर्यें वरी दाटिला । गुरुवाक्यें काढिला । बळकटपणें ॥ १३२ ॥"
+  },
+  {
+    "id": "4.160",
+    "chapterNumber": 4,
+    "oviNumber": 133,
+    "originalMarathi": "ऐसे समरसें मंथन केलें । तेथ झडकरी काजा आलें । जे उज्जीवन जहालें । ज्ञानाग्नीचें ॥ १३३ ॥"
+  },
+  {
+    "id": "4.161",
+    "chapterNumber": 4,
+    "oviNumber": 134,
+    "originalMarathi": "पहिला ऋद्धिसिद्धीचा संभ्रमु । तो निवर्तोनि गेला धूमु । मग प्रगटला सूक्ष्मु । विस्फुलिंगु ॥ १३४ ॥"
+  },
+  {
+    "id": "4.162",
+    "chapterNumber": 4,
+    "oviNumber": 135,
+    "originalMarathi": "मन तयाचे मोकळें । तेचि पेटवण घातलें । जें यमदमीं हळुवारलें । आइतें होतें ॥ १३५ ॥"
+  },
+  {
+    "id": "4.163",
+    "chapterNumber": 4,
+    "oviNumber": 136,
+    "originalMarathi": "तेणें सादुकपणें ज्वाळा समृद्धा । मग वासनांतराचिया समिधा । स्नेहेंसी नानाविधा । जाळिलिया ॥ १३६ ॥"
+  },
+  {
+    "id": "4.164",
+    "chapterNumber": 4,
+    "oviNumber": 137,
+    "originalMarathi": "तेथ सोहंमंत्रें दीक्षितीं । इंद्रियकर्मांचिया आहुती । तिये ज्ञानानळीं प्रदीप्तीं । दिधलिया ॥ १३७ ॥"
+  },
+  {
+    "id": "4.165",
+    "chapterNumber": 4,
+    "oviNumber": 138,
+    "originalMarathi": "पाठीं प्राणक्रिचेनि स्रुवेनिशीं । पूर्णाहुती पडली हुताशीं । तेथ अवभृत समरसीं । सहजें जाहलें ॥ १३८ ॥"
+  },
+  {
+    "id": "4.166",
+    "chapterNumber": 4,
+    "oviNumber": 139,
+    "originalMarathi": "मग आत्मबोधींचे सुख । जे संयमाग्नीचें हुतशेष । तोचि पुरोडाशु देख । घेतला तिहीं ॥ १३९ ॥"
+  },
+  {
+    "id": "4.167",
+    "chapterNumber": 4,
+    "oviNumber": 140,
+    "originalMarathi": "एक ऐशिया इहीं यजनीं । मुक्त ते जाहले त्रिभुवनीं । या यज्ञक्रिया तरी आनानी । परि प्राप्य तें एक ॥ १४० ॥"
+  },
+  {
+    "id": "4.168",
+    "chapterNumber": 4,
+    "oviNumber": 28,
+    "originalMarathi": "द्रव्ययज्ञास्तपोयज्ञा योगयज्ञास्तथापरे । स्वाध्यायज्ञानयज्ञाश्च यतयः संशितव्रताः ॥ २८ ॥"
+  },
+  {
+    "id": "4.169",
+    "chapterNumber": 4,
+    "oviNumber": 141,
+    "originalMarathi": "एक द्रव्ययज्ञु म्हणिपती । एक तपसामग्रिया निपजती । एक योगयागुही आहाती । जे सांगितले ॥ १४१ ॥"
+  },
+  {
+    "id": "4.170",
+    "chapterNumber": 4,
+    "oviNumber": 142,
+    "originalMarathi": "एकीं शब्दीं शब्दु यजिजे । तो वाग्यज्ञु म्हणिजे । ज्ञाने ज्ञेय गमिजे । तो ज्ञानयज्ञु ॥ १४२ ॥"
+  },
+  {
+    "id": "4.171",
+    "chapterNumber": 4,
+    "oviNumber": 143,
+    "originalMarathi": "हें अर्जुना सकळ कुवाडें । जे अनुष्ठितां अतिसांकडे । परी जितेंद्रियासीचि घडे । योग्यतावशें ॥ १४३ ॥"
+  },
+  {
+    "id": "4.172",
+    "chapterNumber": 4,
+    "oviNumber": 144,
+    "originalMarathi": "ते प्रवीण तेथ भले । आणि योगसमृद्धी आथिले । म्हणोनि आपणपां तिहीं केले । आत्महवन ॥ १४४ ॥"
+  },
+  {
+    "id": "4.173",
+    "chapterNumber": 4,
+    "oviNumber": 29,
+    "originalMarathi": "अपाने जुह्वति प्राणं प्राणेऽपाऽनं तथापरे । प्राणापानगति रुद्ध्वा प्राणायामपरायणाः ॥ २९ ॥"
+  },
+  {
+    "id": "4.174",
+    "chapterNumber": 4,
+    "oviNumber": 145,
+    "originalMarathi": "मग अपाग्नीचां मुखी । प्राणद्रव्यें देखी । हवन केलें एकीं । अभ्यासयोगें ॥ १४५ ॥"
+  },
+  {
+    "id": "4.175",
+    "chapterNumber": 4,
+    "oviNumber": 146,
+    "originalMarathi": "एकु अपानु प्राणीं अर्पिती । एक दोहींतेंही निरुंधिती । ते प्राणायामी म्हणिपती । पंडुकुमरा ॥ १४६ ॥"
+  },
+  {
+    "id": "4.176",
+    "chapterNumber": 4,
+    "oviNumber": 30,
+    "originalMarathi": "अपरे नियताहाराः प्राणान् प्राणेषु जुह्वति । सर्वेप्येते यज्ञविदो यज्ञक्षपितकल्मषाः ॥ ३० ॥"
+  },
+  {
+    "id": "4.177",
+    "chapterNumber": 4,
+    "oviNumber": 147,
+    "originalMarathi": "एक वज्रयोगक्रमें । सर्वाहारसंयमें । प्राणीं प्राणु संभ्रमें । हवन करिती ॥ १४७ ॥"
+  },
+  {
+    "id": "4.178",
+    "chapterNumber": 4,
+    "oviNumber": 148,
+    "originalMarathi": "ऐसे मोक्षकाम सकळ । समस्त हे यजनशीळ । जिहीं यज्ञद्वारा मनोमळ । क्षाळण केले ॥ १४८ ॥"
+  },
+  {
+    "id": "4.179",
+    "chapterNumber": 4,
+    "oviNumber": 149,
+    "originalMarathi": "जया अविद्याजात जाळितां । जे उरलें निजस्वभावता । जेथ अग्नि आणि होता । उरेचिना ॥ १४९ ॥"
+  },
+  {
+    "id": "4.180",
+    "chapterNumber": 4,
+    "oviNumber": 150,
+    "originalMarathi": "जेथ यजितयाचा कामु पुरे । यज्ञींचें विधान सरे । मागुते जेथूनि वोसरे । क्रियाजात ॥ १५० ॥"
+  },
+  {
+    "id": "4.181",
+    "chapterNumber": 4,
+    "oviNumber": 151,
+    "originalMarathi": "विचार जेथ न रिगे । हेतु जेथ न निगे । जें द्वैतदोषसंगें । सिंपेचिना ॥ १५१ ॥"
+  },
+  {
+    "id": "4.182",
+    "chapterNumber": 4,
+    "oviNumber": 31,
+    "originalMarathi": "यज्ञशिष्टामृतभुजो यान्ति ब्रह्म सनातनम् । नायं लोकोऽस्त्ययज्ञस्य कुतोऽन्यः कुरुसत्तम ॥ ३१ ॥"
+  },
+  {
+    "id": "4.183",
+    "chapterNumber": 4,
+    "oviNumber": 152,
+    "originalMarathi": "ऐसें अनादिसिद्ध चोखट । जें ज्ञान यज्ञावशिष्ट । तें सेविती ब्रह्मनिष्ठ । ब्रह्माहंमंत्रे ॥ १५२ ॥"
+  },
+  {
+    "id": "4.184",
+    "chapterNumber": 4,
+    "oviNumber": 153,
+    "originalMarathi": "ऐसे शेषामृते धाले । कीं अमर्त्यभावा आले । म्हणोनि ब्रह्म ते जहाले । अनायासे ॥ १५३ ॥"
+  },
+  {
+    "id": "4.185",
+    "chapterNumber": 4,
+    "oviNumber": 154,
+    "originalMarathi": "येरां विरक्ति माळ न घालीचि । जयां संयमाग्नीची सेवा न घडेचि । जें योगयागु न करितीचि । जन्मले सांते ॥ १५४ ॥"
+  },
+  {
+    "id": "4.186",
+    "chapterNumber": 4,
+    "oviNumber": 155,
+    "originalMarathi": "जयां ऐहिक धड नाहीं । तयांचें परत्र पुससी काई । म्हणोनि सांगों कां वांई । पंडुकुमरा ॥ १५५ ॥"
+  },
+  {
+    "id": "4.187",
+    "chapterNumber": 4,
+    "oviNumber": 32,
+    "originalMarathi": "एवं बहुविधा यज्ञा वितता ब्रह्मणो मुखे । कर्मजान् विद्धि तान् सर्वानेवं ज्ञात्वा विमोक्षसे ॥ ३२ ॥"
+  },
+  {
+    "id": "4.188",
+    "chapterNumber": 4,
+    "oviNumber": 156,
+    "originalMarathi": "ऐसे बहुतीं परीं अनेग । जे सांगितले तुज कां याग । ते विस्तारुनि वेदेंचि चांग । म्हणितले आहाती ॥ १५६ ॥"
+  },
+  {
+    "id": "4.189",
+    "chapterNumber": 4,
+    "oviNumber": 157,
+    "originalMarathi": "परि तेणें विस्तारें काय करावें । हेंचि कर्मसिद्ध जाणावें । येतुलेनि कर्मबंधु स्वभावें । पावेल ना ॥ १५७ ॥"
+  },
+  {
+    "id": "4.190",
+    "chapterNumber": 4,
+    "oviNumber": 33,
+    "originalMarathi": "श्रेयान् द्रव्यमयाद् यज्ञान् ज्ञानयज्ञः परंतप । सर्वं कर्माखिलं पार्थ ज्ञाने परिसमाप्यते ॥ ३३ ॥"
+  },
+  {
+    "id": "4.191",
+    "chapterNumber": 4,
+    "oviNumber": 158,
+    "originalMarathi": "अर्जुना वेदु जयांचे मूळ । जे क्रियाविशेषें स्थूळ । जयां नव्हाळियेचे फळ । स्वर्गसुख ॥ १५८ ॥"
+  },
+  {
+    "id": "4.192",
+    "chapterNumber": 4,
+    "oviNumber": 159,
+    "originalMarathi": "ते द्रव्यादियागु कीर होती । परी ज्ञानयज्ञाची सरी न पवती । जैशी तारातेजसंपत्ती । दिनकरापाशीं ॥ १५९ ॥"
+  },
+  {
+    "id": "4.193",
+    "chapterNumber": 4,
+    "oviNumber": 160,
+    "originalMarathi": "देखें परमात्मसुखनिधान । साधावया योगीजन । जें न विसंबिती अंजन । उन्मेषनेत्रीं ॥ १६० ॥"
+  },
+  {
+    "id": "4.194",
+    "chapterNumber": 4,
+    "oviNumber": 161,
+    "originalMarathi": "जें धांवतया कर्माची लाणी । नैष्कर्म्यबोधाची खाणी । जें भुकेलिया धणी । साधनाची ॥ १६१ ॥"
+  },
+  {
+    "id": "4.195",
+    "chapterNumber": 4,
+    "oviNumber": 162,
+    "originalMarathi": "जेथ प्रवृत्ति पांगुळ जाहली । तर्काची दिठी गेली । जेणें इंद्रिये विसरलीं । इंद्रियसंगु ॥ १६२ ॥"
+  },
+  {
+    "id": "4.196",
+    "chapterNumber": 4,
+    "oviNumber": 163,
+    "originalMarathi": "मनाचे मनपण गेलें । जेथ बोलाचे बोलपण ठेलें । जयामाजि सांपडलें । ज्ञेय दिसें ॥ १६३ ॥"
+  },
+  {
+    "id": "4.197",
+    "chapterNumber": 4,
+    "oviNumber": 164,
+    "originalMarathi": "जेथ वैराग्याचा पांगु फिटे । विवेकाचाही सोसु तुटे । जेथ न पाहता सहज भेटे । आपणपें ॥ १६४ ॥"
+  },
+  {
+    "id": "4.198",
+    "chapterNumber": 4,
+    "oviNumber": 34,
+    "originalMarathi": "तद् विद्धि प्रणिपातेन परिप्रश्नेन सेवया । उपदेक्ष्यन्ति ते ज्ञानं ज्ञानिनस्तत्वदर्शिनः ॥ ३४ ॥"
+  },
+  {
+    "id": "4.199",
+    "chapterNumber": 4,
+    "oviNumber": 165,
+    "originalMarathi": "तें ज्ञान पैं गा बरवें । जरी मनीं आथि आणावें । तरी संतां यां भजावें । सर्वस्वेंशीं ॥ १६५ ॥"
+  },
+  {
+    "id": "4.200",
+    "chapterNumber": 4,
+    "oviNumber": 166,
+    "originalMarathi": "जे ज्ञानाचा कुरुठा । तेथ सेवा हा दारवंटा । तू स्वाधीन करी सुभटा । वोळगोनी ॥ १६६ ॥"
+  },
+  {
+    "id": "4.201",
+    "chapterNumber": 4,
+    "oviNumber": 167,
+    "originalMarathi": "तरी तनुमनुजीवें । चरणासी लागावें । आणि अगर्वता करावें । दास्य सकळ ॥ १६७ ॥"
+  },
+  {
+    "id": "4.202",
+    "chapterNumber": 4,
+    "oviNumber": 168,
+    "originalMarathi": "मग अपेक्षित जें आपुलें । तेंही सांगती पुसिलें । जेणे अंतःकरण बोधलें । संकल्पा न ये ॥ १६८ ॥"
+  },
+  {
+    "id": "4.203",
+    "chapterNumber": 4,
+    "oviNumber": 35,
+    "originalMarathi": "यज् ज्ञात्वा न पुनर्मोहमेवं यास्यसि पांडव । येन भूतान्यशेषेण द्रक्ष्यस्यात्मन्यथो मयि ॥ ३५ ॥"
+  },
+  {
+    "id": "4.204",
+    "chapterNumber": 4,
+    "oviNumber": 169,
+    "originalMarathi": "जयाचेनि वाक्यउजिवडें । जाहलें चित्त निधडें । ब्रह्माचेनि पाडे । निःशंकु होय ॥ १६९ ॥"
+  },
+  {
+    "id": "4.205",
+    "chapterNumber": 4,
+    "oviNumber": 170,
+    "originalMarathi": "ते वेळीं आपणपेया सहितें । इये अशेषेंही भूतें । माझां स्वरूपीं अखंडितें । देखसी तूं ॥ १७० ॥"
+  },
+  {
+    "id": "4.206",
+    "chapterNumber": 4,
+    "oviNumber": 171,
+    "originalMarathi": "ऐसें ज्ञानप्रकाशें पाहेल । तैं मोहांधकारू जाईल । जैं गुरुकृपा होईल । पार्था गा ॥ १७१ ॥"
+  },
+  {
+    "id": "4.207",
+    "chapterNumber": 4,
+    "oviNumber": 36,
+    "originalMarathi": "अपि चेदसी पापेभ्यः सर्वेभ्यः पापकृत्तमः । सर्व ज्ञानप्लवेनैव वृजिनं संतरिष्यसि ॥ ३६ ॥"
+  },
+  {
+    "id": "4.208",
+    "chapterNumber": 4,
+    "oviNumber": 172,
+    "originalMarathi": "जरी कल्मषांचा आगरु । तूं भ्रांतीचा सागरु । व्यामोहाचा डोंगरु । होऊनि अससी ॥ १७२ ॥"
+  },
+  {
+    "id": "4.209",
+    "chapterNumber": 4,
+    "oviNumber": 173,
+    "originalMarathi": "तर्ही ज्ञानशक्तीचेनि पाडें । हें आघवेंची गा थोकडें । ऐसे सामर्थ्य असे चोखडें । ज्ञानी इये ॥ १७३ ॥"
+  },
+  {
+    "id": "4.210",
+    "chapterNumber": 4,
+    "oviNumber": 174,
+    "originalMarathi": "देखें विश्वभ्रमाजैसा । जो अमूर्ताचा कवडसा । तो जयाचिया प्रकाशा । पुरेचिना ॥ १७४ ॥"
+  },
+  {
+    "id": "4.211",
+    "chapterNumber": 4,
+    "oviNumber": 175,
+    "originalMarathi": "तया कायसें हें मनोमळ । हें बोलतांचि अति किडाळ । नाहीं येणें पाडें हे ढिसाळ । दुजें जगीं ॥ १७५ ॥"
+  },
+  {
+    "id": "4.212",
+    "chapterNumber": 4,
+    "oviNumber": 37,
+    "originalMarathi": "यथैधांसि समिद्धोऽग्निर्भस्मसात् कुरुतेऽर्जुन । ज्ञानाग्निः सर्वकर्माणि भस्मसात् कुरुते तथा ॥ ३७ ॥"
+  },
+  {
+    "id": "4.213",
+    "chapterNumber": 4,
+    "oviNumber": 176,
+    "originalMarathi": "सांगे भुवनत्रयाची काजळी । जे गगनामाजि उधवली । तिये प्रळयींचे वाहुटळी । काय अभ्र पुरे ॥ १७६ ॥"
+  },
+  {
+    "id": "4.214",
+    "chapterNumber": 4,
+    "oviNumber": 177,
+    "originalMarathi": "कीं पवनाचेनि कोंपें । पाणियेंचि जो पळिपें । तो प्रळयानळु दडपे । तृणें काष्ठे काइ ॥ १७७ ॥"
+  },
+  {
+    "id": "4.215",
+    "chapterNumber": 4,
+    "oviNumber": 38,
+    "originalMarathi": "न हि ज्ञानेन सदृशं पवित्रमिह विद्यते । तत् स्वयं योगसंसिद्धः कालेनात्मनि विन्दति ॥ ३८ ॥"
+  },
+  {
+    "id": "4.216",
+    "chapterNumber": 4,
+    "oviNumber": 178,
+    "originalMarathi": "म्हणोनि असे हें न घडे । तें विचारितांचि असंगडे । पुढती ज्ञानाचेनि पाडें । पवित्र न दिसे ॥ १७८ ॥"
+  },
+  {
+    "id": "4.217",
+    "chapterNumber": 4,
+    "oviNumber": 179,
+    "originalMarathi": "एथ ज्ञान हें उत्तम होये । आणिकही एक तैसें के आहे । जैसें चैतन्य कां नोहे । दुसरे गा ॥ १७९ ॥"
+  },
+  {
+    "id": "4.218",
+    "chapterNumber": 4,
+    "oviNumber": 180,
+    "originalMarathi": "या महातेजाचेनि कसें । जरी चोखाळु प्रतिबिंब दिसे । कां गिंवसिलें गिंवसे । आकाश हें ॥ १८० ॥"
+  },
+  {
+    "id": "4.219",
+    "chapterNumber": 4,
+    "oviNumber": 181,
+    "originalMarathi": "ना तरी पृथ्वीचेनि पाडें । कांटाळें जरी जोडे । तरी उपमा ज्ञानी घडे । पंडुकुमरा ॥ १८१ ॥"
+  },
+  {
+    "id": "4.220",
+    "chapterNumber": 4,
+    "oviNumber": 182,
+    "originalMarathi": "म्हणूनी बहुतीं परीं पाहतां । पुढतपुढती निर्धारिता । हे ज्ञानाची पवित्रता । ज्ञानींचि आथि ॥ १८२ ॥"
+  },
+  {
+    "id": "4.221",
+    "chapterNumber": 4,
+    "oviNumber": 183,
+    "originalMarathi": "जरी अमृताचि चवी निवडिजे । तरी अमृतासारखी म्हणिजे । तैसें ज्ञान हें उपमिजे । ज्ञानेसींचि ॥ १८३ ॥"
+  },
+  {
+    "id": "4.222",
+    "chapterNumber": 4,
+    "oviNumber": 184,
+    "originalMarathi": "आतां यावरि जे बोलणे । ते वायां वेळु फेडणें । तंव सांचचि जी हे पार्थु म्हणे । जें बोलत असां ॥ १८४ ॥"
+  },
+  {
+    "id": "4.223",
+    "chapterNumber": 4,
+    "oviNumber": 185,
+    "originalMarathi": "परि तेंचि ज्ञान केवीं जाणावें । ऐसें अर्जुनें जंव पुसावें तंव तें मनोगत देवें । जाणितलें ॥ १८५ ॥"
+  },
+  {
+    "id": "4.224",
+    "chapterNumber": 4,
+    "oviNumber": 186,
+    "originalMarathi": "मग म्हणतसे किरीटी । आतां चित्त देयीं गोठी । सांगेन ज्ञानाचिये भेटी । उपाय तुज ॥ १८६ ॥"
+  },
+  {
+    "id": "4.225",
+    "chapterNumber": 4,
+    "oviNumber": 39,
+    "originalMarathi": "श्रद्धावान् लभते ज्ञानं तत्परः संयतेन्द्रियः । ज्ञानं लब्ध्वा परां शान्तिमचिरेणाधिगच्छति ॥ ३९ ॥"
+  },
+  {
+    "id": "4.226",
+    "chapterNumber": 4,
+    "oviNumber": 187,
+    "originalMarathi": "तरी आत्मसुखाचिया गोडिया । विटे जो कां सकळ विषयां । जयां ठायीं इंद्रियां । मानु नाही ॥ १८७ ॥"
+  },
+  {
+    "id": "4.227",
+    "chapterNumber": 4,
+    "oviNumber": 188,
+    "originalMarathi": "जो मनाचि चाड न सांगे । जो प्रकृतीचे केलें नेघे । जो श्रद्धेचेनि संभोगें । सुखिया जाहला ॥ १८८ ॥"
+  },
+  {
+    "id": "4.228",
+    "chapterNumber": 4,
+    "oviNumber": 189,
+    "originalMarathi": "तयातेंचि गिंवसित । हेंहें ज्ञान पांवे निश्चित । जयामाजि अचुंबित । शांति असे ॥ १८९ ॥"
+  },
+  {
+    "id": "4.229",
+    "chapterNumber": 4,
+    "oviNumber": 190,
+    "originalMarathi": "तें हृदयीं प्रतिष्ठे । आणि शांतीचा अंकुर फुटे । मग विस्तार बहु प्रकटे । आत्मबोधाचा ॥ १९० ॥"
+  },
+  {
+    "id": "4.230",
+    "chapterNumber": 4,
+    "oviNumber": 191,
+    "originalMarathi": "मग जेऊति वास पाहिजे । तेऊति शांतीचि देखिजे । तेथ अपारा पारु नेणिजे । निर्धारितां ॥ १९१ ॥"
+  },
+  {
+    "id": "4.231",
+    "chapterNumber": 4,
+    "oviNumber": 192,
+    "originalMarathi": "ऐसा हा उत्तरोत्तरु । ज्ञानबीजाचा विस्तारु । सांगता असे अपारु । परि असो आतां ॥ १९२ ॥"
+  },
+  {
+    "id": "4.232",
+    "chapterNumber": 4,
+    "oviNumber": 193,
+    "originalMarathi": "अज्ञाश्चाश्रद्दधानश्च संशयात्मा विनश्यति । मायं लोकोऽस्ति न परो न सुखं संशयात्मनः ॥ ऐकें जया प्राणियाचां ठायीं । इया ज्ञानाची आवडी नाहीं । तयाचें जियालें म्हणों काई । वरी मरण चांग ॥ १९३ ॥"
+  },
+  {
+    "id": "4.233",
+    "chapterNumber": 4,
+    "oviNumber": 194,
+    "originalMarathi": "शून्य जैसें गृह । कां चैतन्येंवीण देह । तैसें जीवित तें संमोह । ज्ञानहीना ॥ १९४ ॥"
+  },
+  {
+    "id": "4.234",
+    "chapterNumber": 4,
+    "oviNumber": 195,
+    "originalMarathi": "अथवा ज्ञान कीर आपु नोहे । परी ते चाड एकी जरी वाहे । तरी तेथ जिव्हाळा कांही आहे । प्राप्तीचा पैं ॥ १९५ ॥"
+  },
+  {
+    "id": "4.235",
+    "chapterNumber": 4,
+    "oviNumber": 196,
+    "originalMarathi": "वांचूनि ज्ञानाची गोठी कायसी । परी ते आस्थाही न धरी मानसीं । तरी तो संशयरूप हुताशीं । पडिला जाण ॥ १९६ ॥"
+  },
+  {
+    "id": "4.236",
+    "chapterNumber": 4,
+    "oviNumber": 197,
+    "originalMarathi": "जे अमृतही परि नावडे । ऐसें सावियाचि आरोचकु जैं पडे । तैं मरण आले आलें असे फुडें । जाणों ये कीं ॥ १९७ ॥"
+  },
+  {
+    "id": "4.237",
+    "chapterNumber": 4,
+    "oviNumber": 198,
+    "originalMarathi": "तैसा विषयसुखें रंजे । जो ज्ञानेंसींचि माजे । तो संशये अंगीकारिजे । एथ भ्रांति नाहीं ॥ १९८ ॥"
+  },
+  {
+    "id": "4.238",
+    "chapterNumber": 4,
+    "oviNumber": 199,
+    "originalMarathi": "मग संशयी जरी पडला । तरी निभ्रांत जरी नासला । ति ऐहिकपरत्रा मुकला । सुखासी गा ॥ १९९ ॥"
+  },
+  {
+    "id": "4.239",
+    "chapterNumber": 4,
+    "oviNumber": 200,
+    "originalMarathi": "जया काळज्वरु आंगी बाणे । तो शीतोष्णें जैशीं नेणे । आगी आणि चांदिणें । सरिसेंचि मानी ॥ २०० ॥"
+  },
+  {
+    "id": "4.240",
+    "chapterNumber": 4,
+    "oviNumber": 201,
+    "originalMarathi": "तैसे साच आणि लटिकें । विरुद्ध आणि निकें । संशयी तो नोळखे । हिताहित ॥ २०१ ॥"
+  },
+  {
+    "id": "4.241",
+    "chapterNumber": 4,
+    "oviNumber": 202,
+    "originalMarathi": "हा रात्रिदिवसु पाहीं जैसा । जात्यंधा ठाउवा नाहीं । तैसे संशयीं असतां काहीं । मना न यें ॥ २०२ ॥"
+  },
+  {
+    "id": "4.242",
+    "chapterNumber": 4,
+    "oviNumber": 203,
+    "originalMarathi": "म्हणऊनि संशयाहुनि थोर । आणिक नाही पाप घोर । हा विनाशाची वागुर । प्राणियासी ॥ २०३ ॥"
+  },
+  {
+    "id": "4.243",
+    "chapterNumber": 4,
+    "oviNumber": 204,
+    "originalMarathi": "येणें कारणे तुवा त्यजावा । आधी हाचि एकु जिणावा । जो ज्ञानाचिया अभावा- । माजी असे ॥ २०४ ॥"
+  },
+  {
+    "id": "4.244",
+    "chapterNumber": 4,
+    "oviNumber": 205,
+    "originalMarathi": "जैं अज्ञानाचे गडद पडे । तैं हा बहुवस मनीं वाढे । म्हणोनि सर्वथा मागु मोडे । विश्वासाचा ॥ २०५ ॥"
+  },
+  {
+    "id": "4.245",
+    "chapterNumber": 4,
+    "oviNumber": 206,
+    "originalMarathi": "हृदयी हाचि न समाये । बुद्धींते गिंवसूनि ठाये । तेथ संशयात्मक होये । लोकत्रय ॥ २०६ ॥"
+  },
+  {
+    "id": "4.246",
+    "chapterNumber": 4,
+    "oviNumber": 41,
+    "originalMarathi": "योगसंन्यस्तकर्माणि ज्ञानसंछिन्नसंशयम् । आत्मवंतं न कर्माणि निबध्नन्ति धनंजयः ॥ ४१ ॥"
+  },
+  {
+    "id": "4.247",
+    "chapterNumber": 4,
+    "oviNumber": 207,
+    "originalMarathi": "ऐसे जरी थोरावे । तरी उपायें एकें आंगवे । जरी हाती होय बरवें । ज्ञानखड्ग ॥ २०७ ॥"
+  },
+  {
+    "id": "4.248",
+    "chapterNumber": 4,
+    "oviNumber": 208,
+    "originalMarathi": "तरी तेणें ज्ञानशस्त्रें तिखटें । निखळु हा निवटे । मग निःशेष खता फिटे । मानसींचा ॥ २०८ ॥"
+  },
+  {
+    "id": "4.249",
+    "chapterNumber": 4,
+    "oviNumber": 42,
+    "originalMarathi": "तस्मादज्ञानसंभूतं हृत्स्थं ज्ञानासिनात्मनः । छित्वैनं संशयं योगमातिष्ठोत्तिष्ठ भारत ॥ ४२ ॥"
+  },
+  {
+    "id": "4.250",
+    "chapterNumber": 4,
+    "oviNumber": 209,
+    "originalMarathi": "याकारणे पार्था । उठीं वेगीं वरौता । नाशु करोनि हृदयस्था । संशयासी ॥ २०९ ॥"
+  },
+  {
+    "id": "4.251",
+    "chapterNumber": 4,
+    "oviNumber": 210,
+    "originalMarathi": "ऐसे सर्वज्ञानाचा बापु । जो कृष्ण ज्ञानदीपु । तो म्हणतसे सकृपु । ऐकें राया ॥ २१० ॥"
+  },
+  {
+    "id": "4.252",
+    "chapterNumber": 4,
+    "oviNumber": 211,
+    "originalMarathi": "तंव या पूर्वापर बोलाचा । विचारुनि कुमरु पंडूचा । कैसा प्रश्नु हन अवसरींचा । करिता होईल ॥ २११ ॥"
+  },
+  {
+    "id": "4.253",
+    "chapterNumber": 4,
+    "oviNumber": 212,
+    "originalMarathi": "ते कथेची संगति । भावाची संपत्ति । रसाचि उन्नति । म्हणिपेल पुढां ॥ २१२ ॥"
+  },
+  {
+    "id": "4.254",
+    "chapterNumber": 4,
+    "oviNumber": 213,
+    "originalMarathi": "जयाचिया बरवेपणीं । कीजे आठां रसांची ओवाळणी । सज्जनाचिये आयणी । विसांवा जगी ॥ २१३ ॥"
+  },
+  {
+    "id": "4.255",
+    "chapterNumber": 4,
+    "oviNumber": 214,
+    "originalMarathi": "तो शांतुचि अभिनवेल । ते परियेसा मऱ्हाठे बोल । जे समुद्राहूनि खोल । अर्थभरित ॥ २१४ ॥"
+  },
+  {
+    "id": "4.256",
+    "chapterNumber": 4,
+    "oviNumber": 215,
+    "originalMarathi": "जैसें बिंब तरी बचकें एवढें । परि प्रकाशा त्रैलोक्य थोकडें । शब्दाची व्याप्ती तेणें पाडें । अनुभवावी ॥ २१५ ॥"
+  },
+  {
+    "id": "4.257",
+    "chapterNumber": 4,
+    "oviNumber": 216,
+    "originalMarathi": "ना तरी कामितयाचिया इच्छा । फळे कल्पवृक्षु जैसा । बोल व्यापकु होय तैसा । तरी अवधान द्यावे ॥२१६ ॥"
+  },
+  {
+    "id": "4.258",
+    "chapterNumber": 4,
+    "oviNumber": 217,
+    "originalMarathi": "हें असो काय म्हणावें । सर्वज्ञु जाणतीं स्वभावें । तरी निकें चित्त द्यावें । हें विनंती माझी ॥ २१७ ॥"
+  },
+  {
+    "id": "4.259",
+    "chapterNumber": 4,
+    "oviNumber": 218,
+    "originalMarathi": "जेथ साहित्य आणि शांति । हे रेखा दिसे बोलती । जैसी लावण्यगुणकुळवती । आणि पतिव्रता ॥२१८ ॥"
+  },
+  {
+    "id": "4.260",
+    "chapterNumber": 4,
+    "oviNumber": 219,
+    "originalMarathi": "आधींचि साखर आवडे । आणि तेचि जरी ओखदीं जोडे । तरी सेवावी ना कां कोडें । नावानावा ॥ २१९ ॥"
+  },
+  {
+    "id": "4.261",
+    "chapterNumber": 4,
+    "oviNumber": 220,
+    "originalMarathi": "सहजे मलयानिळु मंद सुगंधु । तया अमृताचा होय स्वादु । आणि तेथेंचि जोडे नादु । जरी दैवगत्या ॥ २२० ॥"
+  },
+  {
+    "id": "4.262",
+    "chapterNumber": 4,
+    "oviNumber": 221,
+    "originalMarathi": "तरी स्पर्शें सर्वांग निववी । स्वादें जिव्हेतें नाचवी । तेवीचि कानाकरवीं । म्हणवी बापु माझा ॥ २२१ ॥"
+  },
+  {
+    "id": "4.263",
+    "chapterNumber": 4,
+    "oviNumber": 222,
+    "originalMarathi": "तैसे कथेचें इये ऐकणें । एक श्रवणासि होय पारणें । मग संसारदुःख मूळवणें । विकृतीविणें ॥ २२२ ॥"
+  },
+  {
+    "id": "4.264",
+    "chapterNumber": 4,
+    "oviNumber": 223,
+    "originalMarathi": "जरी मंत्रेचि वैरी मरे । तरी वायांचि कां बांधावीं कटारें । रोग जाये दुधें साखरे । तरी निंब कां पियावा ॥ २२३ ॥"
+  },
+  {
+    "id": "4.265",
+    "chapterNumber": 4,
+    "oviNumber": 224,
+    "originalMarathi": "तैसा मनाचा मारु न करितां । आणि इंद्रियां दुःख न देतां । एथ मोक्षु असे आयता । श्रवणाचिमाजी ॥ २२४ ॥"
+  },
+  {
+    "id": "4.266",
+    "chapterNumber": 4,
+    "oviNumber": 225,
+    "originalMarathi": "म्हणोनि आथिलिया आराणुका । गीतार्थु हा निका । ज्ञानदेवो म्हणे आइका । निवृत्तीदासु ॥ २२५ ॥"
   }
-
-  return ovis;
-}
-
-export const CHAPTER_4_FULL_OVIS: Ovi[] = createChapter4Ovis();
+];

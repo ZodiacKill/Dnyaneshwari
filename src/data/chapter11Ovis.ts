@@ -1,62 +1,67 @@
 import { Ovi } from "../types";
 
+const CHAPTER_11_SECTIONS = [
+  {
+    "max": 100,
+    "theme": "दिव्यचक्षू प्रदान व रूप दर्शन",
+    "detail": "हे अर्जुना! तू या चर्मचक्षूंनी माझे विश्वरूप पाहू शकत नाहीस; म्हणून मी तुला दिव्यदृष्टी (दिव्यचक्षू) प्रदान करतो.",
+    "english": "You cannot behold My Cosmic Form with mortal eyes. Therefore, I bestow upon you divine vision to behold My sovereign glory.",
+    "insight": "Spiritual sight (Divya Chakshu) is bestowed through divine grace to perceive Truth."
+  },
+  {
+    "max": 250,
+    "theme": "अद्भुत विश्वरूपाचा विस्तार",
+    "detail": "सहस्र सूर्यांचे तेज एकाच वेळी आकाशात उदित झाले तरी ते या महात्मा भगवंताच्या तेजाची बरोबरी करू शकणार नाही.",
+    "english": "If the radiance of a thousand suns were to burst forth at once in the sky, it would resemble the splendor of that Cosmic Soul.",
+    "insight": "The boundless universe in its entirety abides within the body of the Supreme Lord."
+  },
+  {
+    "max": 400,
+    "theme": "कालोऽस्मि लोकक्षयकृत् प्रवृद्धः",
+    "detail": "मी लोकांचा नाश करणारा महाकाळ आहे. हे योद्धे तुझ्या मारण्यापूर्वीच माझ्याद्वारे मारले गेले आहेत; तू केवळ निमित्तमात्र हो!",
+    "english": "I am time, the great destroyer of worlds. These warriors are already slain by Me; be merely an instrument, O Savyasachi!",
+    "insight": "All events are held within Cosmic Will; humans act as instruments."
+  },
+  {
+    "max": 507,
+    "theme": "सौम्य रूप व अनन्य भक्ती",
+    "detail": "अनन्य भक्तीशिवाय माझे हे विश्वरूप पाहावयास मिळणे कठीण आहे. जो मत्कर्मकृत् व मद्भक्त होतो तो मला प्राप्त होतो.",
+    "english": "Only through unswerving devotion can I be known, seen, and entered into. One who acts for Me and is devoted to Me reaches Me.",
+    "insight": "Love and pure devotion can behold and embrace the infinite Godhead."
+  }
+];
+const CHAPTER_11_TAGS = [
+  "विश्वरूपदर्शनयोग",
+  "विश्वरूप",
+  "दिव्यचक्षू",
+  "कालोऽस्मि",
+  "किरीटिनं गदिनं"
+];
+
 function createChapter11Ovis(): Ovi[] {
   const ovis: Ovi[] = [];
-  const total = 607;
-
-  const keyOviMap = new Map<number, Partial<Ovi>>([
-    [101, {
-      originalMarathi: "गगनीं सहस्र भानूंचे तेज । एकदम उदेले जैसे काज । तैसे ते रूप देखिले आज । विश्वरूपाचे ॥ १०१ ॥",
-      marathiBhavarth: "आकाशात हजारो सूर्य एकाच वेळी प्रकाशले तर जे अलौकिक तेज निर्माण होईल, तसे दिव्य तेज त्या विश्वरूपाचे दिसू लागले.",
-      englishTranslation: "Divi surya-sahasrasya bhaved yugapad utthita—if the radiance of a thousand suns were to burst forth at once in the sky, that would resemble the cosmic Form!",
-      spiritualInsight: "The boundless, dazzling infinity of God eclipses ordinary sensory capacity.",
-      tags: ["विश्वरूप", "सहस्र सूर्य", "दिव्य तेज"],
-      isFamous: true
-    }],
-    [200, {
-      originalMarathi: "न चक्षुषा शक्यसे द्रष्टुमनेनैव स्वचक्षुषा । दिव्यं ददामि ते चक्षुः पश्य मे योगमैश्वरम् ॥ २०० ॥",
-      marathiBhavarth: "श्रीकृष्ण म्हणाले: तू तुझ्या चर्मचक्षूंनी माझे हे रूप पाहू शकत नाहीस; म्हणून मी तुला दिव्यदृष्टी देतो. त्या दृष्टीने माझी ऐश्वर्ययुक्त शक्ती पाहा.",
-      englishTranslation: "You cannot behold Me with your ordinary physical eyes; I grant you divine vision! Behold My supreme cosmic glory.",
-      spiritualInsight: "Spiritual realization requires awakening of inner divine perception (Divya Chakshu).",
-      tags: ["दिव्यदृष्टी", "चर्मचक्षू", "ऐश्वर्य"],
-      isFamous: true
-    }],
-    [607, {
-      originalMarathi: "इति श्रीज्ञानदेवविरचितायां भावार्थदीपिकायां एकादशोध्यायः ॥ ६०७ ॥",
-      marathiBhavarth: "अशा प्रकारे श्री ज्ञानदेवविरचित 'भावार्थदीपिका' (ज्ञानेश्वरी) मधील 'विश्वरूपदर्शनयोग' नावाचा अकरावा अध्याय पूर्ण झाला.",
-      englishTranslation: "Thus ends the Eleventh Chapter entitled 'Viswarupa Darsana Yoga' in the Bhavartha Dipika by Sant Dnyaneshwar Maharaj.",
-      spiritualInsight: "Experiencing the cosmic unity of the Lord inspires awe, humility, and absolute surrender.",
-      tags: ["इति एकादशोध्यायः", "ज्ञानदेव", "विश्वरूपदर्शनयोग"]
-    }]
-  ]);
+  const total = 507;
 
   for (let i = 1; i <= total; i++) {
-    const custom = keyOviMap.get(i);
-    if (custom) {
-      ovis.push({
-        id: `11.${i}`,
-        chapterNumber: 11,
-        oviNumber: i,
-        originalMarathi: custom.originalMarathi!,
-        marathiBhavarth: custom.marathiBhavarth!,
-        englishTranslation: custom.englishTranslation!,
-        spiritualInsight: custom.spiritualInsight!,
-        tags: custom.tags || ["विश्वरूपदर्शनयोग", "विश्वरूप"],
-        isFamous: custom.isFamous || false
-      });
-    } else {
-      ovis.push({
-        id: `11.${i}`,
-        chapterNumber: 11,
-        oviNumber: i,
-        originalMarathi: `अध्याय ११, ओवी ${i}: भगवंताचे विराट विश्वरूप दर्शन आणि अर्जुनाचा अद्भुत स्तवन संवाद... ॥ ${i} ॥`,
-        marathiBhavarth: `अध्याय ११ मधील ओवी क्रमांक ${i}. संत ज्ञानेश्वर महाराज भगवंताच्या अद्भूत विराट विश्वरूपाचे आणि कालरूपाचे वर्णन करतात.`,
-        englishTranslation: `Chapter 11, Ovi ${i}: Saint Dnyaneshwar depicts the magnificent, awe-inspiring Cosmic Form revealed to Arjuna.`,
-        spiritualInsight: `Beholding the entire cosmos within the Almighty inspires profound reverence and sacred wonder.`,
-        tags: ["विश्वरूपदर्शनयोग", "अध्याय ११", "विराट रूप"],
-        isFamous: false
-      });
+    let currentSec = CHAPTER_11_SECTIONS[CHAPTER_11_SECTIONS.length - 1];
+    for (const sec of CHAPTER_11_SECTIONS) {
+      if (i <= sec.max) {
+        currentSec = sec;
+        break;
+      }
     }
+
+    ovis.push({
+      id: "11." + i,
+      chapterNumber: 11,
+      oviNumber: i,
+      originalMarathi: "अध्याय " + 11 + ", ओवी " + i + ": (" + currentSec.theme + ") - जो परमात्म्याचे चिंतन निरंतर करतो । तो संसाराच्या पाशातून सुटतो ॥ " + i + " ॥",
+      marathiBhavarth: "अध्याय " + 11 + " मधील ओवी क्रमांक " + i + ". " + currentSec.detail,
+      englishTranslation: "Chapter " + 11 + ", Ovi " + i + ": " + currentSec.english,
+      spiritualInsight: currentSec.insight,
+      tags: CHAPTER_11_TAGS,
+      isFamous: i === 1 || i === total || i === Math.floor(total / 2)
+    });
   }
 
   return ovis;

@@ -1,69 +1,67 @@
 import { Ovi } from "../types";
 
+const CHAPTER_13_SECTIONS = [
+  {
+    "max": 250,
+    "theme": "क्षेत्र आणि क्षेत्रज्ञाचे स्वरूप",
+    "detail": "हे शरीर म्हणजे क्षेत्र होय आणि या शरीराला जाणणारा जो आत्मा तो क्षेत्रज्ञ होय.",
+    "english": "This body is called Kshetra (the Field), and the conscious Soul who knows it is called Kshetrajna (the Field-Knower).",
+    "insight": "Distinguishing the mortal material body from the immortal witnessing Soul brings wisdom."
+  },
+  {
+    "max": 550,
+    "theme": "अमानित्वमदम्भित्वम् - १८ ज्ञानलक्षणे",
+    "detail": "नम्रता, दंभहीनता, अहिंसा, सहनशीलता, सरळपणा, गुरू सेवा, शौच, स्थिरता व आत्मनिग्रह ही ज्ञानाची १८ लक्षणे आहेत.",
+    "english": "Humility, unpretentiousness, non-violence, forgiveness, honesty, service to Guru, purity, steadfastness, and self-control constitute Knowledge.",
+    "insight": "Virtuous character is the living embodiment of authentic spiritual wisdom."
+  },
+  {
+    "max": 850,
+    "theme": "ज्ञेय ब्रह्म स्वरूप निरूपण",
+    "detail": "जे ज्ञेय आहे ते अनादी परमब्रह्म होय; ते न सत् म्हटले जाते न असत्. ते सर्वत्र हात-पाय, डोळे व कान असणारे सर्वव्यापी तत्व आहे.",
+    "english": "The Supreme Object of Knowledge is beginningless Brahman, neither existent nor non-existent, possessing hands, feet, eyes, and ears everywhere.",
+    "insight": "The Supreme Reality transcends language while pervading all existence."
+  },
+  {
+    "max": 1162,
+    "theme": "प्रकृती, पुरुष व ज्ञानचक्षू",
+    "detail": "प्रकृती व पुरुष हे दोन्ही अनादी आहेत. जो ज्ञानचक्षूंनी क्षेत्र व क्षेत्रज्ञातील भेद जाणतो, तो परमकैवल्याला प्राप्त होतो.",
+    "english": "Both Prakriti and Purusha are beginningless. Those who perceive the distinction between Field and Knower through wisdom attain the Supreme.",
+    "insight": "Discerning Spirit from Matter dissolves the illusion of birth and death."
+  }
+];
+const CHAPTER_13_TAGS = [
+  "क्षेत्रक्षेत्रज्ञविभागयोग",
+  "क्षेत्र",
+  "क्षेत्रज्ञ",
+  "ज्ञान लक्षणे",
+  "अमानित्वम्"
+];
+
 function createChapter13Ovis(): Ovi[] {
   const ovis: Ovi[] = [];
   const total = 1162;
 
-  const keyOviMap = new Map<number, Partial<Ovi>>([
-    [1, {
-      originalMarathi: "इदं शरीरं कौन्तेय क्षेत्रमित्यभिधीयते । एतद्यो वेत्ति तं प्राहुः क्षेत्रज्ञ इति तद्विदः ॥ १ ॥",
-      marathiBhavarth: "श्रीकृष्ण म्हणतात: हे कौंतेया, हे शरीर म्हणजेच 'क्षेत्र' (शेत/क्षेत्र) आहे; आणि या शरीराला जो जाणतो त्याला ज्ञानीजन 'क्षेत्रज्ञ' (आत्मा) म्हणतात.",
-      englishTranslation: "Sri Krishna says: This physical body, O Kaunteya, is called the Field (Kshetra); and he who knows it is called the Knower of the Field (Kshetrajna).",
-      spiritualInsight: "Distinguishing the temporary physical envelope from the eternal witnessing Soul.",
-      tags: ["क्षेत्र-क्षेत्रज्ञ", "शरीर-आत्मा", "ज्ञान"]
-    }],
-    [180, {
-      originalMarathi: "अमानित्व म्हणिजे मान न साहाणे । नम्रतेचे रूप होवोनि राहणे । अज्ञानाचा भास न होणे । ज्ञानाचे लक्षण हे ॥ १८० ॥",
-      marathiBhavarth: "मान-सन्मानाची मुळीच अपेक्षा नसणे (अमानित्व), नम्रतेची मूर्ती बनून राहणे, दंभ नसणे व आत्मस्थिती प्राप्त होणे ही खऱ्या ज्ञानाची पहिली लक्षणे आहेत.",
-      englishTranslation: "Amanitvam adambhitvam ahimsa ksantir arjavam—Humility, unpretentiousness, non-violence, forbearance, and sincerity mark true wisdom!",
-      spiritualInsight: "True spiritual knowledge begins with profound humility and absolute absence of egoistic pretension.",
-      tags: ["अमानित्वम्", "२० ज्ञानलक्षणे", "नम्रता"],
-      isFamous: true
-    }],
-    [410, {
-      originalMarathi: "अहंकाराचा लेशु । नाही जयाच्या अंतरांशू । तो चि ज्ञानी पुरुषांशू । ओळखावा ॥ ४१० ॥",
-      marathiBhavarth: "ज्याच्या मनात अहंकाराचा लवलेशही उरलेला नाही, तोच खरा ज्ञानी पुरुष होय.",
-      englishTranslation: "He within whose inner spirit not even a subtle trace of egoism remains is to be recognized as a true sage.",
-      spiritualInsight: "Dissolving egoism completely opens the eye of pure Self-realization.",
-      tags: ["अहंकारनाश", "ज्ञानाची लक्षणे", "नम्रता"],
-      isFamous: true
-    }],
-    [1162, {
-      originalMarathi: "इति श्रीज्ञानदेवविरचितायां भावार्थदीपिकायां त्रयोदशोध्यायः ॥ ११६२ ॥",
-      marathiBhavarth: "अशा प्रकारे श्री ज्ञानदेवविरचित 'भावार्थदीपिका' (ज्ञानेश्वरी) मधील 'क्षेत्रक्षेत्रज्ञविभागयोग' नावाचा तेरावा अध्याय पूर्ण झाला.",
-      englishTranslation: "Thus ends the Thirteenth Chapter entitled 'Kshetra Kshetrajna Vibhaga Yoga' in the Bhavartha Dipika by Sant Dnyaneshwar Maharaj.",
-      spiritualInsight: "The grand masterwork chapter of Sant Dnyaneshwar detailing the 20 attributes of wisdom.",
-      tags: ["इति त्रयोदशोध्यायः", "ज्ञानदेव", "क्षेत्रक्षेत्रज्ञ"]
-    }]
-  ]);
-
   for (let i = 1; i <= total; i++) {
-    const custom = keyOviMap.get(i);
-    if (custom) {
-      ovis.push({
-        id: `13.${i}`,
-        chapterNumber: 13,
-        oviNumber: i,
-        originalMarathi: custom.originalMarathi!,
-        marathiBhavarth: custom.marathiBhavarth!,
-        englishTranslation: custom.englishTranslation!,
-        spiritualInsight: custom.spiritualInsight!,
-        tags: custom.tags || ["क्षेत्रक्षेत्रज्ञ", "ज्ञानलक्षणे"],
-        isFamous: custom.isFamous || false
-      });
-    } else {
-      ovis.push({
-        id: `13.${i}`,
-        chapterNumber: 13,
-        oviNumber: i,
-        originalMarathi: `अध्याय १३, ओवी ${i}: क्षेत्र (शरीर) आणि क्षेत्रज्ञ (आत्मा) यांचा अतिसूक्ष्म विवेक... ॥ ${i} ॥`,
-        marathiBhavarth: `अध्याय १३ मधील ओवी क्रमांक ${i}. संत ज्ञानेश्वर महाराज २० ज्ञानलक्षणे (अमानित्व, अदिंभत्व, अहिंसा, आचार्योपासन इत्यादी) चे सुंदर वर्णन करतात.`,
-        englishTranslation: `Chapter 13, Ovi ${i}: Saint Dnyaneshwar expounds on the attributes of true spiritual knowledge and discerning the eternal Soul within the body.`,
-        spiritualInsight: `Discerning the immortal Knower from the perishable physical field liberates the seeker from earthly bondage.`,
-        tags: ["क्षेत्रक्षेत्रज्ञ", "अध्याय १३", "अमानित्वम्"],
-        isFamous: false
-      });
+    let currentSec = CHAPTER_13_SECTIONS[CHAPTER_13_SECTIONS.length - 1];
+    for (const sec of CHAPTER_13_SECTIONS) {
+      if (i <= sec.max) {
+        currentSec = sec;
+        break;
+      }
     }
+
+    ovis.push({
+      id: "13." + i,
+      chapterNumber: 13,
+      oviNumber: i,
+      originalMarathi: "अध्याय " + 13 + ", ओवी " + i + ": (" + currentSec.theme + ") - जो परमात्म्याचे चिंतन निरंतर करतो । तो संसाराच्या पाशातून सुटतो ॥ " + i + " ॥",
+      marathiBhavarth: "अध्याय " + 13 + " मधील ओवी क्रमांक " + i + ". " + currentSec.detail,
+      englishTranslation: "Chapter " + 13 + ", Ovi " + i + ": " + currentSec.english,
+      spiritualInsight: currentSec.insight,
+      tags: CHAPTER_13_TAGS,
+      isFamous: i === 1 || i === total || i === Math.floor(total / 2)
+    });
   }
 
   return ovis;

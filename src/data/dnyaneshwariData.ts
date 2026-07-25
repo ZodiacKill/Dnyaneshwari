@@ -726,8 +726,13 @@ export function getOviById(id: string): Ovi {
   return getOvi(1, 1);
 }
 
-// Generate all Ovis for a specific chapter up to totalOvis
+// Generate all Ovis for a specific chapter
 export function getAllOvisForChapter(chapterNumber: number): Ovi[] {
+  const dataset = CHAPTER_DATASETS[chapterNumber];
+  if (dataset && dataset.length > 0) {
+    return dataset;
+  }
+
   const chapter = ALL_CHAPTERS.find(c => c.number === chapterNumber);
   if (!chapter) return [];
 

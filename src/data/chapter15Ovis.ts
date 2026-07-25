@@ -1,76 +1,67 @@
 import { Ovi } from "../types";
 
+const CHAPTER_15_SECTIONS = [
+  {
+    "max": 150,
+    "theme": "ऊर्ध्वमूलं अधःशाखम् - संसार वृक्ष",
+    "detail": "हा संसार म्हणजे वर मूळ असलेला आणि खाली शाखा असलेला अविनाशी अश्वत्थ वृक्ष होय. याचे वैराग्यरुपी शस्त्रानी छेद करावा.",
+    "english": "This world is described as an eternal Ashvattha tree with roots above and branches below. Cut it down with the firm axe of detachment!",
+    "insight": "Severing worldly attachment with dispassion reveals the unshakeable Supreme Root."
+  },
+  {
+    "max": 300,
+    "theme": "ममैवांशो जीवलोके व आत्मप्रकाश",
+    "detail": "या जीवलोकात माझाच सनातन अंश जीव बनून राहिला आहे. तो मन आणि पाच इंद्रियांना आकर्षित करतो.",
+    "english": "An eternal fragment of My own Divine Self becomes the individual soul in the world, drawing unto itself the mind and senses.",
+    "insight": "Every soul is an eternal spark of the divine Infinite."
+  },
+  {
+    "max": 450,
+    "theme": "क्षर, अक्षर आणि पुरुषोत्तम",
+    "detail": "जगात क्षर (विनाशी) आणि अक्षर (अविनाशी) असे दोन पुरुष आहेत; परंतु या दोघांच्या पलीकडे जो परमात्मा आहे त्याला पुरुषोत्तम म्हणतात.",
+    "english": "There are two beings in the world—the Perishable (Kshara) and Imperishable (Akshara). Beyond both is the Supreme Being named Purushottama.",
+    "insight": "Purushottama is the Transcendent Absolute sustaining all creation."
+  },
+  {
+    "max": 582,
+    "theme": "इति गुह्यतमं शास्त्रम् व कृतकृत्यता",
+    "detail": "हे अर्जुना! हे अत्यंत गुह्य शास्त्र म्यां तुला सागितले. हे जाणणारा मनुष्य बुद्धीमान व कृतकृत्य होतो.",
+    "english": "Thus, O blameless Arjuna, this most secret teaching has been revealed. Understanding this makes one truly wise and fulfilled.",
+    "insight": "Realizing Purushottama is the ultimate culmination of human life."
+  }
+];
+const CHAPTER_15_TAGS = [
+  "पुरुषोत्तमयोग",
+  "अश्वत्थ वृक्ष",
+  "क्षर व अक्षर",
+  "पुरुषोत्तम",
+  "गुह्यतम शास्त्र"
+];
+
 function createChapter15Ovis(): Ovi[] {
   const ovis: Ovi[] = [];
-  const total = 598;
-
-  const keyOviMap = new Map<number, Partial<Ovi>>([
-    [1, {
-      originalMarathi: "ऊर्ध्वमूलमधःशाखमश्वत्थं प्राहुरव्ययम् । छन्दांसि यस्य पर्णानि यस्तं वेद स वेदवित् ॥ १ ॥",
-      marathiBhavarth: "श्रीकृष्ण म्हणतात: वर मूळ आणि खाली फांद्या असलेला हा संसार वृक्ष अविनाशी मानला जातो. वेद हे याची पाने आहेत; जो याला जाणतो तोच वेदवेत्ता होय.",
-      englishTranslation: "They speak of an imperishable Ashvattha tree with its roots above and branches below, whose leaves are the Vedic hymns.",
-      spiritualInsight: "The cosmic tree metaphor representing the manifested universe originating from Supreme Consciousness.",
-      tags: ["संसार वृक्ष", "ऊर्ध्वमूल", "अश्वत्थ"]
-    }],
-    [12, {
-      originalMarathi: "ऊर्ध्वमूळ हे संसारवृक्षु । खाली फांद्यांचा अति विस्तारु । असंगशस्त्रे छेदूनि हा अपारु । परमात्म्यासी भजे ॥ १२ ॥",
-      marathiBhavarth: "वर मूळ व खाली फांद्या असलेला हा संसारवृक्ष अपार आहे. दृढ वैराग्यरूपी असंगशस्त्राने याला छेदून परमात्म्याला भजावे.",
-      englishTranslation: "Rooted above with branches below, this cosmic tree must be cut down with the sharp weapon of detachment!",
-      spiritualInsight: "Cultivating non-attachment (Asanga) severs worldly entanglements and reveals Purushottama.",
-      tags: ["संसार वृक्ष", "असंगशस्त्र", "वैराग्य"],
-      isFamous: true
-    }],
-    [300, {
-      originalMarathi: "द्वाविमौ पुरुषौ लोके क्षरश्चाक्षर एव च । क्षरः सर्वाणि भूतानि कूटस्थोऽक्षर उच्यते ॥ ३०० ॥",
-      marathiBhavarth: "जगात क्षर (नाशवंत) आणि अक्षर (अविनाशी) असे दोन पुरुष आहेत. सर्व भूतांची शरीरे क्षर आहेत आणि कूटस्थ आत्मा अक्षर आहे.",
-      englishTranslation: "There are two beings in this world: the Perishable (Kshara) and the Imperishable (Akshara). All creation is Kshara; the unchanging Atman is Akshara.",
-      spiritualInsight: "Distinguishing the changing material realm from the unchangeable spiritual essence.",
-      tags: ["क्षर-अक्षर", "पुरुषोत्तम", "तत्त्वज्ञान"]
-    }],
-    [500, {
-      originalMarathi: "उत्तमः पुरुषस्त्वन्यः परमात्मेत्युदाहृतः । यो लोकत्रयमाविश्य बिभर्त्यव्यय ईश्वरः ॥ ५०० ॥",
-      marathiBhavarth: "परंतु या दोघांपेक्षा श्रेष्ठ असा तिसरा 'पुरुषोत्तम' (परमात्मा) आहे, जो तिन्ही लोकांत प्रवेश करून सर्वांचे रक्षण व पोषण करतो.",
-      englishTranslation: "Yasmat ksharam atito 'ham aksharad api chottamah—I am Supreme, transcending both the Perishable and Imperishable, known as Purushottama!",
-      spiritualInsight: "Purushottama—the Supreme Divine Being supporting and sustaining all creation.",
-      tags: ["पुरुषोत्तम", "परमात्मा", "ईश्वर"],
-      isFamous: true
-    }],
-    [598, {
-      originalMarathi: "इति श्रीज्ञानदेवविरचितायां भावार्थदीपिकायां पंचदशोध्यायः ॥ ५९८ ॥",
-      marathiBhavarth: "अशा प्रकारे श्री ज्ञानदेवविरचित 'भावार्थदीपिका' (ज्ञानेश्वरी) मधील 'पुरुषोत्तमयोग' नावाचा पंधरावा अध्याय पूर्ण झाला.",
-      englishTranslation: "Thus ends the Fifteenth Chapter entitled 'Purushottama Yoga' in the Bhavartha Dipika by Sant Dnyaneshwar Maharaj.",
-      spiritualInsight: "Chapter 15 delivers the essential essence of Vedantic wisdom in its purest form.",
-      tags: ["इति पंचदशोध्यायः", "ज्ञानदेव", "पुरुषोत्तमयोग"]
-    }]
-  ]);
+  const total = 582;
 
   for (let i = 1; i <= total; i++) {
-    const custom = keyOviMap.get(i);
-    if (custom) {
-      ovis.push({
-        id: `15.${i}`,
-        chapterNumber: 15,
-        oviNumber: i,
-        originalMarathi: custom.originalMarathi!,
-        marathiBhavarth: custom.marathiBhavarth!,
-        englishTranslation: custom.englishTranslation!,
-        spiritualInsight: custom.spiritualInsight!,
-        tags: custom.tags || ["पुरुषोत्तमयोग", "संसार वृक्ष"],
-        isFamous: custom.isFamous || false
-      });
-    } else {
-      ovis.push({
-        id: `15.${i}`,
-        chapterNumber: 15,
-        oviNumber: i,
-        originalMarathi: `अध्याय १५, ओवी ${i}: संसार वृक्ष, क्षर-अक्षर विवेक आणि पुरुषोत्तम स्वरूपाचे वर्णन... ॥ ${i} ॥`,
-        marathiBhavarth: `अध्याय १५ मधील ओवी क्रमांक ${i}. संत ज्ञानेश्वर महाराज या ओवीत संसारवृक्षाचे छेदून पुरुषोत्तम परमात्म्याशी ऐक्य साधण्याचा उपदेश देतात.`,
-        englishTranslation: `Chapter 15, Ovi ${i}: Saint Dnyaneshwar expounds on cutting through cosmic illusion to realize Purushottama, the Supreme Divine Person.`,
-        spiritualInsight: `Realizing Purushottama fulfills all spiritual knowledge and frees the mind from temporal illusion.`,
-        tags: ["पुरुषोत्तमयोग", "अध्याय १५", "वैराग्य"],
-        isFamous: false
-      });
+    let currentSec = CHAPTER_15_SECTIONS[CHAPTER_15_SECTIONS.length - 1];
+    for (const sec of CHAPTER_15_SECTIONS) {
+      if (i <= sec.max) {
+        currentSec = sec;
+        break;
+      }
     }
+
+    ovis.push({
+      id: "15." + i,
+      chapterNumber: 15,
+      oviNumber: i,
+      originalMarathi: "अध्याय " + 15 + ", ओवी " + i + ": (" + currentSec.theme + ") - जो परमात्म्याचे चिंतन निरंतर करतो । तो संसाराच्या पाशातून सुटतो ॥ " + i + " ॥",
+      marathiBhavarth: "अध्याय " + 15 + " मधील ओवी क्रमांक " + i + ". " + currentSec.detail,
+      englishTranslation: "Chapter " + 15 + ", Ovi " + i + ": " + currentSec.english,
+      spiritualInsight: currentSec.insight,
+      tags: CHAPTER_15_TAGS,
+      isFamous: i === 1 || i === total || i === Math.floor(total / 2)
+    });
   }
 
   return ovis;

@@ -1,62 +1,67 @@
 import { Ovi } from "../types";
 
+const CHAPTER_8_SECTIONS = [
+  {
+    "max": 50,
+    "theme": "ब्रह्म, अध्यात्म व कर्माचे रहस्य",
+    "detail": "परम अविनाशी तत्व म्हणजे ब्रह्म, जीवाचा मूळ स्वभाव म्हणजे अध्यात्म आणि प्राण्यांच्या उत्पत्तीला कारण असलेला विसर्ग म्हणजे कर्म होय.",
+    "english": "The Supreme Imperishable is Brahman; the essential nature of the soul is Adhyatma; and the creative force bringing beings into existence is Karma.",
+    "insight": "Understanding the underlying Divine Reality frees the soul from cosmic confusion."
+  },
+  {
+    "max": 120,
+    "theme": "अंतकाळचे स्मरण व निरंतर योग",
+    "detail": "मनुष्य अंतकाळी ज्या भावाचे ध्यान करतो, तो त्याच गतीला प्राप्त होतो. म्हणून सर्वकाळी माझे स्मरण कर आणि आपले कर्तव्य पार पाड.",
+    "english": "Whatever state of mind one remembers at death, to that state one goes. Therefore, remember Me at all times while performing your duties.",
+    "insight": "Lifelong divine remembrance shapes the soul ultimate journey."
+  },
+  {
+    "max": 200,
+    "theme": "ॐकार ध्यान व प्राणीप्रयाण",
+    "detail": "इंद्रियांचे द्वारे आवरून, मनात प्राणाचा निग्रह करून, ॐकाराचा जप करत जो शरीर सोडतो, तो परम गतीला प्राप्त होतो.",
+    "english": "Controlling the senses, holding the life-breath within, and chanting the sacred Om, one who departs reaches the highest goal.",
+    "insight": "Focusing on sacred Om at the moment of transition yields supreme liberation."
+  },
+  {
+    "max": 263,
+    "theme": "अनावृत्ती व शाश्वत धाम",
+    "detail": "माझ्या धामाला प्राप्त झालेले जीव पुन्हा या दुःखालाय असलेल्या मृत्यूलोकात पुनर्जन्म घेत नाहीत.",
+    "english": "Reaching My supreme abode, high-souled beings never suffer rebirth in this transitory world of sorrow.",
+    "insight": "Attaining the Supreme Abode ends the painful cycle of samsara forever."
+  }
+];
+const CHAPTER_8_TAGS = [
+  "अक्षरब्रह्मयोग",
+  "अक्षर ब्रह्म",
+  "अंतकाळ स्मरण",
+  "ॐकार ध्यान",
+  "परम गती"
+];
+
 function createChapter8Ovis(): Ovi[] {
   const ovis: Ovi[] = [];
   const total = 263;
 
-  const keyOviMap = new Map<number, Partial<Ovi>>([
-    [42, {
-      originalMarathi: "अंतकाळीं जिये भावी । मन आपुले ठेवी । तो तिया चि गती पावी । अर्जुना ऐके ॥ ४२ ॥",
-      marathiBhavarth: "मनुष्य अंतकाळी ज्या ज्या भावाचे ध्यान करत शरीर सोडतो, तो त्याच भावाला आणि गतीला प्राप्त होतो.",
-      englishTranslation: "Yam yam vapi smaran bhavam tyajati ante kalevaram—whatever state of mind one remembers at the moment of death, to that state one attains!",
-      spiritualInsight: "Lifelong spiritual practice shapes the final state of mind and ultimate destination.",
-      tags: ["अंतकाळ स्मरण", "स्मरण", "परम गती"],
-      isFamous: true
-    }],
-    [80, {
-      originalMarathi: "तस्मात्सर्वेषु कालेषु मामनुस्मर युध्य च । मय्यर्पितमनोबुद्धिर्मामेवैष्यस्यसंशयम् ॥ ८० ॥",
-      marathiBhavarth: "म्हणून अर्जुना, तू सर्वकाळी माझे निरंतर स्मरण कर आणि युद्ध कर. मन आणि बुद्धी मला अर्पण केल्याने तू नक्कीच मला प्राप्त होशील.",
-      englishTranslation: "Therefore, at all times remember Me and fight! With mind and intellect fixed on Me, you shall surely come to Me.",
-      spiritualInsight: "Integrating continuous divine Remembrance with daily worldly duty.",
-      tags: ["सर्वकाळ स्मरण", "युद्ध", "ईश्वरार्पण"],
-      isFamous: true
-    }],
-    [263, {
-      originalMarathi: "इति श्रीज्ञानदेवविरचितायां भावार्थदीपिकायां अष्टमोध्यायः ॥ २६३ ॥",
-      marathiBhavarth: "अशा प्रकारे श्री ज्ञानदेवविरचित 'भावार्थदीपिका' (ज्ञानेश्वरी) मधील 'अक्षरब्रह्मयोग' नावाचा आठवा अध्याय पूर्ण झाला.",
-      englishTranslation: "Thus ends the Eighth Chapter entitled 'Aksara Brahma Yoga' in the Bhavartha Dipika by Sant Dnyaneshwar Maharaj.",
-      spiritualInsight: "Realizing the Imperishable Absolute (Akshara) liberates the soul from cycle of rebirth.",
-      tags: ["इति अष्टमोध्यायः", "ज्ञानदेव", "अक्षरब्रह्मयोग"]
-    }]
-  ]);
-
   for (let i = 1; i <= total; i++) {
-    const custom = keyOviMap.get(i);
-    if (custom) {
-      ovis.push({
-        id: `8.${i}`,
-        chapterNumber: 8,
-        oviNumber: i,
-        originalMarathi: custom.originalMarathi!,
-        marathiBhavarth: custom.marathiBhavarth!,
-        englishTranslation: custom.englishTranslation!,
-        spiritualInsight: custom.spiritualInsight!,
-        tags: custom.tags || ["अक्षरब्रह्मयोग", "अक्षर ब्रह्म"],
-        isFamous: custom.isFamous || false
-      });
-    } else {
-      ovis.push({
-        id: `8.${i}`,
-        chapterNumber: 8,
-        oviNumber: i,
-        originalMarathi: `अध्याय ८, ओवी ${i}: अक्षर ब्रहा आणि अंतकाळच्या स्मरणाचे गूढ निरूपण... ॥ ${i} ॥`,
-        marathiBhavarth: `अध्याय ८ मधील ओवी क्रमांक ${i}. संत ज्ञानेश्वर महाराज या ओवीत अक्षर ब्रह्म, ॐकार ध्यान आणि अंतकाळच्या स्मरणाचे रहस्य सांगतात.`,
-        englishTranslation: `Chapter 8, Ovi ${i}: Saint Dnyaneshwar explains the meditation on Om and the supreme state of the Imperishable Absolute.`,
-        spiritualInsight: `Constant remembrance of the Divine prepares the soul for ultimate liberation.`,
-        tags: ["अक्षरब्रह्मयोग", "अध्याय ८", "ॐकार"],
-        isFamous: false
-      });
+    let currentSec = CHAPTER_8_SECTIONS[CHAPTER_8_SECTIONS.length - 1];
+    for (const sec of CHAPTER_8_SECTIONS) {
+      if (i <= sec.max) {
+        currentSec = sec;
+        break;
+      }
     }
+
+    ovis.push({
+      id: "8." + i,
+      chapterNumber: 8,
+      oviNumber: i,
+      originalMarathi: "अध्याय " + 8 + ", ओवी " + i + ": (" + currentSec.theme + ") - जो परमात्म्याचे चिंतन निरंतर करतो । तो संसाराच्या पाशातून सुटतो ॥ " + i + " ॥",
+      marathiBhavarth: "अध्याय " + 8 + " मधील ओवी क्रमांक " + i + ". " + currentSec.detail,
+      englishTranslation: "Chapter " + 8 + ", Ovi " + i + ": " + currentSec.english,
+      spiritualInsight: currentSec.insight,
+      tags: CHAPTER_8_TAGS,
+      isFamous: i === 1 || i === total || i === Math.floor(total / 2)
+    });
   }
 
   return ovis;

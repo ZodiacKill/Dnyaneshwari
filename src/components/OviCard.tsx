@@ -34,8 +34,11 @@ export const OviCard: React.FC<OviCardProps> = ({
       setIsPlayingAudio(false);
     } else {
       setIsPlayingAudio(true);
+      const textToSpeak = ovi.marathiBhavarth
+        ? `${ovi.originalMarathi}. भावार्थ: ${ovi.marathiBhavarth}`
+        : ovi.originalMarathi;
       speakMarathiText(
-        `${ovi.originalMarathi}. भावार्थ: ${ovi.marathiBhavarth}`,
+        textToSpeak,
         () => {
           setIsPlayingAudio(false);
         },
@@ -45,7 +48,13 @@ export const OviCard: React.FC<OviCardProps> = ({
   };
 
   const handleCopy = () => {
-    const fullText = `ज्ञानेश्वरी अध्याय ${ovi.chapterNumber}, ओवी ${ovi.oviNumber}\n\n${ovi.originalMarathi}\n\nमराठी भावार्थ:\n${ovi.marathiBhavarth}\n\nEnglish Translation:\n${ovi.englishTranslation}`;
+    let fullText = `ज्ञानेश्वरी अध्याय ${ovi.chapterNumber}, ओवी ${ovi.oviNumber}\n\n${ovi.originalMarathi}`;
+    if (ovi.marathiBhavarth) {
+      fullText += `\n\nमराठी भावार्थ:\n${ovi.marathiBhavarth}`;
+    }
+    if (ovi.englishTranslation) {
+      fullText += `\n\nEnglish Translation:\n${ovi.englishTranslation}`;
+    }
     navigator.clipboard.writeText(fullText);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -181,67 +190,77 @@ export const OviCard: React.FC<OviCardProps> = ({
         </p>
       </div>
 
-      {/* View Tabs: Marathi Bhavarth / English Translation / Spiritual Insight */}
-      <div className="mt-4">
-        <div className="flex items-center border-b border-amber-200/80 mb-3 gap-2">
-          <button
-            onClick={() => setActiveTab('bhavarth')}
-            className={`pb-2 px-3 text-xs sm:text-sm font-semibold border-b-2 transition-all ${
-              activeTab === 'bhavarth'
-                ? 'border-[#78350F] text-amber-950 font-bold'
-                : 'border-transparent text-amber-800 hover:text-amber-950'
-            }`}
-          >
-            मराठी भावार्थ
-          </button>
-          <button
-            onClick={() => setActiveTab('english')}
-            className={`pb-2 px-3 text-xs sm:text-sm font-semibold border-b-2 transition-all ${
-              activeTab === 'english'
-                ? 'border-[#78350F] text-amber-950 font-bold'
-                : 'border-transparent text-amber-800 hover:text-amber-950'
-            }`}
-          >
-            English Translation
-          </button>
-          <button
-            onClick={() => setActiveTab('insight')}
-            className={`pb-2 px-3 text-xs sm:text-sm font-semibold border-b-2 transition-all ${
-              activeTab === 'insight'
-                ? 'border-[#78350F] text-amber-950 font-bold'
-                : 'border-transparent text-amber-800 hover:text-amber-950'
-            }`}
-          >
-            गूढ अर्थ व बोध
-          </button>
+      {/* Marathi Bhavarth or Tab Content */}
+      {ovi.marathiBhavarth && (
+        <div className="mt-3 pt-3 border-t border-amber-200/80">
+          <p className="text-amber-950 font-sans text-sm sm:text-base leading-relaxed">
+            <strong className="text-amber-900 font-serif">भावार्थ: </strong>
+            {ovi.marathiBhavarth}
+          </p>
         </div>
+      )}
 
-        {/* Tab Content */}
-        <div className="pt-1">
-          {activeTab === 'bhavarth' && (
-            <p className="text-amber-950 font-sans text-sm sm:text-base leading-relaxed">
-              <strong className="text-amber-950 font-serif">भावार्थ: </strong>
-              {ovi.marathiBhavarth}
-            </p>
-          )}
+      {/* Optional English / Bodh if available */}
+      {(ovi.englishTranslation || ovi.spiritualInsight) && (
+        <div className="mt-3">
+          <div className="flex items-center border-b border-amber-200/80 mb-2 gap-2">
+            {ovi.marathiBhavarth && (
+              <button
+                onClick={() => setActiveTab('bhavarth')}
+                className={`pb-1.5 px-3 text-xs font-semibold border-b-2 transition-all ${
+                  activeTab === 'bhavarth'
+                    ? 'border-[#78350F] text-amber-950 font-bold'
+                    : 'border-transparent text-amber-800 hover:text-amber-950'
+                }`}
+              >
+                मराठी भावार्थ
+              </button>
+            )}
+            {ovi.englishTranslation && (
+              <button
+                onClick={() => setActiveTab('english')}
+                className={`pb-1.5 px-3 text-xs font-semibold border-b-2 transition-all ${
+                  activeTab === 'english'
+                    ? 'border-[#78350F] text-amber-950 font-bold'
+                    : 'border-transparent text-amber-800 hover:text-amber-950'
+                }`}
+              >
+                English Translation
+              </button>
+            )}
+            {ovi.spiritualInsight && (
+              <button
+                onClick={() => setActiveTab('insight')}
+                className={`pb-1.5 px-3 text-xs font-semibold border-b-2 transition-all ${
+                  activeTab === 'insight'
+                    ? 'border-[#78350F] text-amber-950 font-bold'
+                    : 'border-transparent text-amber-800 hover:text-amber-950'
+                }`}
+              >
+                गूढ अर्थ व बोध
+              </button>
+            )}
+          </div>
 
-          {activeTab === 'english' && (
-            <p className="text-amber-950 font-sans italic text-sm sm:text-base leading-relaxed">
-              <strong className="text-amber-950 not-italic font-semibold">English Meaning: </strong>
-              "{ovi.englishTranslation}"
-            </p>
-          )}
-
-          {activeTab === 'insight' && (
-            <div className="bg-amber-50 p-3.5 rounded-xl border border-amber-200">
-              <p className="text-amber-950 font-sans text-sm sm:text-base leading-relaxed">
-                <strong className="text-amber-950 font-serif">आध्यात्मिक बोध: </strong>
-                {ovi.spiritualInsight}
+          <div className="pt-1">
+            {activeTab === 'english' && ovi.englishTranslation && (
+              <p className="text-amber-950 font-sans italic text-sm leading-relaxed">
+                <strong className="text-amber-950 not-italic font-semibold">English Meaning: </strong>
+                "{ovi.englishTranslation}"
               </p>
-            </div>
-          )}
+            )}
+
+            {activeTab === 'insight' && ovi.spiritualInsight && (
+              <div className="bg-amber-50 p-3 rounded-xl border border-amber-200">
+                <p className="text-amber-950 font-sans text-sm leading-relaxed">
+                  <strong className="text-amber-950 font-serif">आध्यात्मिक बोध: </strong>
+                  {ovi.spiritualInsight}
+                </p>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Topic Tags */}
       {ovi.tags && ovi.tags.length > 0 && (

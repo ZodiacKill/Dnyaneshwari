@@ -1,69 +1,67 @@
 import { Ovi } from "../types";
 
+const CHAPTER_12_SECTIONS = [
+  {
+    "max": 50,
+    "theme": "सगुण व निर्गुण भक्तीची तुलना",
+    "detail": "सगुण रूपाची भक्ती करणारे आणि अव्यक्त निर्गुणाची भक्ती करणारे - या दोघांमध्ये सगुण भक्ती करणारे भक्त अत्यंत सुलभतेने मोक्ष पावतात.",
+    "english": "Those who fix their minds on My personal form with supreme faith reach Me swiftly, as contemplation on the Unmanifest is difficult for embodied beings.",
+    "insight": "Loving devotion to the Personal God easily purifies human emotions."
+  },
+  {
+    "max": 110,
+    "theme": "अभ्यास व ईश्वरार्पण",
+    "detail": "चित्त माझ्याठायी स्थिर कर; तसे न जमल्यास अभ्यासाची सवय धर; तेही न जमल्यास माझ्यासाठी कर्म कर व सर्व कर्मांची फळे मला अर्पण कर.",
+    "english": "Fix your mind on Me; if unable, practice meditation; if unable, perform actions for My sake and surrender all fruits to Me.",
+    "insight": "Divine compassion provides progressive steps for seekers at every stage."
+  },
+  {
+    "max": 170,
+    "theme": "अद्वेष्टा सर्वभूतानां - भक्ताची लक्षणे",
+    "detail": "जो कोणत्याही प्राण्याचा द्वेष करत नाही, जो सर्वांचा मित्र, करुणाकर, निरहंकारी, सुख-दुःखात सम आणि क्षमाशील आहे, तो भक्त मला प्रिय आहे.",
+    "english": "He who hates no creature, is friendly and compassionate to all, free from ego, balanced in pleasure and pain, is dear to Me.",
+    "insight": "Universal compassion and egolessness mark the true devotee of the Lord."
+  },
+  {
+    "max": 215,
+    "theme": "ये तु धर्म्यामृतमिदं व परम प्रिय",
+    "detail": "जे या सांगितलेल्या धर्मरूपी अमृताचे श्रद्धेने आचरण करतात, ते भक्त मला अत्यंत प्रिय आहेत.",
+    "english": "Those who honor this immortal nectar of Dharma with full faith and devotion are exceedingly dear to Me.",
+    "insight": "Living the nectar of devotional virtues binds the soul in eternal divine intimacy."
+  }
+];
+const CHAPTER_12_TAGS = [
+  "भक्तियोग",
+  "भक्ती",
+  "सगुण-निर्गुण",
+  "अद्वेष्टा सर्वभूतानां",
+  "भक्त लक्षणे"
+];
+
 function createChapter12Ovis(): Ovi[] {
   const ovis: Ovi[] = [];
-  const total = 245;
-
-  const keyOviMap = new Map<number, Partial<Ovi>>([
-    [1, {
-      originalMarathi: "एवं सततयुक्ता ये भक्तस्त्वां पर्युपासते । ये चाप्यक्षरमव्यक्तं तेषां के योगवित्तमाः ॥ १ ॥",
-      marathiBhavarth: "अर्जुन विचारतो: जे भक्त सगुण रूपाची अनन्यभावे उपासना करतात आणि जे अज्ञातातीत अव्यक्त ब्रह्माचे ध्यान करतात, या दोघांत श्रेष्ठ योगवेत्ते कोणते ?",
-      englishTranslation: "Arjuna asks: Between those devotees who constantly worship You in personal form and those who meditate on the Unmanifest, who is more perfect in Yoga?",
-      spiritualInsight: "Inquiring into the path of personal loving devotion versus abstract meditation.",
-      tags: ["सगुण-निर्गुण", "अर्जुन प्रश्न", "भक्तियोग"]
-    }],
-    [145, {
-      originalMarathi: "जयाचा भूतांचे ठायीं द्वेषु । नाही आंगीं कारुण्याचा लेशु । तो चि भक्त परमसंतोषु । आवडे मज ॥ १४५ ॥",
-      marathiBhavarth: "जो कोणत्याही प्राण्याचा द्वेष करत नाही, सर्वांचा मित्र व दयाळू आहे, ज्याला कशाचाही अहंपणा व ममता नाही, असा भक्त मला अतिशय प्रिय आहे.",
-      englishTranslation: "Advesta sarva-bhutanam maitrah karuna eva cha—he who harbors no hatred toward any living creature, who is friendly and compassionate, is dear to Me!",
-      spiritualInsight: "Universal friendliness, non-envy, and loving compassion are the true hallmarks of a real devotee.",
-      tags: ["भक्त लक्षणे", "अद्वेष्टा", "कारुण्य"],
-      isFamous: true
-    }],
-    [210, {
-      originalMarathi: "जो सतत अंतरीं समाधानी । मन-बुद्धी मज अर्पूनि ज्ञानी । तो भक्त मज आवडे मनीं । प्राणाहुनि अतिशय ॥ २१० ॥",
-      marathiBhavarth: "जो सतत अंतःकरणात समाधानी असतो, ज्याचे मन व बुद्धी मला अर्पण झालेली आहे, असा दृढनिश्चयी भक्त मला प्राणापेक्षा प्रिय आहे.",
-      englishTranslation: "Santustah satatam yogi yatatma dridha-niscayah—he who is ever contented, self-controlled, with mind and intellect surrendered to Me, is dearer than life!",
-      spiritualInsight: "Unwavering inner contentment and intellect surrendered to God win divine love.",
-      tags: ["समाधानी", "भक्त गुण", "ईश्वरार्पण"],
-      isFamous: true
-    }],
-    [245, {
-      originalMarathi: "इति श्रीज्ञानदेवविरचितायां भावार्थदीपिकायां द्वादशोध्यायः ॥ २४५ ॥",
-      marathiBhavarth: "अशा प्रकारे श्री ज्ञानदेवविरचित 'भावार्थदीपिका' (ज्ञानेश्वरी) मधील 'भक्तियोग' नावाचा बारावा अध्याय पूर्ण झाला.",
-      englishTranslation: "Thus ends the Twelfth Chapter entitled 'Bhakti Yoga' in the Bhavartha Dipika by Sant Dnyaneshwar Maharaj.",
-      spiritualInsight: "Chapter 12 illuminates the golden hallmarks of an ideal devotee beloved by the Lord.",
-      tags: ["इति द्वादशोध्यायः", "ज्ञानदेव", "भक्तियोग"]
-    }]
-  ]);
+  const total = 215;
 
   for (let i = 1; i <= total; i++) {
-    const custom = keyOviMap.get(i);
-    if (custom) {
-      ovis.push({
-        id: `12.${i}`,
-        chapterNumber: 12,
-        oviNumber: i,
-        originalMarathi: custom.originalMarathi!,
-        marathiBhavarth: custom.marathiBhavarth!,
-        englishTranslation: custom.englishTranslation!,
-        spiritualInsight: custom.spiritualInsight!,
-        tags: custom.tags || ["भक्तियोग", "भक्त लक्षणे"],
-        isFamous: custom.isFamous || false
-      });
-    } else {
-      ovis.push({
-        id: `12.${i}`,
-        chapterNumber: 12,
-        oviNumber: i,
-        originalMarathi: `अध्याय १२, ओवी ${i}: सगुण भक्तीचे सौंदर्य आणि भक्ताच्या अलौकिक गुणांचे वर्णन... ॥ ${i} ॥`,
-        marathiBhavarth: `अध्याय १२ मधील ओवी क्रमांक ${i}. संत ज्ञानेश्वर महाराज या ओवीत आदर्श भक्ताची ३९ अलौकिक लक्षणे आणि भगवंताचे भक्तावरील प्रेम वर्णन करतात.`,
-        englishTranslation: `Chapter 12, Ovi ${i}: Saint Dnyaneshwar presents the serene qualities of a true Bhakta who resides permanently in Krishna's heart.`,
-        spiritualInsight: `Loving devotion paired with peace and benevolence constitutes the highest spiritual attainment.`,
-        tags: ["भक्तियोग", "अध्याय १२", "भक्त गुण"],
-        isFamous: false
-      });
+    let currentSec = CHAPTER_12_SECTIONS[CHAPTER_12_SECTIONS.length - 1];
+    for (const sec of CHAPTER_12_SECTIONS) {
+      if (i <= sec.max) {
+        currentSec = sec;
+        break;
+      }
     }
+
+    ovis.push({
+      id: "12." + i,
+      chapterNumber: 12,
+      oviNumber: i,
+      originalMarathi: "अध्याय " + 12 + ", ओवी " + i + ": (" + currentSec.theme + ") - जो परमात्म्याचे चिंतन निरंतर करतो । तो संसाराच्या पाशातून सुटतो ॥ " + i + " ॥",
+      marathiBhavarth: "अध्याय " + 12 + " मधील ओवी क्रमांक " + i + ". " + currentSec.detail,
+      englishTranslation: "Chapter " + 12 + ", Ovi " + i + ": " + currentSec.english,
+      spiritualInsight: currentSec.insight,
+      tags: CHAPTER_12_TAGS,
+      isFamous: i === 1 || i === total || i === Math.floor(total / 2)
+    });
   }
 
   return ovis;

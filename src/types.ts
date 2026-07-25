@@ -3,10 +3,10 @@ export interface Ovi {
   chapterNumber: number; // 1 to 18
   oviNumber: number;
   originalMarathi: string;
-  marathiBhavarth: string;
-  englishTranslation: string;
-  spiritualInsight: string;
-  tags: string[];
+  marathiBhavarth?: string;
+  englishTranslation?: string;
+  spiritualInsight?: string;
+  tags?: string[];
   isFamous?: boolean;
   audioUrl?: string; // Optional audio recitation file URL
 }
