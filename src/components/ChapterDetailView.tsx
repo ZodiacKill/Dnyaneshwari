@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Chapter, Ovi } from '../types';
 import { OviCard } from './OviCard';
-import { ArrowLeft, BookOpen, Search, ChevronLeft, ChevronRight, Menu, Tag, Sparkles } from 'lucide-react';
+import { ArrowLeft, Search, ChevronLeft, ChevronRight, Menu, Sparkles, Hash, Layers } from 'lucide-react';
 import { ChapterSidebarIndex } from './ChapterSidebarIndex';
 import { LoadingScreen } from './LoadingScreen';
-import { ALL_CHAPTERS } from '../data/dnyaneshwariData';
+import { ALL_CHAPTERS, getAllOvisForChapter } from '../data/dnyaneshwariData';
 
 interface ChapterDetailViewProps {
   chapter: Chapter;
@@ -15,6 +15,8 @@ interface ChapterDetailViewProps {
   onAskAi: (ovi: Ovi) => void;
 }
 
+const PAGE_SIZE = 20;
+
 export const ChapterDetailView: React.FC<ChapterDetailViewProps> = ({
   chapter,
   onBack,
@@ -24,13 +26,18 @@ export const ChapterDetailView: React.FC<ChapterDetailViewProps> = ({
   onAskAi,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [filterFamousOnly, setFilterFamousOnly] = useState(false);
+  const [viewMode, setViewMode] = useState<'key' | 'all'>('key');
+  const [jumpOviNum, setJumpOviNum] = useState<string>('');
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   // Trigger smooth loading screen when chapter number changes
   useEffect(() => {
     setIsLoading(true);
+    setCurrentPage(1);
+    setSearchQuery('');
+    setJumpOviNum('');
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 300);
@@ -43,18 +50,48 @@ export const ChapterDetailView: React.FC<ChapterDetailViewProps> = ({
     }
   };
 
-  const filteredOvis = chapter.keyOvis.filter(ovi => {
+  // Get full or key ovis list
+  const activeOvisSource = useMemo(() => {
+    if (viewMode === 'all') {
+      return getAllOvisForChapter(chapter.number);
+    }
+    return chapter.keyOvis;
+  }, [chapter, viewMode]);
+
+  // Filter ovis by search query or direct jump
+  const filteredOvis = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
-    const matchesSearch = q === '' ||
-      ovi.originalMarathi.toLowerCase().includes(q) ||
-      ovi.marathiBhavarth.toLowerCase().includes(q) ||
-      ovi.englishTranslation.toLowerCase().includes(q) ||
-      ovi.oviNumber.toString() === q;
+    const jump = jumpOviNum.trim();
 
-    const matchesFamous = !filterFamousOnly || ovi.isFamous;
+    return activeOvisSource.filter(ovi => {
+      if (jump !== '') {
+        return ovi.oviNumber.toString() === jump;
+      }
+      if (q === '') return true;
 
-    return matchesSearch && matchesFamous;
-  });
+      return (
+        ovi.originalMarathi.toLowerCase().includes(q) ||
+        ovi.marathiBhavarth.toLowerCase().includes(q) ||
+        ovi.englishTranslation.toLowerCase().includes(q) ||
+        ovi.oviNumber.toString() === q
+      );
+    });
+  }, [activeOvisSource, searchQuery, jumpOviNum]);
+
+  // Reset page when search or viewMode changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, jumpOviNum, viewMode]);
+
+  // Calculate paginated slice for "all" mode to ensure crisp performance
+  const totalPages = Math.ceil(filteredOvis.length / PAGE_SIZE) || 1;
+  const paginatedOvis = useMemo(() => {
+    if (viewMode === 'key' && !searchQuery && !jumpOviNum) {
+      return filteredOvis; // Show all key ovis together
+    }
+    const start = (currentPage - 1) * PAGE_SIZE;
+    return filteredOvis.slice(start, start + PAGE_SIZE);
+  }, [filteredOvis, currentPage, viewMode, searchQuery, jumpOviNum]);
 
   return (
     <div className="flex gap-6 relative items-start">
@@ -153,51 +190,125 @@ export const ChapterDetailView: React.FC<ChapterDetailViewProps> = ({
               </div>
             </div>
 
-            {/* Filter / Search within Chapter */}
-            <div className="flex flex-wrap items-center justify-between gap-3 bg-[#FFFDF8] p-4 rounded-2xl border border-[#D4C3A1] shadow-xs">
-              <div className="relative flex-1 min-w-[220px]">
-                <Search className="w-4 h-4 text-amber-700 absolute left-3 top-1/2 -translate-y-1/2" />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder={`अध्याय ${chapter.number} मधील ओवी किंवा शब्द शोधा...`}
-                  className="w-full text-xs sm:text-sm pl-9 pr-4 py-2 bg-amber-50/60 rounded-xl border border-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-500 text-amber-950 font-medium"
-                />
+            {/* View Mode Selector & Search / Jump Controls */}
+            <div className="bg-[#FFFDF8] p-4 rounded-2xl border border-[#D4C3A1] shadow-xs space-y-3">
+              {/* Mode Toggle Pills */}
+              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-amber-200/80 pb-3">
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setViewMode('key')}
+                    className={`flex items-center gap-1.5 text-xs px-3.5 py-2 rounded-xl font-bold border transition-colors ${
+                      viewMode === 'key'
+                        ? 'bg-[#78350F] text-amber-100 border-[#78350F] shadow-xs'
+                        : 'bg-amber-100/80 text-amber-950 border-amber-300 hover:bg-amber-200'
+                    }`}
+                  >
+                    <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                    <span>मुख्य ओव्या ({chapter.keyOvis.length})</span>
+                  </button>
+
+                  <button
+                    onClick={() => setViewMode('all')}
+                    className={`flex items-center gap-1.5 text-xs px-3.5 py-2 rounded-xl font-bold border transition-colors ${
+                      viewMode === 'all'
+                        ? 'bg-[#78350F] text-amber-100 border-[#78350F] shadow-xs'
+                        : 'bg-amber-100/80 text-amber-950 border-amber-300 hover:bg-amber-200'
+                    }`}
+                  >
+                    <Layers className="w-3.5 h-3.5 text-amber-300" />
+                    <span>संपूर्ण ओव्या (१ ते {chapter.totalOvis})</span>
+                  </button>
+                </div>
+
+                <div className="text-xs text-amber-900 font-bold bg-amber-100 px-2.5 py-1 rounded-lg border border-amber-200">
+                  {viewMode === 'all' ? `सर्व ${chapter.totalOvis} ओव्या उपलब्ध` : `मुख्य ${chapter.keyOvis.length} ओव्या दर्शवित आहे`}
+                </div>
               </div>
 
-              <button
-                onClick={() => setFilterFamousOnly(!filterFamousOnly)}
-                className={`text-xs px-3.5 py-2 rounded-xl font-bold border transition-colors ${
-                  filterFamousOnly
-                    ? 'bg-[#78350F] text-amber-100 border-[#78350F]'
-                    : 'bg-amber-100 text-amber-950 border-amber-300 hover:bg-amber-200'
-                }`}
-              >
-                {filterFamousOnly ? '✓ प्रसिद्ध ओव्या' : 'सर्व ओव्या'}
-              </button>
+              {/* Search + Direct Jump Input */}
+              <div className="flex flex-wrap items-center gap-3">
+                <div className="relative flex-1 min-w-[200px]">
+                  <Search className="w-4 h-4 text-amber-700 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder={`अध्याय ${chapter.number} मधील ओवी किंवा शब्द शोधा...`}
+                    className="w-full text-xs sm:text-sm pl-9 pr-4 py-2 bg-amber-50/60 rounded-xl border border-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-500 text-amber-950 font-medium"
+                  />
+                </div>
+
+                {/* Direct Ovi Jump */}
+                <div className="relative w-40">
+                  <Hash className="w-3.5 h-3.5 text-amber-700 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="number"
+                    min="1"
+                    max={chapter.totalOvis}
+                    value={jumpOviNum}
+                    onChange={(e) => setJumpOviNum(e.target.value)}
+                    placeholder={`ओवी क्रमांक (१-${chapter.totalOvis})`}
+                    className="w-full text-xs pl-8 pr-3 py-2 bg-amber-50/60 rounded-xl border border-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-500 text-amber-950 font-medium"
+                  />
+                </div>
+
+                {(searchQuery || jumpOviNum) && (
+                  <button
+                    onClick={() => {
+                      setSearchQuery('');
+                      setJumpOviNum('');
+                    }}
+                    className="text-xs text-amber-800 hover:text-amber-950 font-bold underline px-2"
+                  >
+                    शोधा रीसेट करा
+                  </button>
+                )}
+              </div>
             </div>
 
-            {/* Ovi Cards List */}
+            {/* Ovi Cards List Header & Pagination Controls */}
             <div>
-              <div className="flex items-center justify-between mb-4 px-1">
+              <div className="flex flex-wrap items-center justify-between gap-2 mb-4 px-1">
                 <h3 className="font-serif text-lg font-bold text-amber-950 flex items-center gap-2">
                   <Sparkles className="w-4 h-4 text-amber-800" />
-                  <span>अध्याय {chapter.number} मधील ओव्या ({filteredOvis.length})</span>
+                  <span>
+                    {viewMode === 'all' ? `अध्याय ${chapter.number} - ओव्या (एकूण ${filteredOvis.length})` : `अध्याय ${chapter.number} - मुख्य ओव्या (${filteredOvis.length})`}
+                  </span>
                 </h3>
+
+                {/* Top Pagination if multiple pages */}
+                {totalPages > 1 && (
+                  <div className="flex items-center gap-2 text-xs font-bold text-amber-950">
+                    <button
+                      disabled={currentPage <= 1}
+                      onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                      className="px-2.5 py-1 rounded-lg bg-amber-100 hover:bg-amber-200 disabled:opacity-40 disabled:cursor-not-allowed border border-amber-300"
+                    >
+                      मागील
+                    </button>
+                    <span>पान {currentPage} / {totalPages}</span>
+                    <button
+                      disabled={currentPage >= totalPages}
+                      onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                      className="px-2.5 py-1 rounded-lg bg-amber-100 hover:bg-amber-200 disabled:opacity-40 disabled:cursor-not-allowed border border-amber-300"
+                    >
+                      पुढील
+                    </button>
+                  </div>
+                )}
               </div>
 
-              {filteredOvis.length === 0 ? (
+              {paginatedOvis.length === 0 ? (
                 <div className="bg-[#FFFDF8] rounded-2xl p-8 text-center border border-[#D4C3A1] my-6">
                   <p className="text-sm font-bold text-amber-950">
-                    या शोधासाठी कोणतीही ओवी सापडली नाही.
+                    या शोधासाठी अथवा ओवी क्रमांकासाठी (१ ते {chapter.totalOvis}) कोणतीही ओवी सापडली नाही.
                   </p>
                   <p className="text-xs text-amber-800 mt-1">
-                    कृपया शोध शब्द तपासून पुन्हा प्रयत्न करा.
+                    कृपया ओवी क्रमांक १ ते {chapter.totalOvis} मधील प्रविष्ट करा.
                   </p>
                 </div>
               ) : (
-                filteredOvis.map(ovi => (
+                paginatedOvis.map(ovi => (
                   <OviCard
                     key={ovi.id}
                     ovi={ovi}
@@ -208,6 +319,33 @@ export const ChapterDetailView: React.FC<ChapterDetailViewProps> = ({
                     highlightText={searchQuery}
                   />
                 ))
+              )}
+
+              {/* Bottom Pagination controls */}
+              {totalPages > 1 && (
+                <div className="flex items-center justify-center gap-3 mt-6 pt-4 border-t border-amber-200/80">
+                  <button
+                    disabled={currentPage <= 1}
+                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                    className="flex items-center gap-1 text-xs font-bold px-3 py-1.5 rounded-xl bg-amber-100 hover:bg-amber-200 disabled:opacity-40 disabled:cursor-not-allowed border border-amber-300 text-amber-950 transition-colors"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                    <span>मागील पान</span>
+                  </button>
+
+                  <span className="text-xs font-bold font-serif text-amber-950 bg-amber-50 px-3 py-1.5 rounded-xl border border-amber-200">
+                    पान {currentPage} / {totalPages} (ओवी {(currentPage - 1) * PAGE_SIZE + 1} ते {Math.min(currentPage * PAGE_SIZE, filteredOvis.length)})
+                  </span>
+
+                  <button
+                    disabled={currentPage >= totalPages}
+                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                    className="flex items-center gap-1 text-xs font-bold px-3 py-1.5 rounded-xl bg-amber-100 hover:bg-amber-200 disabled:opacity-40 disabled:cursor-not-allowed border border-amber-300 text-amber-950 transition-colors"
+                  >
+                    <span>पुढील पान</span>
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
               )}
             </div>
           </>

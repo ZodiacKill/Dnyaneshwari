@@ -1,5 +1,5 @@
 import React, { useState, useTransition, useMemo } from 'react';
-import { ALL_OVIS, TOPIC_TAGS, ALL_CHAPTERS } from '../data/dnyaneshwariData';
+import { ALL_OVIS, TOPIC_TAGS, ALL_CHAPTERS, getOviById } from '../data/dnyaneshwariData';
 import { Ovi, Chapter } from '../types';
 import { OviCard } from './OviCard';
 import { Search, Tag, BookOpen, RotateCcw, ChevronRight, Sparkles, Filter } from 'lucide-react';
@@ -75,7 +75,7 @@ export const SearchModule: React.FC<SearchModuleProps> = ({
 
   // Search matching ovis
   const matchedOvis = useMemo(() => {
-    return ALL_OVIS.filter(ovi => {
+    const list = ALL_OVIS.filter(ovi => {
       // Search query match
       const q = normalizedQuery;
       const oviNumStr = `${ovi.chapterNumber}.${ovi.oviNumber}`;
@@ -97,6 +97,21 @@ export const SearchModule: React.FC<SearchModuleProps> = ({
 
       return matchesQuery && matchesChapter && matchesTag;
     });
+
+    // If query matches a "ch.ovi" pattern like "2.50" or "18.100" and not in list, fetch dynamically
+    if (normalizedQuery && /^\d+\.\d+$/.test(normalizedQuery)) {
+      const exists = list.some(o => o.id === normalizedQuery);
+      if (!exists) {
+        const customOvi = getOviById(normalizedQuery);
+        if (customOvi) {
+          if (selectedChapter === 'all' || customOvi.chapterNumber === selectedChapter) {
+            list.unshift(customOvi);
+          }
+        }
+      }
+    }
+
+    return list;
   }, [normalizedQuery, selectedChapter, selectedTag]);
 
   const totalResultsCount = (filterType === 'ovis' ? 0 : matchedChapters.length) + matchedOvis.length;

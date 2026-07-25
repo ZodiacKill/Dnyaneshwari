@@ -1,5 +1,5 @@
 import React from 'react';
-import { ALL_OVIS, ALL_CHAPTERS } from '../data/dnyaneshwariData';
+import { ALL_CHAPTERS, getOviById } from '../data/dnyaneshwariData';
 import { Ovi } from '../types';
 import { OviCard } from './OviCard';
 import { Heart, Trash2, MessageSquare } from 'lucide-react';
@@ -19,7 +19,7 @@ export const BookmarksView: React.FC<BookmarksViewProps> = ({
   onAskAi,
   onClearAllBookmarks,
 }) => {
-  const bookmarkedOvis = ALL_OVIS.filter(ovi => bookmarks.includes(ovi.id));
+  const bookmarkedOvis = bookmarks.map(id => getOviById(id));
 
   return (
     <div className="space-y-6">

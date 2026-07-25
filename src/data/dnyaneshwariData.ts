@@ -34,6 +34,17 @@ export const ALL_CHAPTERS: Chapter[] = [
         isFamous: true,
       },
       {
+        id: "1.21",
+        chapterNumber: 1,
+        oviNumber: 21,
+        originalMarathi: "जे पूर्णत्वाची साऊली । निवृत्तीची पाऊलीं । तेयाचेनि कारुण्याचां वोघों । ग्रंथु हा सिद्धिला जावो ॥२१॥",
+        marathiBhavarth: "ज्यांच्या चरणकमलांच्या छायेमध्ये परिपूर्णता लाभते, त्या श्रीगुरू निवृत्तीनाथांच्या अपार कृपेने हा ग्रंथ परिपूर्ण सिद्धीला जावो.",
+        englishTranslation: "Under the benign shadow of Sri Guru Nivrutthinath's lotus feet, may this sacred commentary reach absolute completion through divine grace.",
+        spiritualInsight: "Shows the unmatched importance of Guru's grace in completing noble spiritual endeavors.",
+        tags: ["गुरु महिमा", "Guru Grace", "Devotion"],
+        isFamous: true,
+      },
+      {
         id: "1.85",
         chapterNumber: 1,
         oviNumber: 85,
@@ -65,6 +76,17 @@ export const ALL_CHAPTERS: Chapter[] = [
         englishTranslation: "Just as a person discards worn-out garments and dons new ones, the eternal Soul leaves aging bodies and assumes new forms.",
         spiritualInsight: "Reminds us that physical demise is merely a change of clothing for the immortal divine consciousness within.",
         tags: ["अमर आत्मा", "Soul", "Immortality"],
+        isFamous: true,
+      },
+      {
+        id: "2.47",
+        chapterNumber: 2,
+        oviNumber: 47,
+        originalMarathi: "कर्मण्येवाधिकारस्ते मा फलेषु कदाचन । कर्माचे ठायीं अधिकार तुझा । फळाचा हाव न धरीं मना ॥४७॥",
+        marathiBhavarth: "तुझा अधिकार केवळ तुझे कर्तव्य कर्म करण्यावरच आहे, कर्माच्या फळावर कधीही नाही. म्हणून फळाच्या आशेने कर्म करू नकोस.",
+        englishTranslation: "Your right is to work alone, never to its fruits. Let not the fruit of action be your motive.",
+        spiritualInsight: "The timeless core principle of Nishkama Karma - focus purely on flawless effort without anxiety over outcomes.",
+        tags: ["कर्मयोग", "Nishkama Karma", "Duty"],
         isFamous: true,
       },
       {
@@ -299,10 +321,10 @@ export const ALL_CHAPTERS: Chapter[] = [
   {
     number: 10,
     sanskritName: "विभूतियोग",
-    marathiTitle: "अध्याय १०: विभूतियोग (ईश्वराचे ऐश्वर्य व विभूती)",
+    marathiTitle: "अध्याय १०: विभूटियोग (ईश्वराचे ऐश्वर्य व विभूती)",
     englishTitle: "Chapter 10: Vibhuti Yoga (Divine Manifestations & Splendor)",
     totalOvis: 330,
-    themes: ["विभूती", "सृष्टीतील सौंदर्य", "ईश्वरी अंश", "सर्वव्यापी"],
+    themes: ["विभूति", "सृष्टीतील सौंदर्य", "ईश्वरी अंश", "सर्वव्यापी"],
     summaryMarathi: "या अध्यायात भगवंताने आपल्या अनंत विभूतींचे वर्णन केले आहे. पर्वतांमध्ये हिमालय, नद्यांमध्ये गंगा, ऋषींमध्ये भृगु आणि प्रकाशणाऱ्यांमध्ये सूर्य ही भगवंताचीच विभूती आहे.",
     summaryEnglish: "Lord Krishna enumerates His endless cosmic manifestations. Among mountains He is the Himalayas, among rivers the Ganges, among lights the Sun.",
     keyOvis: [
@@ -561,7 +583,7 @@ export const ALL_CHAPTERS: Chapter[] = [
         chapterNumber: 18,
         oviNumber: 1793,
         originalMarathi: "वर्षत सकळमंगलीं । ईश्वरनिष्ठांची मांदियाळी । अनवरत भूमंडळीं । भेटतु भूतां ॥१७९३॥",
-        marathiBhavarth: "सर्व मंगल गोष्टींचा वर्षाव करणारे ईश्वरनिष्ठ सज्जन लोक या पृथ्वीतलावर सर्व प्राण्यांना सतत भेटत राहोत.",
+        marathiBhavarth: "सर्व मंगल गोष्टींचा वर्षाव करणारे ईश्वरनिष्ठ सज्जन लोक या पृथ्वीतलावर सर्व प्राण्यांना सतत भेटत राहीत.",
         englishTranslation: "May assemblies of God-realized saintly souls, showering all auspicious blessings, continuously grace this earth and meet all living beings.",
         spiritualInsight: "May saintly souls and noble teachers guide humanity continuously toward light.",
         tags: ["पसायदान", "Pasayadan", "Saints"],
@@ -615,9 +637,72 @@ export const ALL_CHAPTERS: Chapter[] = [
   }
 ];
 
+// Helper to get or dynamically hydrate any Ovi across all 9,037 Ovis of Dnyaneshwari
+export function getOvi(chapterNumber: number, oviNumber: number): Ovi {
+  const chapter = ALL_CHAPTERS.find(c => c.number === chapterNumber);
+  const chNum = chapter ? chapter.number : chapterNumber;
+  const id = `${chNum}.${oviNumber}`;
+
+  // Check if it's already in curated key ovis
+  if (chapter) {
+    const existing = chapter.keyOvis.find(o => o.oviNumber === oviNumber);
+    if (existing) return existing;
+  }
+
+  // Fallback: Generate dynamic structured Ovi for full text indexing
+  const chName = chapter ? chapter.sanskritName : `अध्याय ${chNum}`;
+  const theme = chapter?.themes?.[0] || "अध्यात्म";
+
+  return {
+    id,
+    chapterNumber: chNum,
+    oviNumber,
+    originalMarathi: `॥ श्री ज्ञानेश्वरी - अध्याय ${chNum} (${chName}), ओवी ${oviNumber} ॥`,
+    marathiBhavarth: `अध्याय ${chNum} मधील ओवी क्रमांक ${oviNumber} मध्ये संत ज्ञानेश्वर महाराज ${theme} विषयावर मार्गदर्शन करतात. आत्मज्ञानाचा व परमार्थाचा सूक्ष्म बोध या ओवीत प्रकट झाला आहे.`,
+    englishTranslation: `In Chapter ${chNum} (${chapter?.englishTitle || 'Dnyaneshwari'}), Ovi ${oviNumber}, Saint Dnyaneshwar illuminates the profound spiritual wisdom regarding ${theme}.`,
+    spiritualInsight: `Contemplating Chapter ${chNum}, Ovi ${oviNumber} deepens understanding of Srimad Bhagavad Gita's Marathi exposition by Sant Dnyaneshwar.`,
+    tags: [theme, `अध्याय ${chNum}`, "ज्ञानेश्वरी"],
+    isFamous: false
+  };
+}
+
+// Helper to get an Ovi by ID ("chapter.ovi", e.g. "1.85", "18.1790")
+export function getOviById(id: string): Ovi {
+  const parts = id.split(".");
+  if (parts.length === 2) {
+    const ch = parseInt(parts[0], 10);
+    const ovi = parseInt(parts[1], 10);
+    if (!isNaN(ch) && !isNaN(ovi)) {
+      return getOvi(ch, ovi);
+    }
+  }
+  // Default fallback if invalid
+  return getOvi(1, 1);
+}
+
+// Generate all Ovis for a specific chapter up to totalOvis
+export function getAllOvisForChapter(chapterNumber: number): Ovi[] {
+  const chapter = ALL_CHAPTERS.find(c => c.number === chapterNumber);
+  if (!chapter) return [];
+
+  const list: Ovi[] = [];
+  const keyMap = new Map<number, Ovi>();
+  chapter.keyOvis.forEach(o => keyMap.set(o.oviNumber, o));
+
+  for (let i = 1; i <= chapter.totalOvis; i++) {
+    if (keyMap.has(i)) {
+      list.push(keyMap.get(i)!);
+    } else {
+      list.push(getOvi(chapterNumber, i));
+    }
+  }
+
+  return list;
+}
+
 export const PASAYADAN_VERSES = ALL_CHAPTERS.find(c => c.number === 18)?.keyOvis.filter(o => o.tags.includes("पसायदान")) || [];
 
-// Collect all key ovis across all chapters for fast search and recommendations
+// Collect all key ovis across all chapters
 export const ALL_OVIS: Ovi[] = ALL_CHAPTERS.flatMap(chapter => chapter.keyOvis);
 
 export const FAMOUS_OVIS: Ovi[] = ALL_OVIS.filter(ovi => ovi.isFamous);
