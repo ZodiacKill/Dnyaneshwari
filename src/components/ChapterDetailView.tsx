@@ -26,7 +26,6 @@ export const ChapterDetailView: React.FC<ChapterDetailViewProps> = ({
   onAskAi,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [viewMode, setViewMode] = useState<'key' | 'all'>('key');
   const [jumpOviNum, setJumpOviNum] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -50,13 +49,10 @@ export const ChapterDetailView: React.FC<ChapterDetailViewProps> = ({
     }
   };
 
-  // Get full or key ovis list
+  // Get all ovis for the chapter
   const activeOvisSource = useMemo(() => {
-    if (viewMode === 'all') {
-      return getAllOvisForChapter(chapter.number);
-    }
-    return chapter.keyOvis;
-  }, [chapter, viewMode]);
+    return getAllOvisForChapter(chapter.number);
+  }, [chapter]);
 
   // Filter ovis by search query or direct jump
   const filteredOvis = useMemo(() => {
@@ -78,20 +74,17 @@ export const ChapterDetailView: React.FC<ChapterDetailViewProps> = ({
     });
   }, [activeOvisSource, searchQuery, jumpOviNum]);
 
-  // Reset page when search or viewMode changes
+  // Reset page when search changes
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchQuery, jumpOviNum, viewMode]);
+  }, [searchQuery, jumpOviNum]);
 
-  // Calculate paginated slice for "all" mode to ensure crisp performance
+  // Calculate paginated slice for better performance
   const totalPages = Math.ceil(filteredOvis.length / PAGE_SIZE) || 1;
   const paginatedOvis = useMemo(() => {
-    if (viewMode === 'key' && !searchQuery && !jumpOviNum) {
-      return filteredOvis; // Show all key ovis together
-    }
     const start = (currentPage - 1) * PAGE_SIZE;
     return filteredOvis.slice(start, start + PAGE_SIZE);
-  }, [filteredOvis, currentPage, viewMode, searchQuery, jumpOviNum]);
+  }, [filteredOvis, currentPage, searchQuery, jumpOviNum]);
 
   return (
     <div className="flex gap-6 relative items-start">
@@ -190,40 +183,8 @@ export const ChapterDetailView: React.FC<ChapterDetailViewProps> = ({
               </div>
             </div>
 
-            {/* View Mode Selector & Search / Jump Controls */}
+            {/* Search & Jump Controls */}
             <div className="bg-[#FFFDF8] p-4 rounded-2xl border border-[#D4C3A1] shadow-xs space-y-3">
-              {/* Mode Toggle Pills */}
-              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-amber-200/80 pb-3">
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => setViewMode('key')}
-                    className={`flex items-center gap-1.5 text-xs px-3.5 py-2 rounded-xl font-bold border transition-colors ${
-                      viewMode === 'key'
-                        ? 'bg-[#78350F] text-amber-100 border-[#78350F] shadow-xs'
-                        : 'bg-amber-100/80 text-amber-950 border-amber-300 hover:bg-amber-200'
-                    }`}
-                  >
-                    <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-                    <span>मुख्य ओव्या ({chapter.keyOvis.length})</span>
-                  </button>
-
-                  <button
-                    onClick={() => setViewMode('all')}
-                    className={`flex items-center gap-1.5 text-xs px-3.5 py-2 rounded-xl font-bold border transition-colors ${
-                      viewMode === 'all'
-                        ? 'bg-[#78350F] text-amber-100 border-[#78350F] shadow-xs'
-                        : 'bg-amber-100/80 text-amber-950 border-amber-300 hover:bg-amber-200'
-                    }`}
-                  >
-                    <Layers className="w-3.5 h-3.5 text-amber-300" />
-                    <span>संपूर्ण ओव्या (१ ते {chapter.totalOvis})</span>
-                  </button>
-                </div>
-
-                <div className="text-xs text-amber-900 font-bold bg-amber-100 px-2.5 py-1 rounded-lg border border-amber-200">
-                  {viewMode === 'all' ? `सर्व ${chapter.totalOvis} ओव्या उपलब्ध` : `मुख्य ${chapter.keyOvis.length} ओव्या दर्शवित आहे`}
-                </div>
-              </div>
 
               {/* Search + Direct Jump Input */}
               <div className="flex flex-wrap items-center gap-3">
@@ -272,7 +233,7 @@ export const ChapterDetailView: React.FC<ChapterDetailViewProps> = ({
                 <h3 className="font-serif text-lg font-bold text-amber-950 flex items-center gap-2">
                   <Sparkles className="w-4 h-4 text-amber-800" />
                   <span>
-                    {viewMode === 'all' ? `अध्याय ${chapter.number} - ओव्या (एकूण ${filteredOvis.length})` : `अध्याय ${chapter.number} - मुख्य ओव्या (${filteredOvis.length})`}
+                    अध्याय {chapter.number} - ओव्या (एकूण {filteredOvis.length})
                   </span>
                 </h3>
 

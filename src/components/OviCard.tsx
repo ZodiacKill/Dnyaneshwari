@@ -174,11 +174,7 @@ export const OviCard: React.FC<OviCardProps> = ({
               {chapterTitle}
             </span>
           )}
-          {ovi.isFamous && (
-            <span className="bg-amber-200 text-amber-950 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-amber-300">
-              प्रसिद्ध ओवी
-            </span>
-          )}
+          
           {aiContent?.isGenerated && (
             <span className="bg-violet-100 text-violet-700 text-[10px] font-bold px-2 py-0.5 rounded-full border border-violet-200 flex items-center gap-0.5">
               <Wand2 className="w-2.5 h-2.5" />
