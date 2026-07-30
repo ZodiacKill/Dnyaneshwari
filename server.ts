@@ -4,6 +4,15 @@ import { fileURLToPath } from "url";
 import { GoogleGenAI } from "@google/genai";
 import OpenAI from "openai";
 import dotenv from "dotenv";
+import { initializeDatabase } from "./src/database/database";
+import { 
+  getBhavarthContentByOviId, 
+  getBhavarthContentByChapterOvi, 
+  createBhavarthContent, 
+  contentExists,
+  contentExistsByChapterOvi,
+  getBhavarthStats 
+} from "./src/database/bhavarthService";
 
 dotenv.config();
 
@@ -14,6 +23,9 @@ const app = express();
 const PORT = 3000;
 
 app.use(express.json());
+
+// Initialize database
+initializeDatabase();
 
 // Initialize Gemini API client lazily / safely (for Chintan AI)
 const getGeminiAI = () => {
@@ -45,6 +57,60 @@ const getOpenAI = () => {
 // Healthcheck API
 app.get("/api/health", (_req, res) => {
   res.json({ status: "ok", message: "Marathi Dnyaneshwari backend server running" });
+});
+
+// Database APIs
+app.get("/api/bhavarth/:oviId", (req, res) => {
+  try {
+    const { oviId } = req.params;
+    const content = getBhavarthContentByOviId(oviId);
+    
+    if (!content) {
+      return res.status(404).json({ error: "Content not found" });
+    }
+    
+    res.json(content);
+  } catch (error: any) {
+    console.error("Error getting bhavarth content:", error);
+    res.status(500).json({ error: error.message || "Failed to get content" });
+  }
+});
+
+app.get("/api/bhavarth/chapter/:chapterNumber/ovi/:oviNumber", (req, res) => {
+  try {
+    const { chapterNumber, oviNumber } = req.params;
+    const content = getBhavarthContentByChapterOvi(parseInt(chapterNumber), parseInt(oviNumber));
+    
+    if (!content) {
+      return res.status(404).json({ error: "Content not found" });
+    }
+    
+    res.json(content);
+  } catch (error: any) {
+    console.error("Error getting bhavarth content:", error);
+    res.status(500).json({ error: error.message || "Failed to get content" });
+  }
+});
+
+app.head("/api/bhavarth/:oviId/exists", (req, res) => {
+  try {
+    const { oviId } = req.params;
+    const exists = contentExists(oviId);
+    res.status(exists ? 200 : 404).end();
+  } catch (error: any) {
+    console.error("Error checking content existence:", error);
+    res.status(500).end();
+  }
+});
+
+app.get("/api/bhavarth/stats", (req, res) => {
+  try {
+    const stats = getBhavarthStats();
+    res.json(stats || {});
+  } catch (error: any) {
+    console.error("Error getting bhavarth stats:", error);
+    res.status(500).json({ error: error.message || "Failed to get stats" });
+  }
 });
 
 // AI Spiritual Chintan & Q&A Endpoint
@@ -113,7 +179,7 @@ Please guide the user according to the philosophy of Sant Dnyaneshwar Maharaj in
   }
 });
 
-// AI Ovi Content Generation Endpoint (structured: bhavarth, english, bodh) - Using OpenAI
+// AI Ovi Content Generation Endpoint (structured: bhavarth, english, bodh) - Using OpenAI with fallback to Gemini
 app.post("/api/generate-ovi-content", async (req, res) => {
   try {
     const { originalMarathi, chapterNumber, oviNumber } = req.body;
@@ -122,9 +188,31 @@ app.post("/api/generate-ovi-content", async (req, res) => {
       return res.status(400).json({ error: "originalMarathi is required." });
     }
 
-    const openai = getOpenAI();
+    // Generate ovi_id for database lookup
+    const oviId = `chapter${chapterNumber}_ovi${oviNumber}`;
 
-    const systemInstruction = `You are a deeply learned Marathi scholar specializing in Sant Dnyaneshwar Maharaj's 'Dnyaneshwari' (ज्ञानेश्वरी) - the revered 13th-century Marathi commentary on the Bhagavad Gita.
+    // Check if content already exists in database
+    const existingContent = getBhavarthContentByOviId(oviId);
+    if (existingContent) {
+      return res.json({
+        marathiBhavarth: existingContent.marathi_bhavarth || "",
+        englishTranslation: existingContent.english_translation || "",
+        spiritualInsight: existingContent.spiritual_insight || "",
+        timestamp: new Date().toISOString(),
+        fromDatabase: true,
+        aiProvider: existingContent.ai_provider,
+      });
+    }
+
+    let parsed: { marathiBhavarth?: string; englishTranslation?: string; spiritualInsight?: string } = {};
+    let aiProvider = 'openai';
+    let generationError = null;
+
+    try {
+      // Try OpenAI first
+      const openai = getOpenAI();
+      
+      const systemInstruction = `You are a deeply learned Marathi scholar specializing in Sant Dnyaneshwar Maharaj's 'Dnyaneshwari' (ज्ञानेश्वरी) - the revered 13th-century Marathi commentary on the Bhagavad Gita.
 
 Your task is to provide three pieces of content for a given Dnyaneshwari verse (ovi):
 
@@ -139,36 +227,108 @@ CRITICAL RULES:
 - Respond ONLY with valid JSON in this exact format (no markdown, no code fences):
 {"marathiBhavarth": "...", "englishTranslation": "...", "spiritualInsight": "..."}`;
 
-    const userPrompt = `Dnyaneshwari Adhyay ${chapterNumber}, Ovi ${oviNumber}:
+      const userPrompt = `Dnyaneshwari Adhyay ${chapterNumber}, Ovi ${oviNumber}:
 "${originalMarathi}"
 
 Provide marathiBhavarth, englishTranslation, and spiritualInsight for this ovi.`;
 
-    const response = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
-      messages: [
-        { role: "system", content: systemInstruction },
-        { role: "user", content: userPrompt }
-      ],
-      temperature: 0.4,
-      max_tokens: 500,
+      const response = await openai.chat.completions.create({
+        model: "gpt-3.5-turbo",
+        messages: [
+          { role: "system", content: systemInstruction },
+          { role: "user", content: userPrompt }
+        ],
+        temperature: 0.4,
+        max_tokens: 500,
+      });
+
+      const rawText = response.choices[0]?.message?.content || "";
+
+      // Try to parse JSON from the response
+      try {
+        // Strip markdown code fences if present
+        const jsonStr = rawText.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "").trim();
+        parsed = JSON.parse(jsonStr);
+      } catch {
+        // Fallback: return raw text as bhavarth
+        parsed = {
+          marathiBhavarth: rawText,
+          englishTranslation: "",
+          spiritualInsight: "",
+        };
+      }
+    } catch (openaiError: any) {
+      console.warn("OpenAI API failed, falling back to Gemini:", openaiError.message);
+      aiProvider = 'gemini';
+      generationError = openaiError.message;
+      
+      // Fallback to Gemini
+      try {
+        const gemini = getGeminiAI();
+        
+        const systemInstruction = `You are a deeply learned Marathi scholar specializing in Sant Dnyaneshwar Maharaj's 'Dnyaneshwari' (ज्ञानेश्वरी) - the revered 13th-century Marathi commentary on the Bhagavad Gita.
+
+Your task is to provide three pieces of content for a given Dnyaneshwari verse (ovi):
+
+1. **marathiBhavarth**: A clear, authentic Marathi explanation (भावार्थ) of the ovi. Write in simple, beautiful Marathi prose (2-4 sentences). Explain what Sant Dnyaneshwar is conveying.
+2. **englishTranslation**: A faithful English translation/meaning of the ovi (2-3 sentences). Capture the essence accurately.
+3. **spiritualInsight**: The गूढ अर्थ व बोध (hidden spiritual meaning and practical life lesson) in English (2-3 sentences). What deeper wisdom or life guidance does this verse offer?
+
+CRITICAL RULES:
+- Maintain deep reverence for Sant Dnyaneshwar Maharaj.
+- Be authentic and scholarly. Do NOT hallucinate or fabricate meanings.
+- If the verse is a simple connecting verse, still provide meaningful context.
+- Respond ONLY with valid JSON in this exact format (no markdown, no code fences):
+{"marathiBhavarth": "...", "englishTranslation": "...", "spiritualInsight": "..."}`;
+
+        const userPrompt = `Dnyaneshwari Adhyay ${chapterNumber}, Ovi ${oviNumber}:
+"${originalMarathi}"
+
+Provide marathiBhavarth, englishTranslation, and spiritualInsight for this ovi.`;
+
+        const response = await gemini.models.generateContent({
+          model: "gemini-3.6-flash",
+          contents: userPrompt,
+          config: {
+            systemInstruction,
+            temperature: 0.4,
+          },
+        });
+
+        const rawText = (response.text || "").trim();
+
+        // Try to parse JSON from the response
+        try {
+          const jsonStr = rawText.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "").trim();
+          parsed = JSON.parse(jsonStr);
+        } catch {
+          parsed = {
+            marathiBhavarth: rawText,
+            englishTranslation: "",
+            spiritualInsight: "",
+          };
+        }
+      } catch (geminiError: any) {
+        console.error("Gemini API Error in fallback:", geminiError);
+        throw new Error(`Both OpenAI and Gemini APIs failed. OpenAI: ${generationError}, Gemini: ${geminiError.message}`);
+      }
+    }
+
+    // Store the generated content in database
+    const dbContent = createBhavarthContent({
+      ovi_id: oviId,
+      chapter_number: chapterNumber,
+      ovi_number: oviNumber,
+      original_marathi: originalMarathi,
+      marathi_bhavarth: parsed.marathiBhavarth || "",
+      english_translation: parsed.englishTranslation || "",
+      spiritual_insight: parsed.spiritualInsight || "",
+      ai_provider: aiProvider,
+      is_generated: true,
     });
 
-    const rawText = response.choices[0]?.message?.content || "";
-
-    // Try to parse JSON from the response
-    let parsed: { marathiBhavarth?: string; englishTranslation?: string; spiritualInsight?: string } = {};
-    try {
-      // Strip markdown code fences if present
-      const jsonStr = rawText.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "").trim();
-      parsed = JSON.parse(jsonStr);
-    } catch {
-      // Fallback: return raw text as bhavarth
-      parsed = {
-        marathiBhavarth: rawText,
-        englishTranslation: "",
-        spiritualInsight: "",
-      };
+    if (!dbContent) {
+      console.warn("Failed to store content in database");
     }
 
     return res.json({
@@ -176,9 +336,12 @@ Provide marathiBhavarth, englishTranslation, and spiritualInsight for this ovi.`
       englishTranslation: parsed.englishTranslation || "",
       spiritualInsight: parsed.spiritualInsight || "",
       timestamp: new Date().toISOString(),
+      aiProvider: aiProvider,
+      fromDatabase: false,
+      ...(generationError && { warning: `Used ${aiProvider} as fallback due to: ${generationError}` })
     });
   } catch (error: any) {
-    console.error("OpenAI API Error in /api/generate-ovi-content:", error);
+    console.error("AI API Error in /api/generate-ovi-content:", error);
     return res.status(500).json({
       error: error.message || "An error occurred while generating ovi content.",
     });
@@ -201,8 +364,8 @@ async function startServer() {
     });
   }
 
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Marathi Dnyaneshwari server listening on http://0.0.0.0:${PORT}`);
+  app.listen(PORT, "127.0.0.1", () => {
+    console.log(`Marathi Dnyaneshwari server listening on http://127.0.0.1:${PORT}`);
   });
 }
 

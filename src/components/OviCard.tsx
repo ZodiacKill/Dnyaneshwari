@@ -4,6 +4,7 @@ import { Volume2, VolumeX, Heart, Share2, Sparkles, Copy, Check, MessageSquare, 
 import { speakMarathiText, stopMarathiSpeech } from '../utils/audioUtils';
 import { ShareModal } from './ShareModal';
 import { generateOviContent, getCachedContent, hasCuratedContent, OviGeneratedContent } from '../utils/oviContentService';
+import { getBhavarthContentByChapterOvi } from '../database/bhavarthService';
 
 interface OviCardProps {
   ovi: Ovi;
@@ -33,63 +34,54 @@ export const OviCard: React.FC<OviCardProps> = ({
   const [aiContent, setAiContent] = useState<OviGeneratedContent | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [generateError, setGenerateError] = useState<string | null>(null);
+  const [hasDatabaseContent, setHasDatabaseContent] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
-  const hasTriggeredGeneration = useRef(false);
 
   // Determine if this ovi has real curated content
   const isCurated = hasCuratedContent(ovi.marathiBhavarth, ovi.englishTranslation);
 
-  // Effective content: curated > cached AI > freshly generated AI
-  const effectiveBhavarth = isCurated ? ovi.marathiBhavarth : (aiContent?.marathiBhavarth || "");
-  const effectiveEnglish = isCurated ? ovi.englishTranslation : (aiContent?.englishTranslation || "");
-  const effectiveInsight = isCurated ? ovi.spiritualInsight : (aiContent?.spiritualInsight || "");
-  const hasContent = !!(effectiveBhavarth || effectiveEnglish || effectiveInsight);
-
-  // Load cached content on mount
+  // Check database for existing content on mount
   useEffect(() => {
-    if (!isCurated) {
+    const checkDatabaseContent = async () => {
+      if (!isCurated) {
+        try {
+          const dbContent = getBhavarthContentByChapterOvi(ovi.chapterNumber, ovi.oviNumber);
+          if (dbContent) {
+            setAiContent({
+              marathiBhavarth: dbContent.marathi_bhavarth || "",
+              englishTranslation: dbContent.english_translation || "",
+              spiritualInsight: dbContent.spiritual_insight || "",
+              isGenerated: true,
+            });
+            setHasDatabaseContent(true);
+          }
+        } catch (error) {
+          console.warn("Failed to check database content:", error);
+        }
+      }
+    };
+
+    checkDatabaseContent();
+  }, [ovi.chapterNumber, ovi.oviNumber, isCurated]);
+
+  // Load cached content on mount (fallback if no database content)
+  useEffect(() => {
+    if (!isCurated && !hasDatabaseContent) {
       const cached = getCachedContent(ovi.id);
       if (cached) {
         setAiContent(cached);
       }
     }
-  }, [ovi.id, isCurated]);
+  }, [ovi.id, isCurated, hasDatabaseContent]);
 
-  // Auto-generate content when ovi scrolls into view (IntersectionObserver)
-  useEffect(() => {
-    if (isCurated || aiContent || hasTriggeredGeneration.current) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && !hasTriggeredGeneration.current) {
-          hasTriggeredGeneration.current = true;
-          handleGenerateContent();
-        }
-      },
-      { threshold: 0.3 }
-    );
-
-    if (cardRef.current) {
-      observer.observe(cardRef.current);
-    }
-
-    return () => {
-      if (cardRef.current) {
-        observer.unobserve(cardRef.current);
-      }
-      observer.disconnect();
-    };
-  }, [isCurated, aiContent]);
+  // Effective content: curated > database AI > cached AI > freshly generated AI
+  const effectiveBhavarth = isCurated ? ovi.marathiBhavarth : (aiContent?.marathiBhavarth || "");
+  const effectiveEnglish = isCurated ? ovi.englishTranslation : (aiContent?.englishTranslation || "");
+  const effectiveInsight = isCurated ? ovi.spiritualInsight : (aiContent?.spiritualInsight || "");
+  const hasContent = !!(effectiveBhavarth || effectiveEnglish || effectiveInsight);
 
   const handleGenerateContent = async (retryCount = 0) => {
     if (isGenerating || isCurated) return;
-
-    // Check cache one more time
-    const cached = getCachedContent(ovi.id);
-    if (cached) {
-      setAiContent(cached);
-      return;
-    }
 
     setIsGenerating(true);
     setGenerateError(null);
@@ -292,10 +284,10 @@ export const OviCard: React.FC<OviCardProps> = ({
 
       {/* Content Loading State */}
       {isGenerating && (
-        <div className="mt-3 flex items-center gap-2 p-3 bg-violet-50 rounded-xl border border-violet-200 animate-pulse">
-          <Loader2 className="w-4 h-4 text-violet-600 animate-spin" />
-          <span className="text-sm text-violet-700 font-medium">
-            भावार्थ, अनुवाद व बोध तयार होत आहे... (Generating content with AI...)
+        <div className="mt-3 flex items-center gap-2 p-3 bg-emerald-50 rounded-xl border border-emerald-200 animate-pulse">
+          <Loader2 className="w-4 h-4 text-emerald-600 animate-spin" />
+          <span className="text-sm text-emerald-700 font-medium">
+            भावार्थ तयार होत आहे... (Generating bhavarth with AI...)
           </span>
         </div>
       )}
@@ -306,7 +298,7 @@ export const OviCard: React.FC<OviCardProps> = ({
           <span className="text-sm text-red-700">{generateError}</span>
           <button
             onClick={handleGenerateContent}
-            className="text-xs bg-red-600 text-white px-3 py-1 rounded-lg font-bold hover:bg-red-700 flex items-center gap-1"
+            className="text-xs bg-emerald-600 text-white px-3 py-1 rounded-lg font-bold hover:bg-emerald-700 flex items-center gap-1"
           >
             <Wand2 className="w-3 h-3" />
             पुन्हा प्रयत्न करा
@@ -386,15 +378,15 @@ export const OviCard: React.FC<OviCardProps> = ({
         </div>
       )}
 
-      {/* Manual Generate Button - shown if no content and not loading */}
+      {/* Generate Bhavarth Button - shown if no content and not loading */}
       {!hasContent && !isGenerating && !generateError && (
         <div className="mt-3 flex justify-center">
           <button
             onClick={handleGenerateContent}
-            className="flex items-center gap-2 bg-gradient-to-r from-violet-600 to-purple-600 text-white px-4 py-2 rounded-xl font-bold text-sm hover:from-violet-700 hover:to-purple-700 shadow-md transition-all"
+            className="flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-600 text-white px-4 py-2 rounded-xl font-bold text-sm hover:from-emerald-700 hover:to-teal-700 shadow-md transition-all"
           >
             <Wand2 className="w-4 h-4" />
-            भावार्थ, अनुवाद व बोध तयार करा (Generate with AI)
+            भावार्थ तयार करा (Generate Bhavarth)
           </button>
         </div>
       )}

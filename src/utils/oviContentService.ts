@@ -84,8 +84,8 @@ export function hasCuratedContent(marathiBhavarth?: string, englishTranslation?:
 }
 
 /**
- * Generate content for an ovi via the server API with retry mechanism
- */
+  * Generate content for an ovi via the server API with retry mechanism
+  */
 export async function generateOviContent(
   oviId: string,
   originalMarathi: string,
@@ -101,7 +101,7 @@ export async function generateOviContent(
     const response = await fetch("/api/generate-ovi-content", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ originalMarathi, chapterNumber, oviNumber }),
+      body: JSON.stringify({ originalMarathi, chapterNumber, oviNumber, oviId }),
     });
 
     if (!response.ok) {
@@ -132,6 +132,46 @@ export async function generateOviContent(
     throw error;
   }
 }
+
+/**
+ * Check if content exists in database
+ */
+export async function checkContentExists(oviId: string): Promise<boolean> {
+  try {
+    const response = await fetch(`/api/bhavarth/${oviId}/exists`, {
+      method: 'HEAD',
+    });
+    return response.ok;
+  } catch (error) {
+    console.warn('Failed to check content existence:', error);
+    return false;
+  }
+}
+
+/**
+ * Get content from database
+ */
+export async function getDatabaseContent(oviId: string): Promise<OviGeneratedContent | null> {
+  try {
+    const response = await fetch(`/api/bhavarth/${oviId}`);
+    if (!response.ok) {
+      return null;
+    }
+    const data = await response.json();
+    
+    return {
+      marathiBhavarth: data.marathi_bhavarth || "",
+      englishTranslation: data.english_translation || "",
+      spiritualInsight: data.spiritual_insight || "",
+      isGenerated: true,
+    };
+  } catch (error) {
+    console.warn('Failed to get database content:', error);
+    return null;
+  }
+}
+
+
 
 /**
  * Clear all cached ovi content from localStorage
