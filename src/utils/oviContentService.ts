@@ -85,6 +85,7 @@ export function hasCuratedContent(marathiBhavarth?: string, englishTranslation?:
 
 /**
   * Generate content for an ovi via the server API with retry mechanism
+  * First checks database for existing content, then uses AI if not found
   */
 export async function generateOviContent(
   oviId: string,
@@ -97,6 +98,28 @@ export async function generateOviContent(
   const cached = getCachedContent(oviId);
   if (cached) return cached;
 
+  // Check database for existing content
+  try {
+    const dbResponse = await fetch(`/api/bhavarth/${oviId}`);
+    if (dbResponse.ok) {
+      const dbData = await dbResponse.json();
+      const content: OviGeneratedContent = {
+        marathiBhavarth: dbData.marathi_bhavarth || "",
+        englishTranslation: dbData.english_translation || "",
+        spiritualInsight: dbData.spiritual_insight || "",
+        isGenerated: true,
+      };
+      
+      // Cache it for future use
+      setCachedContent(oviId, content);
+      console.log(`Retrieved existing content from database for ovi ${oviId}`);
+      return content;
+    }
+  } catch (error) {
+    console.warn(`Failed to check database for ovi ${oviId}:`, error);
+  }
+
+  // If no content found in database, generate with AI
   try {
     const response = await fetch("/api/generate-ovi-content", {
       method: "POST",

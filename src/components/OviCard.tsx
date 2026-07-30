@@ -34,6 +34,7 @@ export const OviCard: React.FC<OviCardProps> = ({
   const [isGenerating, setIsGenerating] = useState(false);
   const [generateError, setGenerateError] = useState<string | null>(null);
   const [hasDatabaseContent, setHasDatabaseContent] = useState(false);
+  const [contentSource, setContentSource] = useState<'database' | 'ai' | null>(null);
   const cardRef = useRef<HTMLDivElement>(null);
 
   // Determine if this ovi has real curated content
@@ -54,6 +55,8 @@ export const OviCard: React.FC<OviCardProps> = ({
               isGenerated: true,
             });
             setHasDatabaseContent(true);
+            setContentSource('database');
+            console.log(`Loaded content from database for ovi ${ovi.id}`);
           }
         } catch (error) {
           console.warn("Failed to check database content:", error);
@@ -85,8 +88,11 @@ export const OviCard: React.FC<OviCardProps> = ({
 
     setIsGenerating(true);
     setGenerateError(null);
+    setHasDatabaseContent(false);
+    setContentSource(null);
 
     try {
+      // The generateOviContent function now automatically checks database first
       const content = await generateOviContent(
         ovi.id,
         ovi.originalMarathi,
@@ -94,6 +100,8 @@ export const OviCard: React.FC<OviCardProps> = ({
         ovi.oviNumber
       );
       setAiContent(content);
+      setContentSource('ai');
+      console.log(`Generated new AI content for ovi ${ovi.id}`);
     } catch (err: any) {
       // Retry on network errors or rate limits
       if (retryCount < 2 && (err.message?.includes('network') || err.message?.includes('rate') || err.message?.includes('timeout'))) {
@@ -277,6 +285,34 @@ export const OviCard: React.FC<OviCardProps> = ({
           {ovi.originalMarathi}
         </p>
       </div>
+
+      {/* Content Source Indicator */}
+      {contentSource && (
+        <div className="mt-2 flex items-center justify-center">
+          {contentSource === 'database' && (
+            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-green-100 text-green-800 text-xs font-medium rounded-full border border-green-200">
+              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+              <span>From Database</span>
+            </div>
+          )}
+          {contentSource === 'ai' && (
+            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-100 text-blue-800 text-xs font-medium rounded-full border border-blue-200">
+              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+              <span>AI Generated</span>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Database Loading Indicator */}
+      {!isCurated && !aiContent && !generateError && !contentSource && (
+        <div className="mt-2 flex items-center justify-center">
+          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 text-gray-600 text-xs font-medium rounded-full border border-gray-200">
+            <div className="w-2 h-2 bg-gray-400 rounded-full animate-pulse"></div>
+            <span>Checking database...</span>
+          </div>
+        </div>
+      )}
 
       {/* Content Loading State */}
       {isGenerating && (
