@@ -293,7 +293,10 @@ export const OviCard: React.FC<OviCardProps> = ({
         <div className="mt-3 flex items-center justify-between p-3 bg-red-50 rounded-xl border border-red-200">
           <span className="text-sm text-red-700">{generateError}</span>
           <button
-            onClick={handleGenerateContent}
+            onClick={(e) => {
+              e.preventDefault();
+              handleGenerateContent();
+            }}
             className="text-xs bg-emerald-600 text-white px-3 py-1 rounded-lg font-bold hover:bg-emerald-700 flex items-center gap-1"
           >
             <Wand2 className="w-3 h-3" />
@@ -378,7 +381,10 @@ export const OviCard: React.FC<OviCardProps> = ({
       {!hasContent && !isGenerating && !generateError && (
         <div className="mt-3 flex justify-center">
           <button
-            onClick={handleGenerateContent}
+            onClick={(e) => {
+              e.preventDefault();
+              handleGenerateContent();
+            }}
             className="flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-600 text-white px-4 py-2 rounded-xl font-bold text-sm hover:from-emerald-700 hover:to-teal-700 shadow-md transition-all"
           >
             <Wand2 className="w-4 h-4" />

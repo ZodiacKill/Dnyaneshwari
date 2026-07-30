@@ -16,6 +16,7 @@ import {
 
 dotenv.config();
 
+// Fix for CommonJS build
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
