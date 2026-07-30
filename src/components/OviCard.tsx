@@ -4,7 +4,6 @@ import { Volume2, VolumeX, Heart, Share2, Sparkles, Copy, Check, MessageSquare, 
 import { speakMarathiText, stopMarathiSpeech } from '../utils/audioUtils';
 import { ShareModal } from './ShareModal';
 import { generateOviContent, getCachedContent, hasCuratedContent, OviGeneratedContent } from '../utils/oviContentService';
-import { getBhavarthContentByChapterOvi } from '../database/bhavarthService';
 
 interface OviCardProps {
   ovi: Ovi;
@@ -45,8 +44,9 @@ export const OviCard: React.FC<OviCardProps> = ({
     const checkDatabaseContent = async () => {
       if (!isCurated) {
         try {
-          const dbContent = getBhavarthContentByChapterOvi(ovi.chapterNumber, ovi.oviNumber);
-          if (dbContent) {
+          const response = await fetch(`/api/bhavarth/chapter/${ovi.chapterNumber}/ovi/${ovi.oviNumber}`);
+          if (response.ok) {
+            const dbContent = await response.json();
             setAiContent({
               marathiBhavarth: dbContent.marathi_bhavarth || "",
               englishTranslation: dbContent.english_translation || "",
