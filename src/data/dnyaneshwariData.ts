@@ -1,42 +1,91 @@
 import { Chapter, Ovi } from "../types";
-import { CHAPTER_1_FULL_OVIS } from "./chapter1Ovis";
-import { CHAPTER_2_FULL_OVIS } from "./chapter2Ovis";
-import { CHAPTER_3_FULL_OVIS } from "./chapter3Ovis";
-import { CHAPTER_4_FULL_OVIS } from "./chapter4Ovis";
-import { CHAPTER_5_FULL_OVIS } from "./chapter5Ovis";
-import { CHAPTER_6_FULL_OVIS } from "./chapter6Ovis";
-import { CHAPTER_7_FULL_OVIS } from "./chapter7Ovis";
-import { CHAPTER_8_FULL_OVIS } from "./chapter8Ovis";
-import { CHAPTER_9_FULL_OVIS } from "./chapter9Ovis";
-import { CHAPTER_10_FULL_OVIS } from "./chapter10Ovis";
-import { CHAPTER_11_FULL_OVIS } from "./chapter11Ovis";
-import { CHAPTER_12_FULL_OVIS } from "./chapter12Ovis";
-import { CHAPTER_13_FULL_OVIS } from "./chapter13Ovis";
-import { CHAPTER_14_FULL_OVIS } from "./chapter14Ovis";
-import { CHAPTER_15_FULL_OVIS } from "./chapter15Ovis";
-import { CHAPTER_16_FULL_OVIS } from "./chapter16Ovis";
-import { CHAPTER_17_FULL_OVIS } from "./chapter17Ovis";
-import { CHAPTER_18_FULL_OVIS } from "./chapter18Ovis";
+import dnyaneshwariJson from "./Dhyaneshwari.json";
+
+function devanagariToAscii(str: string): string {
+  const map: Record<string, string> = {
+    '०': '0', '१': '1', '२': '2', '३': '3', '४': '4',
+    '५': '5', '६': '6', '७': '7', '८': '8', '९': '9'
+  };
+  return str.replace(/[०-९]/g, m => map[m]);
+}
+
+function parseVerseNumber(line: string): number | null {
+  const asciiLine = devanagariToAscii(line);
+  const match = asciiLine.match(/(?:॥|\|\||\||\(|\[)\s*(\d+)\s*(?:॥|\|\||\||\)|\])\s*$/) 
+             || asciiLine.match(/(\d+)\s*$/);
+  if (match) {
+    return parseInt(match[1], 10);
+  }
+  return null;
+}
+
+const CACHED_CHAPTERS: Record<number, Ovi[]> = {};
+
+function getReconstructedChapterOvis(chapterNumber: number): Ovi[] {
+  if (CACHED_CHAPTERS[chapterNumber]) {
+    return CACHED_CHAPTERS[chapterNumber];
+  }
+
+  const key = `chapter_${chapterNumber}` as keyof typeof dnyaneshwariJson;
+  const lines = dnyaneshwariJson[key];
+  if (!lines) return [];
+
+  const ovis: Ovi[] = [];
+  let currentGroup: string[] = [];
+  let index = 1;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    currentGroup.push(line);
+    const num = parseVerseNumber(line);
+
+    if (num !== null) {
+      const originalText = currentGroup.join(' ').trim();
+      const id = `${chapterNumber}.${index}`;
+      
+      const chapter = ALL_CHAPTERS.find(c => c.number === chapterNumber);
+      const curated = chapter?.keyOvis.find(o => o.oviNumber === index);
+
+      ovis.push({
+        id,
+        chapterNumber,
+        oviNumber: index,
+        originalMarathi: originalText,
+        marathiBhavarth: curated?.marathiBhavarth || "",
+        englishTranslation: curated?.englishTranslation || "",
+        spiritualInsight: curated?.spiritualInsight || "",
+        tags: curated?.tags || [`अध्याय ${chapterNumber}`, "ज्ञानेश्वरी"],
+        isFamous: curated?.isFamous || false
+      });
+
+      index++;
+      currentGroup = [];
+    }
+  }
+
+  CACHED_CHAPTERS[chapterNumber] = ovis;
+  return ovis;
+}
 
 const CHAPTER_DATASETS: Record<number, Ovi[]> = {
-  1: CHAPTER_1_FULL_OVIS,
-  2: CHAPTER_2_FULL_OVIS,
-  3: CHAPTER_3_FULL_OVIS,
-  4: CHAPTER_4_FULL_OVIS,
-  5: CHAPTER_5_FULL_OVIS,
-  6: CHAPTER_6_FULL_OVIS,
-  7: CHAPTER_7_FULL_OVIS,
-  8: CHAPTER_8_FULL_OVIS,
-  9: CHAPTER_9_FULL_OVIS,
-  10: CHAPTER_10_FULL_OVIS,
-  11: CHAPTER_11_FULL_OVIS,
-  12: CHAPTER_12_FULL_OVIS,
-  13: CHAPTER_13_FULL_OVIS,
-  14: CHAPTER_14_FULL_OVIS,
-  15: CHAPTER_15_FULL_OVIS,
-  16: CHAPTER_16_FULL_OVIS,
-  17: CHAPTER_17_FULL_OVIS,
-  18: CHAPTER_18_FULL_OVIS,
+  get 1() { return getReconstructedChapterOvis(1); },
+  get 2() { return getReconstructedChapterOvis(2); },
+  get 3() { return getReconstructedChapterOvis(3); },
+  get 4() { return getReconstructedChapterOvis(4); },
+  get 5() { return getReconstructedChapterOvis(5); },
+  get 6() { return getReconstructedChapterOvis(6); },
+  get 7() { return getReconstructedChapterOvis(7); },
+  get 8() { return getReconstructedChapterOvis(8); },
+  get 9() { return getReconstructedChapterOvis(9); },
+  get 10() { return getReconstructedChapterOvis(10); },
+  get 11() { return getReconstructedChapterOvis(11); },
+  get 12() { return getReconstructedChapterOvis(12); },
+  get 13() { return getReconstructedChapterOvis(13); },
+  get 14() { return getReconstructedChapterOvis(14); },
+  get 15() { return getReconstructedChapterOvis(15); },
+  get 16() { return getReconstructedChapterOvis(16); },
+  get 17() { return getReconstructedChapterOvis(17); },
+  get 18() { return getReconstructedChapterOvis(18); },
 };
 
 export const ALL_CHAPTERS: Chapter[] = [
@@ -45,7 +94,7 @@ export const ALL_CHAPTERS: Chapter[] = [
     sanskritName: "अर्जुनविषादयोग",
     marathiTitle: "अध्याय १: अर्जुनविषादयोग (मंगलाचरण व अर्जुनाचा मोह)",
     englishTitle: "Chapter 1: Arjuna Visada Yoga (Dejection of Arjuna)",
-    totalOvis: 275,
+    totalOvis: 314,
     themes: ["मंगलाचरण", "गणेश वंदना", "गुरु महिमा", "अर्जुनाचा शोक", "युद्धभूमी"],
     summaryMarathi: "ज्ञानेश्वरीच्या पहिल्या अध्यायात संत ज्ञानेश्वर महाराजांनी श्री गणेश, सरस्वती आणि श्रीगुरू निवृत्तीनाथांची अलौकिक वंदना केली आहे. कुरुक्षेत्रावर दोन्ही सैन्ये समोरासमोर उभी ठाकल्यावर आपल्याच आपतेष्टांना पाहून अर्जुनाचे मन काकुळतीला येते व तो धनुष्यबाण टाकून शोकग्रस्त होतो.",
     summaryEnglish: "The opening chapter begins with Saint Dnyaneshwar's sublime invocation to Lord Ganesha, Saraswati, and his Guru Nivrutthinath. On the battlefield of Kurukshetra, seeing his own relatives arrayed for war, Arjuna experiences deep moral sorrow and drops his bow in despondency.",
@@ -101,7 +150,7 @@ export const ALL_CHAPTERS: Chapter[] = [
     sanskritName: "सांख्ययोग",
     marathiTitle: "अध्याय २: सांख्ययोग (आत्मज्ञान व स्थितप्रज्ञ लक्षणे)",
     englishTitle: "Chapter 2: Sankhya Yoga (Wisdom of Soul & Sthitaprajna)",
-    totalOvis: 375,
+    totalOvis: 446,
     themes: ["आत्मज्ञान", "अमर आत्मा", "कर्मयोग", "स्थितप्रज्ञ", "स्वधर्म"],
     summaryMarathi: "दुसऱ्या अध्यायात भगवान श्रीकृष्ण अर्जुनाला आत्म्याचे अमरत्व समजावून सांगून शोकाचा परिहार करतात. शरीर नाशवंत आहे परंतु आत्मा अविनाशी आहे. याच अध्यायात स्थितप्रज्ञाची (स्थिर बुद्धीच्या मानवाची) अलौकिक लक्षणे ज्ञानेश्वरांनी अत्यंत रसाळ भाषेत वर्णन केली आहेत.",
     summaryEnglish: "In Chapter 2, Lord Krishna reveals the immortality of the Soul (Atman) and dispels Arjuna's sorrow. While the body perishes, the Atman is eternal. Saint Dnyaneshwar exquisitely describes the characteristics of 'Sthitaprajna' - the person of steady wisdom.",
@@ -157,7 +206,7 @@ export const ALL_CHAPTERS: Chapter[] = [
     sanskritName: "कर्मयोग",
     marathiTitle: "अध्याय ३: कर्मयोग (निष्काम कर्म व लोकसंग्रह)",
     englishTitle: "Chapter 3: Karma Yoga (Selfless Action & Social Harmony)",
-    totalOvis: 187,
+    totalOvis: 317,
     themes: ["निष्काम कर्म", "यज्ञ", "लोकसंग्रह", "सत्कर्म", "आसक्ति त्याग"],
     summaryMarathi: "या अध्यायात कर्मयोगाचे रहस्य उलगडले आहे. मनुष्य कर्माशिवाय एक क्षणही राहू शकत नाही. फळाची आशा न ठेवता ईश्वराला अर्पण भावनेने केलेले निष्काम कर्मच मनुष्याला बंधनातून मुक्त करते.",
     summaryEnglish: "Unveils the mystery of Karma Yoga. No living being can exist without action. Performing duties selflessly without obsession over results, as a divine offering, frees one from karmic bondage.",
@@ -191,7 +240,7 @@ export const ALL_CHAPTERS: Chapter[] = [
     sanskritName: "ज्ञानकर्मसंन्यासयोग",
     marathiTitle: "अध्याय ४: ज्ञानकर्मसंन्यासयोग (ज्ञानयज्ञ व अवतार रहस्य)",
     englishTitle: "Chapter 4: Jnana Karma Sanyasa Yoga (Wisdom & Divine Incarnation)",
-    totalOvis: 224,
+    totalOvis: 266,
     themes: ["अवतार रहस्य", "ज्ञानयज्ञ", "गुरु उपदेश", "संशय विनाश"],
     summaryMarathi: "भगवान श्रीकृष्णांनी धर्माच्या रक्षणासाठी होणाऱ्या आपल्या अवतारांचे रहस्य सांगितले. ज्ञानरूपी अग्नी सर्व कर्मांच्या भस्माला जाळून टाकतो आणि ज्ञानासारखे पवित्र या जगात दुसरे काहीही नाही.",
     summaryEnglish: "Lord Krishna reveals the purpose of divine incarnations to restore cosmic order. The fire of spiritual knowledge burns away karmic impressions; nothing in this world is as sacred as pure knowledge.",
@@ -225,7 +274,7 @@ export const ALL_CHAPTERS: Chapter[] = [
     sanskritName: "संन्यासयोग",
     marathiTitle: "अध्याय ५: संन्यासयोग (कर्मसंन्यास व कर्मयोग समानता)",
     englishTitle: "Chapter 5: Sanyasa Yoga (Renunciation & Action Equilibrium)",
-    totalOvis: 180,
+    totalOvis: 208,
     themes: ["संन्यास", "समदृष्टी", "ब्रह्मस्थिती", "अंतरंग शांती"],
     summaryMarathi: "कर्मसंन्यास (त्याग) आणि कर्मयोग (कर्तव्य) हे दोन्ही एकाच ध्येयाकडे नेतात. जो सर्व प्राण्यांमध्ये समदृष्टी ठेवतो आणि फळाची आसक्ती सोडतो, तो संन्यासीच आहे.",
     summaryEnglish: "Explains that true renunciation and selfless action lead to the same supreme state. One who maintains equal vision toward all beings and remains unattached is a true renunciate.",
@@ -248,7 +297,7 @@ export const ALL_CHAPTERS: Chapter[] = [
     sanskritName: "आत्मसंयमयोग",
     marathiTitle: "अध्याय ६: आत्मसंयमयोग / ध्यानयोग (कुंडलिनी व ध्यानधारणा)",
     englishTitle: "Chapter 6: Dhyana Yoga (Meditation & Kundalini Yoga)",
-    totalOvis: 496,
+    totalOvis: 525,
     themes: ["ध्यानसाधना", "कुंडलिनी योग", "मनोनिग्रह", "अभ्यास योग", "आसन"],
     summaryMarathi: "ज्ञानेश्वरीतील हा अत्यंत प्रसिद्ध अध्याय आहे. यात संत ज्ञानेश्वरांनी ध्यानमार्ग, आसनाची पद्धत, मन स्थिर करण्याचे उपाय आणि नाथ संप्रदायातील रहस्यमय कुंडलिनी महायोगाचे अत्यंत सुंदर वर्णन केले आहे.",
     summaryEnglish: "A famous chapter where Saint Dnyaneshwar elaborates on meditation techniques, posture, controlling the wandering mind, and the esoteric Kundalini awakening of the Natha lineage.",
@@ -282,7 +331,7 @@ export const ALL_CHAPTERS: Chapter[] = [
     sanskritName: "ज्ञानविज्ञानयोग",
     marathiTitle: "अध्याय ७: ज्ञानविज्ञानयोग (ईश्वराचे अष्टधा स्वरूप व भक्त प्रकार)",
     englishTitle: "Chapter 7: Jnana Vijnana Yoga (Divine Nature & Four Devotees)",
-    totalOvis: 178,
+    totalOvis: 525,
     themes: ["अष्टधा प्रकृति", "मायेशे जाळे", "चार प्रकारचे भक्त", "वासुदेवः सर्वम्"],
     summaryMarathi: "या अध्यायात भगवंताच्या अष्टधा प्रकृतीचे (पृथ्वी, जल, तेज, वायू, आकाश, मन, बुद्धी, अहंकार) वर्णन आहे. तसेच आर्त, जिज्ञासू, अर्थार्थी आणि ज्ञानी या चार प्रकारच्या भक्तांचे स्वरूप स्पष्ट केले आहे.",
     summaryEnglish: "Reveals the eightfold cosmic nature of the Divine and illuminates four types of devotees: the distressed, seeker of wealth, seeker of knowledge, and the enlightened sage.",
@@ -305,7 +354,7 @@ export const ALL_CHAPTERS: Chapter[] = [
     sanskritName: "अक्षरब्रह्मयोग",
     marathiTitle: "अध्याय ८: अक्षरब्रह्मयोग (परम गती व अंतकाळ स्मरण)",
     englishTitle: "Chapter 8: Aksara Brahma Yoga (Imperishable Absolute)",
-    totalOvis: 263,
+    totalOvis: 289,
     themes: ["अक्षर ब्रह्म", "अंतकाळ स्मरण", "ॐकार उपासना", "शाश्वत गती"],
     summaryMarathi: "या अध्यायात अंतकाळी भगवंताचे स्मरण करण्याचे महत्त्व सांगितले आहे. जो मनुष्य शेवटच्या क्षणी ज्या भावाने परमेश्वराचे ध्यान करतो, तो तसाच परम गतीला प्राप्त होतो.",
     summaryEnglish: "Discusses the mystery of the Imperishable Absolute and the significance of meditating on the Supreme Divine at the final moment of life.",
@@ -328,7 +377,7 @@ export const ALL_CHAPTERS: Chapter[] = [
     sanskritName: "राजविद्याराजगुह्ययोग",
     marathiTitle: "अध्याय ९: राजविद्याराजगुह्ययोग (सर्वश्रेष्ठ विद्या व अनन्य भक्ती)",
     englishTitle: "Chapter 9: Raja Vidya Raja Guhya Yoga (Royal Secret & Supreme Devotion)",
-    totalOvis: 535,
+    totalOvis: 555,
     themes: ["राजविद्या", "अनन्य भक्ती", "पत्रं पुष्पं फलं तोयं", "समर्पण"],
     summaryMarathi: "ज्ञानेश्वरीचा हा अत्यंत लाडका अध्याय मानला जातो. या अध्यायात भक्तीचा महामहिमा संगितला आहे. प्रेमाने अर्पण केलेले छोटेसे पान किंवा फूलसुद्धा भगवान अत्यंत आवडीने स्वीकारतात.",
     summaryEnglish: "Regarded as the spiritual heart of Dnyaneshwari. Highlights the sublime majesty of pure loving devotion. Even a leaf, flower, fruit, or water offered with genuine love is joyfully accepted by the Divine.",
@@ -362,7 +411,7 @@ export const ALL_CHAPTERS: Chapter[] = [
     sanskritName: "विभूतियोग",
     marathiTitle: "अध्याय १०: विभूटियोग (ईश्वराचे ऐश्वर्य व विभूती)",
     englishTitle: "Chapter 10: Vibhuti Yoga (Divine Manifestations & Splendor)",
-    totalOvis: 330,
+    totalOvis: 378,
     themes: ["विभूति", "सृष्टीतील सौंदर्य", "ईश्वरी अंश", "सर्वव्यापी"],
     summaryMarathi: "या अध्यायात भगवंताने आपल्या अनंत विभूतींचे वर्णन केले आहे. पर्वतांमध्ये हिमालय, नद्यांमध्ये गंगा, ऋषींमध्ये भृगु आणि प्रकाशणाऱ्यांमध्ये सूर्य ही भगवंताचीच विभूती आहे.",
     summaryEnglish: "Lord Krishna enumerates His endless cosmic manifestations. Among mountains He is the Himalayas, among rivers the Ganges, among lights the Sun.",
@@ -385,7 +434,7 @@ export const ALL_CHAPTERS: Chapter[] = [
     sanskritName: "विश्वरूपदर्शनयोग",
     marathiTitle: "अध्याय ११: विश्वरूपदर्शनयोग (विराट स्वरूप दर्शन)",
     englishTitle: "Chapter 11: Viswarupa Darsana Yoga (Cosmic Vision of God)",
-    totalOvis: 607,
+    totalOvis: 764,
     themes: ["विश्वरूप", "दिव्यदृष्टी", "कालरूप", "अद्भूत अनुभव"],
     summaryMarathi: "अर्जुन भगवंताला आपले विश्वरूप दाखवण्याची विनंती करतो. श्रीकृष्ण अर्जुनाला दिव्यदृष्टी देतात व संपूर्ण ब्रह्मांड आपल्या शरीरात दाखवतात. अर्जुनाला काळ आणि ब्रह्मांडाचे विस्मयकारक दर्शन होते.",
     summaryEnglish: "Arjuna requests to see the Universal Cosmic Form. Krishna grants him divine vision, revealing the entire cosmos, past, present, and future within His body.",
@@ -408,7 +457,7 @@ export const ALL_CHAPTERS: Chapter[] = [
     sanskritName: "भक्तियोग",
     marathiTitle: "अध्याय १२: भक्तियोग (सगुण-निर्गुण उपासना व उत्तम भक्ताची लक्षणे)",
     englishTitle: "Chapter 12: Bhakti Yoga (Qualities of a True Devotee)",
-    totalOvis: 245,
+    totalOvis: 268,
     themes: ["सगुण उपासना", "भक्त लक्षणे", "अद्वेष्टा सर्वभूतानां", "शांती"],
     summaryMarathi: "बारावा अध्याय हा भक्तीचा सुवर्णयोग आहे. यात संत ज्ञानेश्वरांनी खऱ्या भक्ताचे ३९ अलौकिक गुण वर्णन केले आहेत - जो कोणाचाही द्वेष करत नाही, सर्वांवर दया करतो, क्षमाशील व समाधानी राहतो तोच देवाला प्रिय असतो.",
     summaryEnglish: "The golden chapter of Devotion. Saint Dnyaneshwar outlines the qualities of an ideal Bhakta - non-envious, compassionate, forgiving, mentally serene, and devoted.",
@@ -442,7 +491,7 @@ export const ALL_CHAPTERS: Chapter[] = [
     sanskritName: "क्षेत्रक्षेत्रज्ञविभागयोग",
     marathiTitle: "अध्याय १३: क्षेत्रक्षेत्रज्ञविभागयोग (शरीर, आत्मा व २० ज्ञानलक्षणे)",
     englishTitle: "Chapter 13: Kshetra Kshetrajna Yoga (The Field & The Knower)",
-    totalOvis: 1162,
+    totalOvis: 1190,
     themes: ["क्षेत्र", "क्षेत्रज्ञ", "अमानित्वम्", "२० ज्ञानलक्षणे", "नम्रता"],
     summaryMarathi: "ज्ञानेश्वरीतील सर्वात मोठा व सखोल अध्याय. यात 'क्षेत्र' (शरीर व प्रकृती) आणि 'क्षेत्रज्ञ' (आत्मा) यांचा विवेक केला आहे. संत ज्ञानेश्वरांनी 'अमानित्व' (अहंकार नसणे) ते 'तत्त्वज्ञानार्थदर्शन' या २० ज्ञानलक्षणांचे ३५० हून अधिक ओव्यात अप्रतिम वर्णन केले आहे.",
     summaryEnglish: "The most voluminous and philosophical chapter distinguishing 'Kshetra' (the body/field) from 'Kshetrajna' (the Soul/Knower). Features a breathtaking exposition of 20 attributes of wisdom including Humility (Amanitvam).",
@@ -476,7 +525,7 @@ export const ALL_CHAPTERS: Chapter[] = [
     sanskritName: "गुणत्रयविभागयोग",
     marathiTitle: "अध्याय १४: गुणत्रयविभागयोग (सत्त्व, रज व तम गुण)",
     englishTitle: "Chapter 14: Gunatraya Vibhaga Yoga (Three Modes of Nature)",
-    totalOvis: 410,
+    totalOvis: 443,
     themes: ["सत्त्व गुण", "रज गुण", "तम गुण", "गुणातीत"],
     summaryMarathi: "प्रकृतीचे तीन गुण - सत्त्व (प्रकाश/ज्ञान), रज (तृष्णा/कर्म) आणि तम (आळस/अज्ञान) मानवी मनाला कसे बांधतात याचे विश्लेषण यात केले आहे. या तीन गुणांच्या पलीकडे जाणारा 'गुणातीत' होतो.",
     summaryEnglish: "Analyzes the three modes of cosmic energy - Sattva (purity/knowledge), Rajas (passion/action), and Tamas (darkness/inertia). Transcending all three leads to absolute freedom (Gunatita).",
@@ -499,7 +548,7 @@ export const ALL_CHAPTERS: Chapter[] = [
     sanskritName: "पुरुषोत्तमयोग",
     marathiTitle: "अध्याय १५: पुरुषोत्तमयोग (संसार वृक्ष व पुरुषोत्तम स्वरूप)",
     englishTitle: "Chapter 15: Purushottama Yoga (The Supreme Divine Person)",
-    totalOvis: 598,
+    totalOvis: 620,
     themes: ["ऊर्ध्वमूल वृक्ष", "संसार वृक्ष", "क्षर व अक्षर", "पुरुषोत्तम"],
     summaryMarathi: "या अध्यायात संसाराचे रूप 'ऊर्ध्वमूल' (वर मूळ असलेला) उलट्या वृक्षासारखे दिले आहे. वैराग्याच्या शस्त्राने या संसारवृक्षाचे मूळ छेदून परमात्मा पुरुषोत्तमाला प्राप्त करून घेणे हाच पुरुषार्थ आहे.",
     summaryEnglish: "Describes the cosmos as an inverted Ashvattha tree with roots above in the Supreme Divine. Armed with the axe of detachment, one cuts through worldly confusion to attain the Supreme Person.",
@@ -522,7 +571,7 @@ export const ALL_CHAPTERS: Chapter[] = [
     sanskritName: "दैवासुरसंपद्विभागयोग",
     marathiTitle: "अध्याय १६: दैवासुरसंपद्विभागयोग (दैवी व आसुरी संपत्ती)",
     englishTitle: "Chapter 16: Daivasura Sampad Vibhaga Yoga (Divine & Demonic Natures)",
-    totalOvis: 470,
+    totalOvis: 497,
     themes: ["दैवी संपदा", "आसुरी संपदा", "अभयं सत्त्वसंशुद्धिः", "नरकाची तीन द्वारे"],
     summaryMarathi: "मानवी स्वभावातील दैवी (अभय, सत्य, दया, क्षमा) आणि आसुरी (दंभ, दर्प, क्रोध, अज्ञान) प्रवृत्तींचे स्पष्ट वर्गीकरण. काम, क्रोध आणि लोभ हे आत्म्याचा नाश करणारे नरकाची तीन द्वारे आहेत.",
     summaryEnglish: "Contrasts divine qualities (fearlessness, truth, compassion) with demonic traits (arrogance, anger, deceit). Lust, anger, and greed are named as the three gates to self-destruction.",
@@ -545,7 +594,7 @@ export const ALL_CHAPTERS: Chapter[] = [
     sanskritName: "श्रद्धात्रयविभागयोग",
     marathiTitle: "अध्याय १७: श्रद्धात्रयविभागयोग (श्रद्धा, आहार व ॐ तत्सत्)",
     englishTitle: "Chapter 17: Shraddhatraya Vibhaga Yoga (Threefold Faith & Om Tat Sat)",
-    totalOvis: 419,
+    totalOvis: 462,
     themes: ["श्रद्धा", "सात्त्विक आहार", "तपस्या", "ॐ तत्सत्"],
     summaryMarathi: "मनुष्याची श्रद्धा त्याच्या गुणानुसार (सात्त्विक, राजसिक, तामसिक) असते. तसेच सात्त्विक आहार, वाणीचे तप आणि 'ॐ तत्सत्' या ब्रम्हनिर्देशाचे महत्त्व या अध्यायात वर्णन केले आहे.",
     summaryEnglish: "Explains how human faith, food choices, and speech habits align with the three Gunas. Reveals the divine mantra 'Om Tat Sat' that purifies all actions.",
@@ -568,7 +617,7 @@ export const ALL_CHAPTERS: Chapter[] = [
     sanskritName: "मोक्षसंन्यासयोग",
     marathiTitle: "अध्याय १८: मोक्षसंन्यासयोग (पसायदान व सार्वभौम शांती प्रार्थना)",
     englishTitle: "Chapter 18: Moksha Sanyasa Yoga (Final Liberation & Pasayadan)",
-    totalOvis: 1793,
+    totalOvis: 1894,
     themes: ["मोक्ष", "सर्वधर्मान्परित्यज्य", "पसायदान", "सार्वभौम शांती", "ज्ञानदेव"],
     summaryMarathi: "ज्ञानेश्वरीचा हा मुकुटमणी अध्याय. संपूर्ण गीतेचे सार ज्ञानेश्वरांच्या अलौकिक रसाळ ओव्यात प्रकट झाले आहे. अध्यायाच्या शेवटी संत ज्ञानेश्वर महाराजांनी संपूर्ण विश्वाच्या कल्याणासाठी श्री गुरूंकडे अलौकिक 'पसायदान' (वरप्रсад) मागितले आहे.",
     summaryEnglish: "The crowning glory of Dnyaneshwari. Summarizes all spiritual paths. Concludes with Sant Dnyaneshwar's immortal prayer 'Pasayadan' asking for universal happiness, peace, and enlightenment for all beings.",

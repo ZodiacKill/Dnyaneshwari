@@ -2,6 +2,7 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import { GoogleGenAI } from "@google/genai";
+import OpenAI from "openai";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -14,7 +15,7 @@ const PORT = 3000;
 
 app.use(express.json());
 
-// Initialize Gemini API client lazily / safely
+// Initialize Gemini API client lazily / safely (for Chintan AI)
 const getGeminiAI = () => {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
@@ -27,6 +28,17 @@ const getGeminiAI = () => {
         "User-Agent": "aistudio-build",
       },
     },
+  });
+};
+
+// Initialize OpenAI API client lazily / safely (for Ovi content generation)
+const getOpenAI = () => {
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) {
+    throw new Error("OPENAI_API_KEY environment variable is missing.");
+  }
+  return new OpenAI({
+    apiKey,
   });
 };
 
@@ -97,6 +109,78 @@ Please guide the user according to the philosophy of Sant Dnyaneshwar Maharaj in
     console.error("Gemini API Error in /api/ai-explain:", error);
     return res.status(500).json({
       error: error.message || "An error occurred while generating spiritual explanation.",
+    });
+  }
+});
+
+// AI Ovi Content Generation Endpoint (structured: bhavarth, english, bodh) - Using OpenAI
+app.post("/api/generate-ovi-content", async (req, res) => {
+  try {
+    const { originalMarathi, chapterNumber, oviNumber } = req.body;
+
+    if (!originalMarathi) {
+      return res.status(400).json({ error: "originalMarathi is required." });
+    }
+
+    const openai = getOpenAI();
+
+    const systemInstruction = `You are a deeply learned Marathi scholar specializing in Sant Dnyaneshwar Maharaj's 'Dnyaneshwari' (ज्ञानेश्वरी) - the revered 13th-century Marathi commentary on the Bhagavad Gita.
+
+Your task is to provide three pieces of content for a given Dnyaneshwari verse (ovi):
+
+1. **marathiBhavarth**: A clear, authentic Marathi explanation (भावार्थ) of the ovi. Write in simple, beautiful Marathi prose (2-4 sentences). Explain what Sant Dnyaneshwar is conveying.
+2. **englishTranslation**: A faithful English translation/meaning of the ovi (2-3 sentences). Capture the essence accurately.
+3. **spiritualInsight**: The गूढ अर्थ व बोध (hidden spiritual meaning and practical life lesson) in English (2-3 sentences). What deeper wisdom or life guidance does this verse offer?
+
+CRITICAL RULES:
+- Maintain deep reverence for Sant Dnyaneshwar Maharaj.
+- Be authentic and scholarly. Do NOT hallucinate or fabricate meanings.
+- If the verse is a simple connecting verse, still provide meaningful context.
+- Respond ONLY with valid JSON in this exact format (no markdown, no code fences):
+{"marathiBhavarth": "...", "englishTranslation": "...", "spiritualInsight": "..."}`;
+
+    const userPrompt = `Dnyaneshwari Adhyay ${chapterNumber}, Ovi ${oviNumber}:
+"${originalMarathi}"
+
+Provide marathiBhavarth, englishTranslation, and spiritualInsight for this ovi.`;
+
+    const response = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
+      messages: [
+        { role: "system", content: systemInstruction },
+        { role: "user", content: userPrompt }
+      ],
+      temperature: 0.4,
+      max_tokens: 500,
+    });
+
+    const rawText = response.choices[0]?.message?.content || "";
+
+    // Try to parse JSON from the response
+    let parsed: { marathiBhavarth?: string; englishTranslation?: string; spiritualInsight?: string } = {};
+    try {
+      // Strip markdown code fences if present
+      const jsonStr = rawText.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "").trim();
+      parsed = JSON.parse(jsonStr);
+    } catch {
+      // Fallback: return raw text as bhavarth
+      parsed = {
+        marathiBhavarth: rawText,
+        englishTranslation: "",
+        spiritualInsight: "",
+      };
+    }
+
+    return res.json({
+      marathiBhavarth: parsed.marathiBhavarth || "",
+      englishTranslation: parsed.englishTranslation || "",
+      spiritualInsight: parsed.spiritualInsight || "",
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error: any) {
+    console.error("OpenAI API Error in /api/generate-ovi-content:", error);
+    return res.status(500).json({
+      error: error.message || "An error occurred while generating ovi content.",
     });
   }
 });

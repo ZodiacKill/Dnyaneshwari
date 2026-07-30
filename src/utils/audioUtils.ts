@@ -69,7 +69,9 @@ export function stopMarathiSpeech() {
   if ('speechSynthesis' in window) {
     try {
       window.speechSynthesis.cancel();
-    } catch {}
+    } catch (error) {
+      console.warn("Error stopping Marathi speech:", error);
+    }
   }
   activeUtterance = null;
 }
@@ -149,13 +151,17 @@ function stopTanpura() {
     try {
       osc.stop();
       osc.disconnect();
-    } catch {}
+    } catch (error) {
+      console.warn("Error stopping tanpura oscillator:", error);
+    }
   });
   tanpuraOscillators = [];
   if (tanpuraGainNode) {
     try {
       tanpuraGainNode.disconnect();
-    } catch {}
+    } catch (error) {
+      console.warn("Error disconnecting tanpura gain node:", error);
+    }
   }
   isTanpuraPlaying = false;
 }
