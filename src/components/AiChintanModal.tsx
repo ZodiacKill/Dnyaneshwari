@@ -65,19 +65,27 @@ export const AiChintanModal: React.FC<AiChintanModalProps> = ({ initialOvi, onCl
         }),
       });
 
+      // Log response details for debugging
+      console.log('AI Chintan Response Status:', response.status);
+      console.log('AI Chintan Response Headers:', response.headers);
+
       // Handle different response formats
       let responseData;
       let contentType = response.headers.get('content-type');
       
       if (contentType && contentType.includes('application/json')) {
         responseData = await response.json();
+        console.log('AI Chintan JSON Response:', responseData);
       } else {
         // Handle plain text or HTML responses
-        responseData = { answer: await response.text() };
+        const textResponse = await response.text();
+        console.log('AI Chintan Text Response:', textResponse);
+        responseData = { answer: textResponse };
       }
 
       if (!response.ok) {
-        throw new Error(responseData.error || 'उत्तर मिळवताना त्रुटी आली.');
+        console.error('AI Chintan Error Response:', responseData);
+        throw new Error(responseData.error || `Server responded with ${response.status}: ${responseData.answer || 'उत्तर मिळवताना त्रुटी आली.'}`);
       }
 
       setAnswer(responseData.answer);

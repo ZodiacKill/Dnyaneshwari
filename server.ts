@@ -119,11 +119,15 @@ app.post("/api/ai-explain", async (req, res) => {
   try {
     const { question, verseContext, mode } = req.body;
 
+    console.log("AI Chintan Request:", { question, mode, verseContext });
+
     if (!question && !verseContext) {
       return res.status(400).json({ error: "Please provide a question or verse context." });
     }
 
-    const ai = getGeminiAI();
+    try {
+      const ai = getGeminiAI();
+      console.log("Gemini AI initialized successfully");
 
     let systemInstruction = `You are a deeply respectful, learned Marathi scholar and spiritual guide specializing in Sant Dnyaneshwar Maharaj's 'Dnyaneshwari' (ज्ञानेश्वरी) - the revered 13th-century Marathi commentary on the Bhagavad Gita.
 Your mission is to provide authentic, heartwarming, and profound explanations of Dnyaneshwari verses (ओवी), Marathi Bhavarth (भावार्थ), and spiritual wisdom.
@@ -157,21 +161,29 @@ ${verseContext ? `Context Verse: Adhyay ${verseContext.chapterNumber}, Ovi ${ver
 Please guide the user according to the philosophy of Sant Dnyaneshwar Maharaj in Dnyaneshwari. Provide both Marathi and English insights.`;
     }
 
-    const response = await ai.models.generateContent({
-      model: "gemini-3.6-flash",
-      contents: userPrompt,
-      config: {
-        systemInstruction,
-        temperature: 0.7,
-      },
-    });
+const response = await ai.models.generateContent({
+        model: "gemini-3.6-flash",
+        contents: userPrompt,
+        config: {
+          systemInstruction,
+          temperature: 0.7,
+        },
+      });
 
-    const text = response.text || "क्षमस्व, प्रतिसादाची प्रक्रिया पूर्ण होऊ शकली नाही. कृपया पुन्हा प्रयत्न करा.";
+      const text = response.text || "क्षमस्व, प्रतिसादाची प्रक्रिया पूर्ण होऊ शकली नाही. कृपया पुन्हा प्रयत्न करा.";
+      
+      console.log("AI Response generated successfully:", text);
 
-    return res.json({
-      answer: text,
-      timestamp: new Date().toISOString(),
-    });
+      return res.json({
+        answer: text,
+        timestamp: new Date().toISOString(),
+      });
+    } catch (aiError: any) {
+      console.error("Gemini AI Error in /api/ai-explain:", aiError);
+      return res.status(500).json({
+        error: `AI service error: ${aiError.message || "Unknown error occurred"}`
+      });
+    }
   } catch (error: any) {
     console.error("Gemini API Error in /api/ai-explain:", error);
     return res.status(500).json({
