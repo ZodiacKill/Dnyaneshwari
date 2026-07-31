@@ -361,6 +361,9 @@ Provide marathiBhavarth, englishTranslation, and spiritualInsight for this ovi.`
   }
 });
 
+// API routes must be defined before Vite middleware in development mode
+// This ensures API requests reach Express routes instead of being handled by Vite
+
 async function startServer() {
   if (process.env.NODE_ENV !== "production") {
     const { createServer: createViteServer } = await import("vite");
@@ -368,7 +371,15 @@ async function startServer() {
       server: { middlewareMode: true },
       appType: "spa",
     });
-    app.use(vite.middlewares);
+    
+    // Use Vite middleware for all requests except API routes
+    app.use((req, res, next) => {
+      if (!req.path.startsWith('/api/')) {
+        vite.middlewares(req, res, next);
+      } else {
+        next();
+      }
+    });
   } else {
     const distPath = path.join(process.cwd(), "dist");
     app.use(express.static(distPath));
