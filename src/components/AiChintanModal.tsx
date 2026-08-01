@@ -48,12 +48,7 @@ export const AiChintanModal: React.FC<AiChintanModalProps> = ({ initialOvi, onCl
     setAnswer(null);
 
     try {
-      // Use relative URL in production, explicit local URL in development
-      const apiUrl = process.env.NODE_ENV === 'development' 
-        ? 'http://127.0.0.1:3000/api/ai-explain'
-        : '/api/ai-explain';
-        
-      const response = await fetch(apiUrl, {
+      const response = await fetch('/api/ai-explain', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

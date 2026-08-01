@@ -161,14 +161,20 @@ ${verseContext ? `Context Verse: Adhyay ${verseContext.chapterNumber}, Ovi ${ver
 Please guide the user according to the philosophy of Sant Dnyaneshwar Maharaj in Dnyaneshwari. Provide both Marathi and English insights.`;
     }
 
-const response = await ai.models.generateContent({
-        model: "gemini-3.6-flash",
-        contents: userPrompt,
-        config: {
-          systemInstruction,
-          temperature: 0.7,
-        },
-      });
+      let response;
+      try {
+        response = await ai.models.generateContent({
+          model: "gemini-2.5-flash",
+          contents: userPrompt,
+          config: { systemInstruction, temperature: 0.7 },
+        });
+      } catch (e) {
+        response = await ai.models.generateContent({
+          model: "gemini-1.5-flash",
+          contents: userPrompt,
+          config: { systemInstruction, temperature: 0.7 },
+        });
+      }
 
       const text = response.text || "क्षमस्व, प्रतिसादाची प्रक्रिया पूर्ण होऊ शकली नाही. कृपया पुन्हा प्रयत्न करा.";
       
@@ -299,14 +305,20 @@ CRITICAL RULES:
 
 Provide marathiBhavarth, englishTranslation, and spiritualInsight for this ovi.`;
 
-        const response = await gemini.models.generateContent({
-          model: "gemini-3.6-flash",
-          contents: userPrompt,
-          config: {
-            systemInstruction,
-            temperature: 0.4,
-          },
-        });
+        let response;
+        try {
+          response = await gemini.models.generateContent({
+            model: "gemini-2.5-flash",
+            contents: userPrompt,
+            config: { systemInstruction, temperature: 0.4 },
+          });
+        } catch (e) {
+          response = await gemini.models.generateContent({
+            model: "gemini-1.5-flash",
+            contents: userPrompt,
+            config: { systemInstruction, temperature: 0.4 },
+          });
+        }
 
         const rawText = (response.text || "").trim();
 
