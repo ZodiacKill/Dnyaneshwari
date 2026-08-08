@@ -54,8 +54,6 @@ function getReconstructedChapterOvis(chapterNumber: number): Ovi[] {
         marathiBhavarth: curated?.marathiBhavarth || "",
         englishTranslation: curated?.englishTranslation || "",
         spiritualInsight: curated?.spiritualInsight || "",
-        tags: curated?.tags || [`अध्याय ${chapterNumber}`, "ज्ञानेश्वरी"],
-        isFamous: curated?.isFamous || false
       });
 
       index++;
@@ -107,8 +105,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "हे आद्य आत्मरूपा, वेदांनी प्रतिपादन केलेल्या, स्वसंवेद्य असलेल्या श्री परमेश्वरा (श्री गणेशा), तुला माझा नम्र नमस्कार असो!",
         englishTranslation: "Om! Salutations to the Primal One, praised by the Vedas, self-cognizable, and the supreme embodied Soul! Victory to Thee!",
         spiritualInsight: "Sant Dnyaneshwar begins the sacred Dnyaneshwari by worshipping the Absolute Divine (Omkar / Ganesh) as the essence of knowledge and spiritual truth.",
-        tags: ["मंगलाचरण", "गणेश वंदना", "Devotion", "Guru"],
-        isFamous: true,
       },
       {
         id: "1.2",
@@ -118,8 +114,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "श्री निवृत्तीनाथांचा दास असणारा ज्ञानदेव म्हणतो, हे देवा! तूच सर्व बुद्धीला प्रकाश देणारा श्रीगणेश आहेस, माझी ही प्रार्थना ऐक.",
         englishTranslation: "Saint Dnyaneshwar, servant of Nivrutthinath, says: 'O Lord, Thou art indeed Ganesha, the illuminator of all intelligence.'",
         spiritualInsight: "Highlights that true wisdom and sharp discernment emanate from divine grace and masterly devotion.",
-        tags: ["गणेश वंदना", "Wisdom", "Devotion"],
-        isFamous: true,
       },
       {
         id: "1.21",
@@ -129,8 +123,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "ज्यांच्या चरणकमलांच्या छायेमध्ये परिपूर्णता लाभते, त्या श्रीगुरू निवृत्तीनाथांच्या अपार कृपेने हा ग्रंथ परिपूर्ण सिद्धीला जावो.",
         englishTranslation: "Under the benign shadow of Sri Guru Nivrutthinath's lotus feet, may this sacred commentary reach absolute completion through divine grace.",
         spiritualInsight: "Shows the unmatched importance of Guru's grace in completing noble spiritual endeavors.",
-        tags: ["गुरु महिमा", "Guru Grace", "Devotion"],
-        isFamous: true,
       },
       {
         id: "1.85",
@@ -140,8 +132,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "अर्जुन श्रीकृष्णाला म्हणतो - हे कृष्णा, हे माझे मित्र आणि नातेवाईक आहेत. यांना मारून पापाशिवाय मला काय मिळणार आहे बरे?",
         englishTranslation: "Arjuna pleads to Krishna - 'O Krishna, killing these friends and kinsmen will bring us nothing but grief and sin.'",
         spiritualInsight: "Illustrates human attachment and ethical conflict when worldly bonds overshadow cosmic duty (Svadharma).",
-        tags: ["अर्जुनाचा शोक", "Compassionate Dilemma", "Svadharma"],
-        isFamous: false,
       }
     ]
   },
@@ -163,8 +153,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "ज्याप्रमाणे मनुष्य जुने वस्त्र टाकून नवीन वस्त्र परिधान करतो, त्याचप्रमाणे चैतन्य स्वरूप आत्मा जुने देहावसान सोडून नवीन देह धारण करतो.",
         englishTranslation: "Just as a person discards worn-out garments and dons new ones, the eternal Soul leaves aging bodies and assumes new forms.",
         spiritualInsight: "Reminds us that physical demise is merely a change of clothing for the immortal divine consciousness within.",
-        tags: ["अमर आत्मा", "Soul", "Immortality"],
-        isFamous: true,
       },
       {
         id: "2.47",
@@ -174,8 +162,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "हे धनुर्धरा अर्जुना! केवळ निष्काम कर्तव्य कर्म करण्यावरच तुझा अधिकार आहे. परंतु कर्माच्या फळाची इच्छा किंवा हाव तू कधीही धरू नकोस.",
         englishTranslation: "Your right is to work alone, never to its fruits. Let not the fruit of action be your motive.",
         spiritualInsight: "The timeless core principle of Nishkama Karma - focus purely on flawless effort without anxiety over outcomes.",
-        tags: ["कर्मयोग", "Nishkama Karma", "Duty"],
-        isFamous: true,
       },
       {
         id: "2.256",
@@ -185,8 +171,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "ज्याच्या मनात चंचल विषयांची आवड संपली आहे आणि विषयांचा पूर्ण विसर पडला आहे, त्यालाच खरोखर 'स्थितप्रज्ञ' (स्थिर बुद्धीचा योगी) समजावे.",
         englishTranslation: "He whose mind and intellect remain unagitated amidst sensory attractions is truly known as Sthitaprajna - one of steady wisdom.",
         spiritualInsight: "Equanimity and mastery over sensory impulses lead to unshakeable inner peace and spiritual poise.",
-        tags: ["स्थितप्रज्ञ", "Mind Control", "Equanimity"],
-        isFamous: true,
       },
       {
         id: "2.312",
@@ -196,8 +180,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "ज्याप्रमाणे समुद्र आपली मर्यादा कधीही सोडत नाही, त्याचप्रमाणे धीर गंभीर पुरुष सुख आणि दुःखाच्या प्रसंगी आपली शांती गमावत नाही.",
         englishTranslation: "Like the ocean that never overflows its boundaries, the steadfast individual remains undisturbed amidst pleasure and pain.",
         spiritualInsight: "True spiritual depth accommodates the tides of life without losing inner calm.",
-        tags: ["स्थितप्रज्ञ", "Inner Peace", "Equanimity"],
-        isFamous: true,
       }
     ]
   },
@@ -219,8 +201,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "म्हणून हे अर्जुना, कर्माच्या फळाची आशा सोडून देऊन आपले कर्तव्य कर्म कर. त्यामुळे संसाराचे बंधन तुला त्रास देणार नाही.",
         englishTranslation: "O Arjuna, perform your duty abandoning desire for fruits; thus you shall break free from the bondage of worldly attachment.",
         spiritualInsight: "Focusing on the purity of action rather than anxiety for results grants mental clarity and freedom.",
-        tags: ["निष्काम कर्म", "Selfless Duty", "Karma"],
-        isFamous: true,
       },
       {
         id: "3.155",
@@ -230,8 +210,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "ज्या ज्या प्राण्याला तू भेटशील, त्या प्रत्येकात परमेश्वराचेच रूप आहे असे मानणे, हाच खरा भक्तीचा श्रेष्ठ मार्ग आहे.",
         englishTranslation: "Seeing the Supreme Divinity in every living creature that you meet is the true and sure path of devotion.",
         spiritualInsight: "Universal brotherhood and reverence for all beings is the highest culmination of spiritual action.",
-        tags: ["लोकसंग्रह", "Universal Love", "Bhakti"],
-        isFamous: true,
       }
     ]
   },
@@ -253,8 +231,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "जेव्हा जेव्हा या पृथ्वीवर अधर्माची वाढ होते आणि धर्माचे तेज मंदावते, तेव्हा साधूंच्या रक्षणासाठी आणि धर्माच्या पुनरुत्थानासाठी मी अवतार घेतो.",
         englishTranslation: "Whenever righteousness declines and unrighteousness prevails upon the earth, I manifest Myself to protect the good.",
         spiritualInsight: "Divine grace intervenes continuously to preserve truth, goodness, and cosmic balance.",
-        tags: ["अवतार रहस्य", "Divine Grace", "Dharma"],
-        isFamous: true,
       },
       {
         id: "4.164",
@@ -264,8 +240,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "ज्ञानासारखे पवित्र आणि निर्मल या जगात दुसरे काहीही नाही. ते ज्ञानरूपी प्रकाशाने संपूर्ण अंतःकरण उजळून टाकते.",
         englishTranslation: "Indeed, there is nothing in this world as purifying as divine wisdom. The lamp of knowledge dissolves all doubts.",
         spiritualInsight: "Truth dispels darkness and ignorance, liberating the human mind.",
-        tags: ["ज्ञानयज्ञ", "Wisdom", "Self Knowledge"],
-        isFamous: true,
       }
     ]
   },
@@ -287,8 +261,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "जो कोणाचाही द्वेष करत नाही आणि कशाचीही वासना धरत नाही, जो सदा सर्व प्राण्यांमध्ये समचित्त व साक्षी राहतो, तोच खरा संन्यासी होय.",
         englishTranslation: "He who neither hates nor craves, remaining balanced and witnessing all, is perpetually a true renunciate.",
         spiritualInsight: "True renunciation is a state of inner detachment and peaceful observation, not mere outer withdrawal.",
-        tags: ["संन्यास", "Equanimity", "Witnessing"],
-        isFamous: true,
       }
     ]
   },
@@ -310,8 +282,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "मनुष्य स्वतःच आपला मित्र आहे आणि स्वतःच आपला शत्रू आहे. ज्याने आपले मन जिंकले तो आनंदाचा सागर बनतो.",
         englishTranslation: "A person is their own friend and their own enemy. One who masters their mind discovers an ocean of peace.",
         spiritualInsight: "Self-mastery begins inside the mind; internal thoughts shape external reality.",
-        tags: ["मनोनिग्रह", "Mind Mastery", "Self-Help"],
-        isFamous: true,
       },
       {
         id: "6.335",
@@ -321,8 +291,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "हे धनुर्धरा अर्जुना, मन अत्यंत चंचल आहे; परंतु निरंतर सराव (अभ्यास) आणि वैराग्याचा आश्रय घेतल्याने ते नक्कीच स्थिर होते.",
         englishTranslation: "Doubtless, O Arjuna, the mind is restless and difficult to curb; but by persistent practice and dispassion, it is stilled.",
         spiritualInsight: "Patience and daily spiritual practice overcome even the most turbulent thoughts.",
-        tags: ["अभ्यास योग", "Practice", "Mindfulness"],
-        isFamous: true,
       }
     ]
   },
@@ -344,8 +312,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "चार प्रकारचे भक्त माझी भक्ती करतात - आर्त, जिज्ञासू, अर्थार्थी आणि ज्ञानी. त्या सर्वांमध्ये ज्ञानी भक्त हा माझा प्रत्यक्ष आत्माच आहे.",
         englishTranslation: "Four kinds of virtuous souls worship Me; among them, the enlightened sage of wisdom is My very Soul.",
         spiritualInsight: "Devotion integrated with divine knowledge is the supreme union with the Almighty.",
-        tags: ["भक्त प्रकार", "Devotion", "Wisdom"],
-        isFamous: true,
       }
     ]
   },
@@ -367,8 +333,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "मनुष्य अंतकाळी ज्या ज्या भावाचे ध्यान करत शरीर सोडतो, तो त्याच भावाला आणि गतीला प्राप्त होतो.",
         englishTranslation: "Whatever state of being a person remembers when relinquishing the body, to that very state they attain.",
         spiritualInsight: "What we contemplate throughout life shapes our ultimate spiritual destiny.",
-        tags: ["अंतकाळ स्मरण", "Mindfulness", "Destiny"],
-        isFamous: false,
       }
     ]
   },
@@ -390,8 +354,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "जो मला भक्तीने पान, फूल, फळ किंवा केवळ थोडे पाणी अर्पण करतो, त्या निष्पाप भक्ताचा प्रेमोपहार माझ्या अंतराला तृप्त करतो.",
         englishTranslation: "Whoever offers Me with love and devotion a leaf, a flower, a fruit, or water - I accept that offering of a pure heart.",
         spiritualInsight: "God values the purity of love and devotion above all material wealth or grand rituals.",
-        tags: ["अनन्य भक्ती", "Devotion", "Surrender"],
-        isFamous: true,
       },
       {
         id: "9.520",
@@ -401,8 +363,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "जे अनन्यभावाने माझे निरंतर चिंतन करत उपासना करतात, अशा नित्ययुक्त भक्तांचा योगक्षेम (रक्षण व पोषण) मी स्वतः वहन करतो.",
         englishTranslation: "To those who worship Me with undivided concentration, constantly meditating on Me, I personally carry what they lack and preserve what they have.",
         spiritualInsight: "Total trust in the Divine brings supreme protection and freedom from fear.",
-        tags: ["योगक्षेम", "Divine Protection", "Faith"],
-        isFamous: true,
       }
     ]
   },
@@ -424,8 +384,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "ज्या ज्या वस्तू किंवा प्राण्यामध्ये सौंदर्य, ऐश्वर्य आणि तेज दिसून येते, ते सर्व माझ्याच तेजाच्या अंशापासून उत्पन्न झाले आहे असे समज.",
         englishTranslation: "Whatever is glorious, beautiful, or mighty in this universe - know that to be a spark of My divine splendor.",
         spiritualInsight: "Recognize the Divine in all beauty, excellence, and grandeur surrounding us.",
-        tags: ["विभूती", "Cosmic Beauty", "God in Nature"],
-        isFamous: true,
       }
     ]
   },
@@ -447,8 +405,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "आकाशात हजारो सूर्य एकाच वेळी प्रकाशले तर जे अलौकिक तेज निर्माण होईल, तसे दिव्य तेज त्या विश्वरूपाचे दिसू लागले.",
         englishTranslation: "If the radiance of a thousand suns were to burst forth at once in the sky, that would resemble the splendor of the Mighty Lord.",
         spiritualInsight: "The awe-inspiring infinity of God surpasses human comprehension.",
-        tags: ["विश्वरूप", "Cosmic Vision", "Light"],
-        isFamous: true,
       }
     ]
   },
@@ -470,8 +426,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "जो कोणत्याही प्राण्याचा द्वेष करत नाही, सर्वांचा मित्र व दयाळू आहे, ज्याला कशाचाही अहंपणा व ममता नाही, असा भक्त मला प्रिय आहे.",
         englishTranslation: "He who holds no hatred toward any living creature, who is friendly and compassionate, free from egoism and possessiveness, balanced in joy and sorrow...",
         spiritualInsight: "Universal friendliness, freedom from envy, and quiet humility define true spiritual maturity.",
-        tags: ["भक्त लक्षणे", "Compassion", "Non-Envy"],
-        isFamous: true,
       },
       {
         id: "12.210",
@@ -481,8 +435,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "जो सतत अंतःकरणात समाधानी असतो, ज्याचे मन व बुद्धी मला अर्पण झालेली आहे, असा दृढनिश्चयी भक्त मला प्राणापेक्षा प्रिय आहे.",
         englishTranslation: "He who is ever contented, self-controlled, steadfast in conviction, with mind and intellect surrendered to Me - that devotee is dear to Me.",
         spiritualInsight: "Contentment with life's unfolding brings divine favor and joy.",
-        tags: ["भक्त लक्षणे", "Contentment", "Surrender"],
-        isFamous: true,
       }
     ]
   },
@@ -504,8 +456,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "मान-सन्मानाची मुळीच अपेक्षा नसणे (अमानित्व), नम्रतेची मूर्ती बनून राहणे, दंभ नसणे व आत्मस्थिती प्राप्त होणे ही ज्ञानाची लक्षणे आहेत.",
         englishTranslation: "Humility, unpretentiousness, non-violence, forbearance, uprightness, service to the Guru, purity, and steadfastness are the true signs of Wisdom.",
         spiritualInsight: "True knowledge begins with genuine humility and freedom from spiritual pride.",
-        tags: ["२० ज्ञानलक्षणे", "Humility", "Wisdom"],
-        isFamous: true,
       },
       {
         id: "13.410",
@@ -515,8 +465,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "ज्याच्या मनात अहंकाराचा लवलेशही उरलेला नाही, तोच खरा ज्ञानी पुरुष होय.",
         englishTranslation: "He within whose heart not even a trace of egoism remains is to be recognized as a true sage.",
         spiritualInsight: "Egoism blinds; its dissolution brings luminous spiritual sight.",
-        tags: ["अमानित्वम्", "Ego-dissolution", "Humility"],
-        isFamous: true,
       }
     ]
   },
@@ -538,8 +486,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "सत्त्वगुण मनुष्याला सुखात व ज्ञानात जोडतो, रजोगुण कर्मात गुंतवतो आणि तमोगुण अज्ञानाच्या अंधारात गुंफून ठेवतो.",
         englishTranslation: "Sattva binds one to happiness, Rajas to relentless action, while Tamas veils wisdom and leads to delusion.",
         spiritualInsight: "Cultivate Sattva first to overcome Tamas and Rajas, then transcend even Sattva to reach pure Soul awareness.",
-        tags: ["त्रिगुण", "Sattva", "Gunatita"],
-        isFamous: false,
       }
     ]
   },
@@ -561,8 +507,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "वर मूळ व खाली फांद्या असलेला हा संसारवृक्ष अपार आहे. दृढ वैराग्यरूपी असंगशस्त्राने याला छेदून परमात्म्याला भजावे.",
         englishTranslation: "Rooted above with branches below, this eternal world-tree must be severed with the sharp axe of non-attachment.",
         spiritualInsight: "Detach from temporary worldly illusions to connect with the timeless supreme Reality.",
-        tags: ["संसार वृक्ष", "Purushottama", "Detachment"],
-        isFamous: true,
       }
     ]
   },
@@ -584,8 +528,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "निर्भयता, चित्ताची शुद्धी, ज्ञानयोगात स्थैर्य, दान, संयम, दया आणि सरळपणा ही दैवी संपदा आहे.",
         englishTranslation: "Fearlessness, purity of heart, steadfastness in knowledge, charity, self-restraint, self-study, and uprightness constitute the divine heritage.",
         spiritualInsight: "Cultivating fearlessness and inner purity unlocks spiritual nobility.",
-        tags: ["दैवी संपदा", "Virtues", "Purity"],
-        isFamous: true,
       }
     ]
   },
@@ -607,8 +549,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "कोणालाही उद्वेग न देणारे, सत्य, प्रिय आणि हितकारक बोलणे तसेच सद्ग्रंथांचा निरंतर अभ्यास करणे याला वाणीचे तप म्हणतात.",
         englishTranslation: "Words that cause no distress, truthful, pleasant, beneficial, and regular recitation of sacred scriptures constitute the austerity of speech.",
         spiritualInsight: "Mindful, truthful, and uplifting speech is a high form of spiritual discipline.",
-        tags: ["वाणीचे तप", "Truthful Speech", "Austerity"],
-        isFamous: true,
       }
     ]
   },
@@ -630,8 +570,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "सर्व उपाधी व धर्म सोडून केवळ एका मला शरण ये. मी तुला सर्व पापातून मुक्त करीन, शोक करू नकोस.",
         englishTranslation: "Abandoning all relative duties, surrender unto Me alone. I shall liberate you from all sins; grieve not.",
         spiritualInsight: "Complete, fearless surrender to the Divine Source leads to absolute liberation.",
-        tags: ["शरणागती", "Surrender", "Liberation"],
-        isFamous: true,
       },
       {
         id: "18.1790",
@@ -641,8 +579,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "आता या माझ्या वाग्यज्ञाने (ज्ञानेश्वरी ग्रंथाने) विश्वात्मक परमेश्वर संतोषित होवो आणि मला हे पसायदान (प्रसादाचे दान) देवो...",
         englishTranslation: "Now may the Supreme Divine Soul of the Universe be pleased with this literary offering, and grant me this holy benediction...",
         spiritualInsight: "Sant Dnyaneshwar asks not for personal fame or wealth, but for universal enlightenment and peace.",
-        tags: ["पसायदान", "Pasayadan", "Universal Peace", "Benediction"],
-        isFamous: true,
       },
       {
         id: "18.1791",
@@ -652,8 +588,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "दुर्जनांची कुबुद्धी नष्ट होवो, त्यांची सत्कर्मात आवडी वाढो आणि सर्व प्राण्यांमध्ये एकमेकांबद्दल जिव्हाळ्याची मैत्री निर्माण होवो.",
         englishTranslation: "May the wickedness of evil-minded people cease; may their love for righteous deeds grow, and may all living beings foster heart-felt friendship.",
         spiritualInsight: "Prayer for the transformation of evil into goodness and cosmic friendliness among all creatures.",
-        tags: ["पसायदान", "Pasayadan", "Universal Love"],
-        isFamous: true,
       },
       {
         id: "18.1792",
@@ -663,8 +597,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "पापांचा आणि अज्ञानाचा अंधार नाहीसा होवो! संपूर्ण विश्वाला स्वधर्माचा सूर्य प्राप्त होवो आणि प्रत्येक प्राण्याला ज्याची इच्छा असेल ते मिळो.",
         englishTranslation: "May the darkness of sins vanish; may the universe behold the sun of Self-duty; and may every creature attain whatever wholesome thing it desires.",
         spiritualInsight: "Universal abundance, truth, and spiritual illumination for all humankind.",
-        tags: ["पसायदान", "Pasayadan", "Illumination"],
-        isFamous: true,
       },
       {
         id: "18.1793",
@@ -674,8 +606,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "सर्व मंगल गोष्टींचा वर्षाव करणारे ईश्वरनिष्ठ सज्जन लोक या पृथ्वीतलावर सर्व प्राण्यांना सतत भेटत राहीत.",
         englishTranslation: "May assemblies of God-realized saintly souls, showering all auspicious blessings, continuously grace this earth and meet all living beings.",
         spiritualInsight: "May saintly souls and noble teachers guide humanity continuously toward light.",
-        tags: ["पसायदान", "Pasayadan", "Saints"],
-        isFamous: true,
       },
       {
         id: "18.1794",
@@ -685,8 +615,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "जे सज्जन म्हणजे चालते-बोलते कल्पवृक्षांचे बगीचे आहेत, सजीव चिंतामणींचे गाव आहेत आणि अमृताचे बोलणारे सागर आहेत...",
         englishTranslation: "Saintly people are like walking orchards of wish-fulfilling trees, villages of living gems, and vocal oceans of celestial nectar...",
         spiritualInsight: "Poetic tribute to the unconditional grace and wisdom of enlightened saints.",
-        tags: ["पसायदान", "Pasayadan", "Saints"],
-        isFamous: true,
       },
       {
         id: "18.1795",
@@ -696,8 +624,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "जे डागरहित चंद्र आहेत, तापहीन सूर्य आहेत, असे सज्जन सर्वांचे सदा आप्त आणि मित्र बनोत.",
         englishTranslation: "May these saintly souls - who are like spotless moons and non-scorching suns - become close kinsmen and well-wishers to everyone.",
         spiritualInsight: "Cooling light and soothing warmth for all suffering humanity.",
-        tags: ["पसायदान", "Pasayadan", "Peace"],
-        isFamous: true,
       },
       {
         id: "18.1796",
@@ -707,8 +633,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "किंबहुना तिन्ही लोकांतील सर्व जीव परिपूर्ण सुखी होऊन त्या आदिपुरुषाची अखंड भक्ती करोत.",
         englishTranslation: "In short, may all beings in all three worlds become completely fulfilled in bliss, perpetually worshipping the Primal Divine Being.",
         spiritualInsight: "Ultimate spiritual prayer for boundless joy and eternal devotion.",
-        tags: ["पसायदान", "Pasayadan", "Universal Joy"],
-        isFamous: true,
       },
       {
         id: "18.1798",
@@ -718,8 +642,6 @@ export const ALL_CHAPTERS: Chapter[] = [
         marathiBhavarth: "येथे श्रीगुरू निवृत्तीनाथ (विश्वेशराव) म्हणाले, 'हा तुझा वरप्रसाद तुला नक्की मिळेल!' या आशीर्वादाने ज्ञानदेव अत्यंत सुखी झाले.",
         englishTranslation: "Thereupon Sri Nivrutthinath declared: 'This prayer shall surely be granted!' Blessed with this divine grace, Dnyandev became immensely fulfilled.",
         spiritualInsight: "The fulfillment of Sant Dnyaneshwar's prayer brings divine assurance of peace and bliss.",
-        tags: ["पसायदान", "Pasayadan", "Grace"],
-        isFamous: true,
       }
     ]
   }
@@ -756,8 +678,6 @@ export function getOvi(chapterNumber: number, oviNumber: number): Ovi {
     marathiBhavarth: `अध्याय ${chNum} (${chapter?.marathiTitle || ''}) मधील ओवी क्रमांक ${oviNumber}. संत ज्ञानेश्वर महाराज या ओवीत ${theme} विषयाचे गूढ निरूपण प्रस्तुत करतात.`,
     englishTranslation: `In Chapter ${chNum} (${chapter?.englishTitle || 'Dnyaneshwari'}), Ovi ${oviNumber}, Saint Dnyaneshwar illuminates the profound spiritual wisdom regarding ${theme}.`,
     spiritualInsight: `Contemplating Chapter ${chNum}, Ovi ${oviNumber} deepens understanding of Srimad Bhagavad Gita's Marathi exposition by Sant Dnyaneshwar.`,
-    tags: [theme, `अध्याय ${chNum}`, "ज्ञानेश्वरी"],
-    isFamous: false
   };
 }
 
@@ -800,7 +720,7 @@ export function getAllOvisForChapter(chapterNumber: number): Ovi[] {
   return list;
 }
 
-export const PASAYADAN_VERSES = ALL_CHAPTERS.find(c => c.number === 18)?.keyOvis.filter(o => o.tags.includes("पसायदान")) || [];
+export const PASAYADAN_VERSES = ALL_CHAPTERS.find(c => c.number === 18)?.keyOvis || [];
 
 // Collect all key ovis across all chapters
 export const ALL_OVIS: Ovi[] = ALL_CHAPTERS.flatMap(chapter => chapter.keyOvis);

@@ -10,8 +10,6 @@ interface ChapterDetailViewProps {
   chapter: Chapter;
   onBack: () => void;
   onSelectChapter: (num: number) => void;
-  bookmarks: string[];
-  onToggleBookmark: (oviId: string, note?: string) => void;
   onAskAi: (ovi: Ovi) => void;
 }
 
@@ -21,8 +19,6 @@ export const ChapterDetailView: React.FC<ChapterDetailViewProps> = ({
   chapter,
   onBack,
   onSelectChapter,
-  bookmarks,
-  onToggleBookmark,
   onAskAi,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -274,8 +270,6 @@ export const ChapterDetailView: React.FC<ChapterDetailViewProps> = ({
                     key={ovi.id}
                     ovi={ovi}
                     chapterTitle={chapter.marathiTitle}
-                    isBookmarked={bookmarks.includes(ovi.id)}
-                    onToggleBookmark={onToggleBookmark}
                     onAskAi={onAskAi}
                     highlightText={searchQuery}
                   />

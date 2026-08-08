@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
 import { PASAYADAN_VERSES } from '../data/dnyaneshwariData';
-import { Volume2, VolumeX, Sparkles, Feather, Heart, Copy, Check } from 'lucide-react';
+import { Volume2, VolumeX, Sparkles, Feather, Copy, Check } from 'lucide-react';
 import { speakMarathiText, stopMarathiSpeech } from '../utils/audioUtils';
 import { Ovi } from '../types';
 
 interface PasayadanViewProps {
   onAskAi: (ovi: Ovi) => void;
-  bookmarks: string[];
-  onToggleBookmark: (oviId: string, note?: string) => void;
 }
 
 export const PasayadanView: React.FC<PasayadanViewProps> = ({
   onAskAi,
-  bookmarks,
-  onToggleBookmark,
 }) => {
   const [isPlayingFullPasayadan, setIsPlayingFullPasayadan] = useState(false);
   const [copiedAll, setCopiedAll] = useState(false);

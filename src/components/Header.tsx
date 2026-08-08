@@ -2,15 +2,13 @@ import React from 'react';
 import { BookOpen, Search, Heart, Sparkles, Feather } from 'lucide-react';
 
 interface HeaderProps {
-  activeTab: 'chapters' | 'search' | 'pasayadan' | 'bookmarks' | 'ai';
-  setActiveTab: (tab: 'chapters' | 'search' | 'pasayadan' | 'bookmarks' | 'ai') => void;
-  bookmarkCount: number;
+  activeTab: 'chapters' | 'search' | 'pasayadan' | 'ai';
+  setActiveTab: (tab: 'chapters' | 'search' | 'pasayadan' | 'ai') => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
   activeTab,
   setActiveTab,
-  bookmarkCount,
 }) => {
   return (
     <header className="sticky top-0 z-40 bg-[#2D241E] text-amber-50 backdrop-blur-md border-b border-amber-900/80 shadow-lg">
@@ -26,7 +24,7 @@ export const Header: React.FC<HeaderProps> = ({
             onClick={() => setActiveTab('chapters')}
           >
             <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-br from-amber-600 via-amber-700 to-amber-900 flex items-center justify-center text-amber-100 font-bold shadow-md border border-amber-400/50 shrink-0 group-hover:scale-105 transition-transform">
-              <span className="font-serif text-2xl font-black">ॐ</span>
+              <span className="font-serif text-sm font-black">ध्न्यानेश्वर</span>
             </div>
             <div>
               <div className="flex items-center gap-2">

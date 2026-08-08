@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Ovi } from '../types';
-import { Volume2, VolumeX, Heart, Share2, Sparkles, Copy, Check, MessageSquare, Loader2, Wand2 } from 'lucide-react';
+import { Volume2, VolumeX, Share2, Sparkles, Copy, Check, Loader2, Wand2 } from 'lucide-react';
 import { speakMarathiText, stopMarathiSpeech } from '../utils/audioUtils';
 import { ShareModal } from './ShareModal';
 import { generateOviContent, getCachedContent, hasCuratedContent, OviGeneratedContent } from '../utils/oviContentService';
@@ -8,8 +8,7 @@ import { generateOviContent, getCachedContent, hasCuratedContent, OviGeneratedCo
 interface OviCardProps {
   ovi: Ovi;
   chapterTitle?: string;
-  isBookmarked: boolean;
-  onToggleBookmark: (oviId: string, note?: string) => void;
+
   onAskAi: (ovi: Ovi) => void;
   highlightText?: string;
 }
@@ -17,16 +16,13 @@ interface OviCardProps {
 export const OviCard: React.FC<OviCardProps> = ({
   ovi,
   chapterTitle,
-  isBookmarked,
-  onToggleBookmark,
+
   onAskAi,
   highlightText,
 }) => {
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [showNoteInput, setShowNoteInput] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
-  const [userNote, setUserNote] = useState('');
   const [activeTab, setActiveTab] = useState<'bhavarth' | 'english' | 'insight'>('bhavarth');
 
   // AI content generation state
@@ -157,10 +153,7 @@ export const OviCard: React.FC<OviCardProps> = ({
     setShowShareModal(true);
   };
 
-  const handleSaveBookmark = () => {
-    onToggleBookmark(ovi.id, userNote);
-    setShowNoteInput(false);
-  };
+
 
   return (
     <div
@@ -206,18 +199,7 @@ export const OviCard: React.FC<OviCardProps> = ({
             {isPlayingAudio ? <VolumeX className="w-4 h-4 text-amber-950" /> : <Volume2 className="w-4 h-4" />}
           </button>
 
-          {/* Bookmark */}
-          <button
-            onClick={() => setShowNoteInput(!showNoteInput)}
-            title={isBookmarked ? "जतन केले आहे" : "ओवी जतन करा"}
-            className={`p-2 rounded-xl transition-colors border ${
-              isBookmarked
-                ? 'bg-rose-100 text-rose-600 border-rose-300'
-                : 'bg-amber-100 text-amber-950 border-amber-300/80 hover:bg-amber-200'
-            }`}
-          >
-            <Heart className={`w-4 h-4 ${isBookmarked ? 'fill-rose-600 text-rose-600' : ''}`} />
-          </button>
+
 
           {/* Copy */}
           <button
@@ -248,36 +230,7 @@ export const OviCard: React.FC<OviCardProps> = ({
         </div>
       </div>
 
-      {/* Bookmark Note Drawer */}
-      {showNoteInput && (
-        <div className="bg-amber-100/90 border border-amber-300 rounded-xl p-3 mb-4 transition-all">
-          <div className="flex items-center gap-1 text-xs font-bold text-amber-950 mb-1">
-            <MessageSquare className="w-3.5 h-3.5 text-amber-800" />
-            <span>तुमची वैयक्तिक टीप (Personal Reflection Note):</span>
-          </div>
-          <input
-            type="text"
-            value={userNote}
-            onChange={(e) => setUserNote(e.target.value)}
-            placeholder="उदा. या ओवीने मला मनाची शांती दिली..."
-            className="w-full text-xs px-3 py-2 bg-white rounded-lg border border-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-500 mb-2"
-          />
-          <div className="flex justify-end gap-2">
-            <button
-              onClick={() => setShowNoteInput(false)}
-              className="text-xs text-amber-900 hover:underline px-2 py-1 font-medium"
-            >
-              रद्द
-            </button>
-            <button
-              onClick={handleSaveBookmark}
-              className="text-xs bg-[#78350F] text-amber-100 px-3 py-1 rounded-md font-bold hover:bg-[#5B2508]"
-            >
-              {isBookmarked ? 'टीप अद्यतन करा' : 'जतन करा'}
-            </button>
-          </div>
-        </div>
-      )}
+
 
       {/* Main Original Marathi Ovi Text */}
       <div className="my-3 text-center sm:text-left px-3 sm:px-4 py-3 rounded-xl border border-amber-200/80 bg-[#FAF4E5] shadow-inner">
@@ -341,15 +294,6 @@ export const OviCard: React.FC<OviCardProps> = ({
         </div>
       )}
 
-      {/* Marathi Bhavarth - always shown if available */}
-      {effectiveBhavarth && (
-        <div className="mt-3 pt-3 border-t border-amber-200/80">
-          <p className="text-amber-950 font-sans text-sm sm:text-base leading-relaxed">
-            <strong className="text-amber-900 font-serif">भावार्थ: </strong>
-            {effectiveBhavarth}
-          </p>
-        </div>
-      )}
 
       {/* English & Bodh Tabs - shown if available */}
       {(effectiveEnglish || effectiveInsight) && (
@@ -394,6 +338,13 @@ export const OviCard: React.FC<OviCardProps> = ({
           </div>
 
           <div className="pt-1">
+            {activeTab === 'bhavarth' && effectiveBhavarth && (
+                <p className="text-amber-950 font-sans italic text-sm leading-relaxed">
+                  <strong className="text-amber-950 not-italic font-semibold">भावार्थ: </strong>
+                  {effectiveBhavarth}
+                </p>
+            )}
+
             {activeTab === 'english' && effectiveEnglish && (
               <p className="text-amber-950 font-sans italic text-sm leading-relaxed">
                 <strong className="text-amber-950 not-italic font-semibold">English Meaning: </strong>
@@ -429,20 +380,7 @@ export const OviCard: React.FC<OviCardProps> = ({
         </div>
       )}
 
-      {/* Topic Tags */}
-      {ovi.tags && ovi.tags.length > 0 && (
-        <div className="mt-4 pt-3 border-t border-amber-200/80 flex flex-wrap items-center gap-1.5">
-          <span className="text-[11px] text-amber-800 font-medium">विषय:</span>
-          {ovi.tags.map((tag, idx) => (
-            <span
-              key={idx}
-              className="text-[11px] bg-amber-100 text-amber-950 px-2.5 py-0.5 rounded-full border border-amber-300 font-medium"
-            >
-              #{tag}
-            </span>
-          ))}
-        </div>
-      )}
+
 
       {/* Share Modal */}
       {showShareModal && (

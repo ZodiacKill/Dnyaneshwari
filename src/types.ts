@@ -6,9 +6,6 @@ export interface Ovi {
   marathiBhavarth?: string;
   englishTranslation?: string;
   spiritualInsight?: string;
-  tags?: string[];
-  isFamous?: boolean;
-  audioUrl?: string; // Optional audio recitation file URL
 }
 
 export interface Chapter {

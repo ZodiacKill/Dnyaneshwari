@@ -5,35 +5,16 @@ import { ChapterGrid } from './components/ChapterGrid';
 import { ChapterDetailView } from './components/ChapterDetailView';
 import { PasayadanView } from './components/PasayadanView';
 import { SearchModule } from './components/SearchModule';
-import { BookmarksView } from './components/BookmarksView';
 import { AiChintanModal } from './components/AiChintanModal';
 import { LoadingScreen } from './components/LoadingScreen';
 import { Ovi } from './types';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'chapters' | 'search' | 'pasayadan' | 'bookmarks' | 'ai'>('chapters');
+  const [activeTab, setActiveTab] = useState<'chapters' | 'search' | 'pasayadan' | 'ai'>('chapters');
   const [selectedChapterNum, setSelectedChapterNum] = useState<number | null>(null);
   const [isInitialAppLoading, setIsInitialAppLoading] = useState<boolean>(true);
   const [isTabLoading, setIsTabLoading] = useState<boolean>(false);
 
-  // Bookmarks & User Notes state stored in localStorage
-  const [bookmarks, setBookmarks] = useState<string[]>(() => {
-    try {
-      const saved = localStorage.getItem('dnyaneshwari_bookmarks');
-      return saved ? JSON.parse(saved) : ["18.1790", "2.11", "12.145"];
-    } catch {
-      return ["18.1790", "2.11", "12.145"];
-    }
-  });
-
-  const [userNotes, setUserNotes] = useState<Record<string, string>>(() => {
-    try {
-      const saved = localStorage.getItem('dnyaneshwari_user_notes');
-      return saved ? JSON.parse(saved) : { "18.1790": "विश्वशांतीची महान प्रार्थना" };
-    } catch {
-      return { "18.1790": "विश्वशांतीची महान प्रार्थना" };
-    }
-  });
 
   // AI Modal State
   const [aiModalOpen, setAiModalOpen] = useState(false);
@@ -90,48 +71,13 @@ export default function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Save Bookmarks & Notes to LocalStorage
-  useEffect(() => {
-    try {
-      localStorage.setItem('dnyaneshwari_bookmarks', JSON.stringify(bookmarks));
-    } catch {}
-  }, [bookmarks]);
-
-  useEffect(() => {
-    try {
-      localStorage.setItem('dnyaneshwari_user_notes', JSON.stringify(userNotes));
-    } catch {}
-  }, [userNotes]);
-
-  const handleToggleBookmark = (oviId: string, note?: string) => {
-    if (bookmarks.includes(oviId)) {
-      setBookmarks(prev => prev.filter(id => id !== oviId));
-      if (note !== undefined) {
-        const copy = { ...userNotes };
-        delete copy[oviId];
-        setUserNotes(copy);
-      }
-    } else {
-      setBookmarks(prev => [...prev, oviId]);
-      if (note) {
-        setUserNotes(prev => ({ ...prev, [oviId]: note }));
-      }
-    }
-  };
-
-  const handleClearAllBookmarks = () => {
-    if (window.confirm("तुम्हाला खरोखरच सर्व जतन केलेल्या ओव्या काढायच्या आहेत का?")) {
-      setBookmarks([]);
-      setUserNotes({});
-    }
-  };
 
   const handleOpenAiWithOvi = (ovi: Ovi) => {
     setAiContextOvi(ovi);
     setAiModalOpen(true);
   };
 
-  const handleNavTabChange = (tab: 'chapters' | 'search' | 'pasayadan' | 'bookmarks' | 'ai') => {
+  const handleNavTabChange = (tab: 'chapters' | 'search' | 'pasayadan' | 'ai') => {
     if (tab === 'ai') {
       setAiContextOvi(null);
       setAiModalOpen(true);
@@ -170,7 +116,6 @@ export default function App() {
       <Header
         activeTab={activeTab}
         setActiveTab={handleNavTabChange}
-        bookmarkCount={bookmarks.length}
       />
 
       {/* Main Content Body */}
@@ -187,8 +132,6 @@ export default function App() {
                   chapter={currentChapter}
                   onBack={() => setSelectedChapterNum(null)}
                   onSelectChapter={handleSelectChapter}
-                  bookmarks={bookmarks}
-                  onToggleBookmark={handleToggleBookmark}
                   onAskAi={handleOpenAiWithOvi}
                 />
               ) : (
@@ -201,8 +144,6 @@ export default function App() {
 
             {activeTab === 'search' && (
               <SearchModule
-                bookmarks={bookmarks}
-                onToggleBookmark={handleToggleBookmark}
                 onAskAi={handleOpenAiWithOvi}
                 onSelectChapter={handleSelectChapter}
               />
@@ -211,18 +152,6 @@ export default function App() {
             {activeTab === 'pasayadan' && (
               <PasayadanView
                 onAskAi={handleOpenAiWithOvi}
-                bookmarks={bookmarks}
-                onToggleBookmark={handleToggleBookmark}
-              />
-            )}
-
-            {activeTab === 'bookmarks' && (
-              <BookmarksView
-                bookmarks={bookmarks}
-                userNotes={userNotes}
-                onToggleBookmark={handleToggleBookmark}
-                onAskAi={handleOpenAiWithOvi}
-                onClearAllBookmarks={handleClearAllBookmarks}
               />
             )}
           </>

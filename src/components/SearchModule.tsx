@@ -5,8 +5,7 @@ import { OviCard } from './OviCard';
 import { Search, Tag, BookOpen, RotateCcw, ChevronRight, Sparkles, Filter } from 'lucide-react';
 
 interface SearchModuleProps {
-  bookmarks: string[];
-  onToggleBookmark: (oviId: string, note?: string) => void;
+
   onAskAi: (ovi: Ovi) => void;
   onSelectChapter?: (num: number) => void;
 }
@@ -24,8 +23,7 @@ const normalizeSearchQuery = (input: string): string => {
 };
 
 export const SearchModule: React.FC<SearchModuleProps> = ({
-  bookmarks,
-  onToggleBookmark,
+
   onAskAi,
   onSelectChapter,
 }) => {
@@ -86,14 +84,13 @@ export const SearchModule: React.FC<SearchModuleProps> = ({
         ovi.englishTranslation.toLowerCase().includes(q) ||
         ovi.spiritualInsight.toLowerCase().includes(q) ||
         ovi.id === q ||
-        oviNumStr === q ||
-        ovi.tags.some(t => t.toLowerCase().includes(q));
+        oviNumStr === q;
 
       // Chapter filter
       const matchesChapter = selectedChapter === 'all' || ovi.chapterNumber === selectedChapter;
 
-      // Tag filter
-      const matchesTag = selectedTag === 'all' || ovi.tags.includes(selectedTag);
+      // Tag filter (matches against chapter themes)
+      const matchesTag = selectedTag === 'all' || ALL_CHAPTERS.find(c => c.number === ovi.chapterNumber)?.themes.includes(selectedTag);
 
       return matchesQuery && matchesChapter && matchesTag;
     });
@@ -341,8 +338,7 @@ export const SearchModule: React.FC<SearchModuleProps> = ({
                       key={ovi.id}
                       ovi={ovi}
                       chapterTitle={ch?.marathiTitle}
-                      isBookmarked={bookmarks.includes(ovi.id)}
-                      onToggleBookmark={onToggleBookmark}
+
                       onAskAi={onAskAi}
                       highlightText={query}
                     />
