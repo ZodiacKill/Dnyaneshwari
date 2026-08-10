@@ -2,7 +2,7 @@ import { VercelRequest, VercelResponse } from "@vercel/node";
 import {
   buildOviId,
   getOviContent,
-} from "../../../src/database/kvStore";
+} from "../../lib/kvStore.js";
 
 /**
  * Handles /api/bhavarth/chapter/:chapterNumber/ovi/:oviNumber

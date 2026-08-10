@@ -1,5 +1,5 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
-import { generateGeminiContent, GeminiApiError } from '../src/services/geminiService';
+import { generateGeminiContent, GeminiApiError } from './lib/geminiService.js';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Chapter } from '../types';
 import { BookOpen, ChevronRight, Tag, Sparkles } from 'lucide-react';
+import logo from '../logo.png';
 
 interface ChapterGridProps {
   chapters: Chapter[];
@@ -28,12 +29,21 @@ export const ChapterGrid: React.FC<ChapterGridProps> = ({ chapters, onSelectChap
         </div>
 
         <div className="relative z-10 max-w-3xl">
-          <div className="inline-flex items-center gap-2 bg-amber-800/80 border border-amber-600/60 text-amber-200 px-3 py-1 rounded-full text-xs font-bold mb-3 shadow-inner font-serif">
-            <span>अध्याय १ ते १८ संपूर्ण ज्ञानेश्वरी</span>
+          <div className="flex items-center gap-4 mb-3">
+            <img
+              src={logo}
+              alt="ज्ञानेश्वरी लोगो"
+              className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-contain bg-amber-50/95 p-1.5 shadow-lg border border-amber-400/70 hidden sm:block"
+            />
+            <div>
+              <div className="inline-flex items-center gap-2 bg-amber-800/80 border border-amber-600/60 text-amber-200 px-3 py-1 rounded-full text-xs font-bold mb-3 shadow-inner font-serif">
+                <span>अध्याय १ ते १८ संपूर्ण ज्ञानेश्वरी</span>
+              </div>
+              <h2 className="font-serif text-2xl sm:text-4xl font-bold tracking-tight text-amber-100 mb-3 leading-snug">
+                संत ज्ञानेश्वर महाराज कृत भावार्थदीपिका
+              </h2>
+            </div>
           </div>
-          <h2 className="font-serif text-2xl sm:text-4xl font-bold tracking-tight text-amber-100 mb-3 leading-snug">
-            संत ज्ञानेश्वर महाराज कृत भावार्थदीपिका
-          </h2>
           <p className="text-amber-200/90 text-sm sm:text-base leading-relaxed font-sans mb-4">
             श्रीमद्भगवद्गीतेवरील सुलभ व रसाळ प्राकृत मराठीतील अद्वितीय ग्रंथ. १८ अध्यायांचे मूळ श्लोक, संत ज्ञानेश्वरांची ओवी, मराठी भावार्थ व इंग्रजी भाषांतरासह अभ्यासा.
           </p>

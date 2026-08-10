@@ -1,5 +1,5 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
-import { getOviContent } from "../../../src/database/kvStore";
+import { getOviContent } from "../../lib/kvStore.js";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const { id } = req.query;

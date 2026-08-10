@@ -1,5 +1,6 @@
 import React from 'react';
 import { BookOpen, Search, Heart, Sparkles, Feather } from 'lucide-react';
+import logo from '../logo.png';
 
 interface HeaderProps {
   activeTab: 'chapters' | 'search' | 'pasayadan' | 'ai';
@@ -23,9 +24,11 @@ export const Header: React.FC<HeaderProps> = ({
             className="flex items-center gap-3 cursor-pointer group"
             onClick={() => setActiveTab('chapters')}
           >
-            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-br from-amber-600 via-amber-700 to-amber-900 flex items-center justify-center text-amber-100 font-bold shadow-md border border-amber-400/50 shrink-0 group-hover:scale-105 transition-transform">
-              <span className="font-serif text-sm font-black">ध्न्यानेश्वर</span>
-            </div>
+            <img
+              src={logo}
+              alt="मराठी ज्ञानेश्वरी लोगो"
+              className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl object-contain bg-amber-50/95 p-1 shadow-md border border-amber-300/70 shrink-0 group-hover:scale-105 transition-transform"
+            />
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="font-serif text-xl sm:text-2xl font-bold tracking-tight text-amber-100">

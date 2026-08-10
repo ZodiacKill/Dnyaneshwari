@@ -1,6 +1,6 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
-import { generateGeminiContent, GeminiApiError } from "../src/services/geminiService";
-import { saveOviContent, isStoragePersistent } from "../src/database/kvStore";
+import { generateGeminiContent, GeminiApiError } from "./lib/geminiService.js";
+import { saveOviContent, isStoragePersistent } from "./lib/kvStore.js";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
