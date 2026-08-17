@@ -722,8 +722,8 @@ export function getAllOvisForChapter(chapterNumber: number): Ovi[] {
 
 export const PASAYADAN_VERSES = ALL_CHAPTERS.find(c => c.number === 18)?.keyOvis || [];
 
-// Collect all key ovis across all chapters
-export const ALL_OVIS: Ovi[] = ALL_CHAPTERS.flatMap(chapter => chapter.keyOvis);
+// Collect all ovis across all chapters
+export const ALL_OVIS: Ovi[] = ALL_CHAPTERS.flatMap(chapter => getAllOvisForChapter(chapter.number));
 
 
 

@@ -31,7 +31,6 @@ export const SearchModule: React.FC<SearchModuleProps> = ({
   const [query, setQuery] = useState('');
   const [selectedChapter, setSelectedChapter] = useState<number | 'all'>('all');
   const [selectedTag, setSelectedTag] = useState<string | 'all'>('all');
-  const [filterType, setFilterType] = useState<'all' | 'chapters' | 'ovis'>('all');
   const [isPending, startTransition] = useTransition();
 
   const handleInputChange = (val: string) => {
@@ -46,30 +45,11 @@ export const SearchModule: React.FC<SearchModuleProps> = ({
     setQuery('');
     setSelectedChapter('all');
     setSelectedTag('all');
-    setFilterType('all');
   };
 
   const normalizedQuery = useMemo(() => normalizeSearchQuery(query), [query]);
 
-  // Search matching chapters
-  const matchedChapters = useMemo(() => {
-    if (!normalizedQuery) return [];
-    return ALL_CHAPTERS.filter(ch => {
-      const chNumStr = ch.number.toString();
-      const marathiNum = ['०','१','२','३','४','५','६','७','८','९'][ch.number] || '';
-      return (
-        ch.marathiTitle.toLowerCase().includes(normalizedQuery) ||
-        ch.englishTitle.toLowerCase().includes(normalizedQuery) ||
-        ch.sanskritName.toLowerCase().includes(normalizedQuery) ||
-        ch.summaryMarathi.toLowerCase().includes(normalizedQuery) ||
-        ch.summaryEnglish.toLowerCase().includes(normalizedQuery) ||
-        ch.themes.some(t => t.toLowerCase().includes(normalizedQuery)) ||
-        chNumStr === normalizedQuery ||
-        `अध्याय ${chNumStr}`.includes(normalizedQuery) ||
-        `अध्याय ${marathiNum}`.includes(normalizedQuery)
-      );
-    });
-  }, [normalizedQuery]);
+
 
   // Search matching ovis
   const matchedOvis = useMemo(() => {
@@ -111,7 +91,7 @@ export const SearchModule: React.FC<SearchModuleProps> = ({
     return list;
   }, [normalizedQuery, selectedChapter, selectedTag]);
 
-  const totalResultsCount = (filterType === 'ovis' ? 0 : matchedChapters.length) + matchedOvis.length;
+
 
   return (
     <div className="space-y-6">
@@ -177,36 +157,8 @@ export const SearchModule: React.FC<SearchModuleProps> = ({
             </select>
           </div>
 
-          {/* Result Type Tabs */}
-          <div className="flex items-center gap-1 bg-amber-100/80 p-1 rounded-xl border border-amber-300/80 text-xs font-medium">
-            <button
-              onClick={() => setFilterType('all')}
-              className={`px-3 py-1 rounded-lg transition-colors ${
-                filterType === 'all' ? 'bg-[#78350F] text-amber-100 font-bold' : 'text-amber-900 hover:bg-amber-200/80'
-              }`}
-            >
-              सर्व ({totalResultsCount})
-            </button>
-            <button
-              onClick={() => setFilterType('chapters')}
-              className={`px-3 py-1 rounded-lg transition-colors ${
-                filterType === 'chapters' ? 'bg-[#78350F] text-amber-100 font-bold' : 'text-amber-900 hover:bg-amber-200/80'
-              }`}
-            >
-              अध्याय ({matchedChapters.length})
-            </button>
-            <button
-              onClick={() => setFilterType('ovis')}
-              className={`px-3 py-1 rounded-lg transition-colors ${
-                filterType === 'ovis' ? 'bg-[#78350F] text-amber-100 font-bold' : 'text-amber-900 hover:bg-amber-200/80'
-              }`}
-            >
-              ओव्या ({matchedOvis.length})
-            </button>
-          </div>
-
           {/* Clear Filters Button */}
-          {(query || selectedChapter !== 'all' || selectedTag !== 'all' || filterType !== 'all') && (
+          {(query || selectedChapter !== 'all' || selectedTag !== 'all') && (
             <button
               onClick={handleResetFilters}
               className="flex items-center gap-1.5 text-xs text-amber-900 font-bold bg-amber-200/80 hover:bg-amber-300 px-3 py-1.5 rounded-xl border border-amber-300 transition-colors"
@@ -262,92 +214,44 @@ export const SearchModule: React.FC<SearchModuleProps> = ({
       {/* Search Results */}
       {!isPending && (
         <div className="space-y-6">
-
-          {/* Section A: Matched Chapters */}
-          {filterType !== 'ovis' && matchedChapters.length > 0 && (
-            <div>
-              <h3 className="font-serif text-lg font-bold text-amber-950 mb-3 flex items-center gap-2">
-                <BookOpen className="w-5 h-5 text-amber-800" />
-                <span>सापडलेले अध्याय ({matchedChapters.length})</span>
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-serif text-lg font-bold text-amber-950 flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-amber-800" />
+                <span>सापडलेल्या ओव्या ({matchedOvis.length})</span>
               </h3>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {matchedChapters.map(ch => (
-                  <div
-                    key={ch.number}
-                    onClick={() => onSelectChapter && onSelectChapter(ch.number)}
-                    className="bg-[#FFFDF8] rounded-2xl border border-[#D4C3A1] hover:border-amber-600 p-4 shadow-xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between group"
-                  >
-                    <div>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="bg-[#78350F] text-amber-100 text-xs font-serif font-bold px-2.5 py-1 rounded-lg">
-                          अध्याय {ch.number}
-                        </span>
-                        <span className="text-[11px] text-amber-800 font-medium">
-                          {ch.totalOvis} ओव्या
-                        </span>
-                      </div>
-                      <h4 className="font-serif font-bold text-amber-950 text-base group-hover:text-amber-800">
-                        {ch.marathiTitle}
-                      </h4>
-                      <p className="text-xs text-amber-900/80 line-clamp-2 mt-1">
-                        {ch.summaryMarathi}
-                      </p>
-                    </div>
-
-                    <div className="mt-3 pt-2 border-t border-amber-200/60 flex items-center justify-between text-xs font-bold text-amber-800">
-                      <span>अध्याय उघडा</span>
-                      <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                    </div>
-                  </div>
-                ))}
-              </div>
             </div>
-          )}
 
-          {/* Section B: Matched Ovis */}
-          {filterType !== 'chapters' && (
-            <div>
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-serif text-lg font-bold text-amber-950 flex items-center gap-2">
-                  <Sparkles className="w-5 h-5 text-amber-800" />
-                  <span>सापडलेल्या ओव्या ({matchedOvis.length})</span>
-                </h3>
+            {matchedOvis.length === 0 ? (
+              <div className="bg-[#FFFDF8] rounded-2xl p-8 text-center border border-[#D4C3A1]">
+                <p className="text-sm font-bold text-amber-950">
+                  कोणतीही ओवी सापडली नाही.
+                </p>
+                <p className="text-xs text-amber-800 mt-1">
+                  कृपया शोध शब्द तपासून पुन्हा प्रयत्न करा.
+                </p>
+                <button
+                  onClick={handleResetFilters}
+                  className="mt-4 text-xs bg-[#78350F] text-amber-100 px-4 py-2 rounded-xl font-bold hover:bg-[#5B2508]"
+                >
+                  सर्व फिल्टर्स रीसेट करा
+                </button>
               </div>
-
-              {matchedOvis.length === 0 && matchedChapters.length === 0 ? (
-                <div className="bg-[#FFFDF8] rounded-2xl p-8 text-center border border-[#D4C3A1]">
-                  <p className="text-sm font-bold text-amber-950">
-                    कोणतीही ओवी किंवा अध्याय सापडला नाही.
-                  </p>
-                  <p className="text-xs text-amber-800 mt-1">
-                    कृपया शोध शब्द तपासून पुन्हा प्रयत्न करा.
-                  </p>
-                  <button
-                    onClick={handleResetFilters}
-                    className="mt-4 text-xs bg-[#78350F] text-amber-100 px-4 py-2 rounded-xl font-bold hover:bg-[#5B2508]"
-                  >
-                    सर्व फिल्टर्स रीसेट करा
-                  </button>
-                </div>
-              ) : (
-                matchedOvis.map(ovi => {
-                  const ch = ALL_CHAPTERS.find(c => c.number === ovi.chapterNumber);
-                  return (
-                    <OviCard
-                      key={ovi.id}
-                      ovi={ovi}
-                      chapterTitle={ch?.marathiTitle}
-
-                      onAskAi={onAskAi}
-                      highlightText={query}
-                    />
-                  );
-                })
-              )}
-            </div>
-          )}
-
+            ) : (
+              matchedOvis.map(ovi => {
+                const ch = ALL_CHAPTERS.find(c => c.number === ovi.chapterNumber);
+                return (
+                  <OviCard
+                    key={ovi.id}
+                    ovi={ovi}
+                    chapterTitle={ch?.marathiTitle}
+                    onAskAi={onAskAi}
+                    highlightText={query}
+                  />
+                );
+              })
+            )}
+          </div>
         </div>
       )}
     </div>

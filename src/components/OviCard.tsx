@@ -167,14 +167,9 @@ export const OviCard: React.FC<OviCardProps> = ({
       {/* Header Info Bar */}
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-amber-200/80 pb-3 mb-4">
         <div className="flex items-center gap-2">
-          <span className="bg-[#78350F] text-amber-100 font-serif font-bold text-xs sm:text-sm px-3 py-1 rounded-full shadow-xs">
-            अध्याय {ovi.chapterNumber} | ओवी {ovi.oviNumber}
+          <span className="bg-[#78350F] text-amber-100 font-serif font-bold text-xs sm:text-sm px-3 py-1.5 rounded-full shadow-xs">
+            {chapterTitle || `अध्याय ${ovi.chapterNumber}`}
           </span>
-          {chapterTitle && (
-            <span className="text-xs text-amber-900 font-medium truncate max-w-[200px] sm:max-w-xs">
-              {chapterTitle}
-            </span>
-          )}
           
           {aiContent?.isGenerated && (
             <span className="bg-violet-100 text-violet-700 text-[10px] font-bold px-2 py-0.5 rounded-full border border-violet-200 flex items-center gap-0.5">
