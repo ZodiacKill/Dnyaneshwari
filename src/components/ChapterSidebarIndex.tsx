@@ -76,9 +76,6 @@ export const ChapterSidebarIndex: React.FC<ChapterSidebarIndexProps> = ({
                     <p className="text-xs font-serif font-semibold truncate leading-tight">
                       {ch.sanskritName}
                     </p>
-                    <p className={`text-[10px] truncate ${isSelected ? 'text-amber-200/90' : 'text-amber-800/70'}`}>
-                      {ch.totalOvis} ओव्या
-                    </p>
                   </div>
                 </div>
 

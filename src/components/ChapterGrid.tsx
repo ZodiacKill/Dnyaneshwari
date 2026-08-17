@@ -112,13 +112,10 @@ export const ChapterGrid: React.FC<ChapterGridProps> = ({ chapters, onSelectChap
                 <span className="w-9 h-9 rounded-xl bg-[#78350F] text-amber-100 font-serif font-bold text-sm flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
                   {chapter.number}
                 </span>
-                <span className="text-xs bg-amber-100 text-amber-950 font-bold px-2.5 py-0.5 rounded-full border border-amber-300">
-                  {chapter.totalOvis} ओव्या
-                </span>
               </div>
 
               <h3 className="font-serif text-lg font-bold text-amber-950 mb-1 group-hover:text-amber-800 transition-colors">
-                {chapter.marathiTitle}
+                {chapter.marathiTitle.replace(/^अध्याय\s*[०-९]+\s*[:.]?\s*/, "")}
               </h3>
               <p className="text-xs text-amber-900/80 font-medium italic mb-3">
                 {chapter.englishTitle}

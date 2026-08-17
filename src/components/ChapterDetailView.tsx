@@ -126,9 +126,6 @@ export const ChapterDetailView: React.FC<ChapterDetailViewProps> = ({
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
-            <span className="text-xs font-bold text-amber-950 px-2 font-serif">
-              अध्याय {chapter.number} / १८
-            </span>
             <button
               disabled={chapter.number >= 18}
               onClick={() => handleChapterChange(chapter.number + 1)}
@@ -153,16 +150,13 @@ export const ChapterDetailView: React.FC<ChapterDetailViewProps> = ({
               <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="bg-amber-800 text-amber-100 text-xs font-bold px-3 py-1 rounded-full border border-amber-700/80 font-serif">
-                    अध्याय {chapter.number}: {chapter.sanskritName}
-                  </span>
-                  <span className="bg-amber-900/80 text-amber-200 text-xs px-2.5 py-1 rounded-full border border-amber-700/60">
-                    एकूण {chapter.totalOvis} ओव्या
+                    {chapter.sanskritName}
                   </span>
                 </div>
               </div>
 
               <h2 className="font-serif text-2xl sm:text-3xl font-bold text-amber-100 mb-2">
-                {chapter.marathiTitle}
+                {chapter.marathiTitle.replace(/^अध्याय\s*[०-९]+\s*[:.]?\s*/, "")}
               </h2>
               <p className="text-xs sm:text-sm text-amber-200/90 font-medium italic mb-4">
                 {chapter.englishTitle}
@@ -228,9 +222,7 @@ export const ChapterDetailView: React.FC<ChapterDetailViewProps> = ({
               <div className="flex flex-wrap items-center justify-between gap-2 mb-4 px-1">
                 <h3 className="font-serif text-lg font-bold text-amber-950 flex items-center gap-2">
                   <Sparkles className="w-4 h-4 text-amber-800" />
-                  <span>
-                    अध्याय {chapter.number} - ओव्या (एकूण {filteredOvis.length})
-                  </span>
+                  <span>ओव्या</span>
                 </h3>
 
                 {/* Top Pagination if multiple pages */}
