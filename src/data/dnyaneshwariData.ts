@@ -670,10 +670,19 @@ export const ALL_CHAPTERS: Chapter[] = [
         spiritualInsight: "Ultimate spiritual prayer for boundless joy and eternal devotion.",
       },
       {
+        id: "18.1797",
+        chapterNumber: 18,
+        oviNumber: 1797,
+        originalMarathi: "आणि ग्रंथोपजीविये । विशेषीं लोकींयें । दृष्टादृष्ट विजयें । होआवें जी ॥१७९७॥",
+        marathiBhavarth: "आणि जे या ग्रंथाचा उपजीविका म्हणून आदर करतात, त्यांना या लोकांमध्ये दृश्य व अदृश्य अशा दोन्ही प्रकारचे विजय साध्य व्हावे.",
+        englishTranslation: "And may those who live by and honour this sacred scripture attain victory in this world, in all visible and invisible attainments.",
+        spiritualInsight: "Prayer that the readers of the scripture may prosper in both seen and unseen spheres of life.",
+      },
+      {
         id: "18.1798",
         chapterNumber: 18,
         oviNumber: 1798,
-        originalMarathi: "येथ म्हणे श्रीविश्वेशराओ । हा होईल दानपसावो । येणे वरप्रसादे सुखी झालाओ । ज्ञानदेवो ॥१७९८॥",
+        originalMarathi: "येथ म्हणे श्रीविश्वेशरावो । हा होइल दानपसावो । येणे वरप्रसादे सुखी झालाओ । ज्ञानदेवो ॥१७९८॥",
         marathiBhavarth: "येथे श्रीगुरू निवृत्तीनाथ (विश्वेशराव) म्हणाले, 'हा तुझा वरप्रसाद तुला नक्की मिळेल!' या आशीर्वादाने ज्ञानदेव अत्यंत सुखी झाले.",
         englishTranslation: "Thereupon Sri Nivrutthinath declared: 'This prayer shall surely be granted!' Blessed with this divine grace, Dnyandev became immensely fulfilled.",
         spiritualInsight: "The fulfillment of Sant Dnyaneshwar's prayer brings divine assurance of peace and bliss.",
@@ -755,7 +764,10 @@ export function getAllOvisForChapter(chapterNumber: number): Ovi[] {
   return list;
 }
 
-export const PASAYADAN_VERSES = ALL_CHAPTERS.find(c => c.number === 18)?.keyOvis || [];
+export const PASAYADAN_VERSES: Ovi[] =
+  (ALL_CHAPTERS.find(c => c.number === 18)?.keyOvis || [])
+    .filter(o => o.oviNumber >= 1790 && o.oviNumber <= 1798)
+    .sort((a, b) => a.oviNumber - b.oviNumber);
 
 // Collect all ovis across all chapters
 export const ALL_OVIS: Ovi[] = ALL_CHAPTERS.flatMap(chapter => getAllOvisForChapter(chapter.number));
